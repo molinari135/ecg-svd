@@ -9,6 +9,7 @@ notebook
 numpy
 pandas
 pip
+pyEDFlib
 python-dotenv
 scikit-learn
 tqdm
