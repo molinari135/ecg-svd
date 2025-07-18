@@ -9,8 +9,12 @@ notebook
 numpy
 pandas
 pip
+pyEDFlib
 python-dotenv
+PyWavelets
 scikit-learn
+seaborn
 tqdm
 typer
+wfdb
 -e .
