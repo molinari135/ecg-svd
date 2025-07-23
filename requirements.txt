@@ -17,4 +17,5 @@ seaborn
 tqdm
 typer
 wfdb
+wget
 -e .
