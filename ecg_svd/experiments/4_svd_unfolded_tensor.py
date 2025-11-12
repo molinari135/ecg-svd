@@ -1,0 +1,104 @@
+import typer
+import numpy as np
+import neurokit2 as nk
+from loguru import logger
+from typing import List
+
+from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader, create_segment_tensor
+from ecg_svd.src.decomposition import diagonal_averaging, create_hankel_matrix
+from ecg_svd.src.metrics import get_classification_report
+
+app = typer.Typer(help="Runs Multichannel Singular Spectrum Analysis (MSSA) on the unfolded Hankel tensor.")
+
+
+@app.command()
+def main(
+    filename: str = "r01.edf",
+    target_channels: List[int] = [1, 2, 3, 4],
+    gt_channel: int = 0,
+    segment_duration: float = 5.0,
+    window_length: int = 625 * 2,
+    mecg_cvp_threshold: float = 0.75,
+    fecg_cvp_threshold: float = 0.95
+):
+    edf_path = RAW_DATA_DIR / filename
+
+    try:
+        # initialization and data loading
+        edf = get_edf_reader(edf_path)
+        gt_data = get_signal_segment(edf, ch_number=gt_channel, end_time=segment_duration)
+        gt_onsets = gt_data['onsets']
+        sampling_rate = gt_data['sampling_rate']
+        segments_data = [
+            get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
+            for ch in target_channels
+        ]
+
+        # tensor unfolding
+        hankel_matrices = [
+            create_hankel_matrix(data['segment'], L_samples=window_length)
+            for data in segments_data
+        ]
+        segment_tensor = create_segment_tensor(hankel_matrices)
+        L, K, N_channels = segment_tensor.shape
+        H = segment_tensor.reshape(L, K * N_channels)
+        logger.info(f"Unfolded matrix H shape: {H.shape}")
+
+        # svd decomposition
+        U, S, Vt = np.linalg.svd(H, full_matrices=False)
+
+        # rank determination
+        var_explained = S**2 / np.sum(S**2)
+        cumulative_var = np.cumsum(var_explained)
+        k1 = np.argmax(cumulative_var >= mecg_cvp_threshold) + 1
+        k2 = np.argmax(cumulative_var >= fecg_cvp_threshold) + 1
+        k2 = max(k2, k1 + 1)
+        logger.info(f"SVD Ranks selected: mECG (1..{k1}), fECG ({k1 + 1}..{k2}), Noise (>{k2})")
+
+        # reconstruction of Hankel blocks
+        H_mecg_reco = U[:, :k1] @ np.diag(S[:k1]) @ Vt[:k1, :]
+        H_fecg_reco = U[:, k1:k2] @ np.diag(S[k1:k2]) @ Vt[k1:k2, :]
+
+        # divide H_fecg_reco (L, K*N_channels) in N_channels matrices (L, K)
+        # then apply diagonal averaging
+
+        # obtain again a tensor
+        fecg_tensor_reco = H_fecg_reco.reshape(L, K, N_channels)
+
+        fecg_signals_list = []
+        for ch_idx in range(N_channels):
+            H_fecg_ch = fecg_tensor_reco[:, :, ch_idx]
+            fecg_ch_signal = diagonal_averaging(H_fecg_ch)
+            fecg_signals_list.append(fecg_ch_signal)
+
+        # weighted mean could be used here, if computed
+        fecg_combined = np.mean(fecg_signals_list, axis=0)
+
+        mecg_tensor_reco = H_mecg_reco.reshape(L, K, N_channels)
+        mecg_signals_list = [diagonal_averaging(mecg_tensor_reco[:, :, ch_idx]) for ch_idx in range(N_channels)]
+        mecg_combined = np.mean(mecg_signals_list, axis=0)
+
+        logger.info("mECG and fECG signals reconstructed and combined by channel averaging.")
+
+        # metrics calculations
+        N_original = len(segments_data[0]['segment'])
+        fecg_to_test = fecg_combined[:N_original]  # mean of reconstructed signals
+
+        _, info = nk.ecg_peaks(fecg_to_test, sampling_rate=sampling_rate, correct_artifacts=True)
+        fecg_peaks_seconds = info.get('ECG_R_Peaks', []) / sampling_rate
+
+        report = get_classification_report(gt_onsets, fecg_peaks_seconds)
+        logger.success(f"Experiment 4 (MSSA) Completed. Final Accuracy: {report['accuracy']:.2f}%")
+
+    except Exception as e:
+        logger.error(f"An error occurred during the MSSA experiment: {e}")
+        raise
+
+    finally:
+        # cleanup
+        close_edf_reader()
+
+
+if __name__ == "__main__":
+    app()
