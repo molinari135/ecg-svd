@@ -1,14 +1,19 @@
 import typer
+import sys
+import time
+import json
 import neurokit2 as nk
 import torch
 import tensorly as tl
+import numpy as np
 from loguru import logger
 from typing import List
 from scipy.signal.windows import hann
 from scipy.linalg import hankel
+from pathlib import Path
 import warnings
 
-from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import run_parafac, reconstruct_channels_torch
 from ecg_svd.src.metrics import get_classification_report, get_signal_weights
@@ -23,7 +28,7 @@ app = typer.Typer(help="Runs PARAFAC Decomposition on a 3D Hankel tensor using a
 
 @app.command()
 def main(
-    filename: str = "r04.edf",
+    filename: str = "r01.edf",
     target_channels: List[int] = [1, 2, 3, 4],
     gt_channel: int = 0,
     segment_length: float = 5.0,
@@ -32,6 +37,7 @@ def main(
     parafac_rank: int = 4,
 ):
     edf_path = RAW_DATA_DIR / filename
+    start_time = time.time()
 
     # setup cuda
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -147,9 +153,9 @@ def main(
         logger.info(f"Finished processing {segment_count} segments.")
 
         # final normalization
-        full_mecg /= torch.maximum(weights_final, torch.tensor(1e-8, device=device))
-        full_fecg /= torch.maximum(weights_final, torch.tensor(1e-8, device=device))
-        full_noise /= torch.maximum(weights_final, torch.tensor(1e-8, device=device))
+        full_mecg /= torch.maximum(weights_final, torch.tensor(1e-8, device=device))  # periodicity
+        full_fecg /= torch.maximum(weights_final, torch.tensor(1e-8, device=device))  # mECG
+        full_noise /= torch.maximum(weights_final, torch.tensor(1e-8, device=device))  # fECG
         fecg_to_test = full_noise.cpu().numpy()
 
         # metrics computation
@@ -161,7 +167,38 @@ def main(
         fecg_peaks_seconds = info.get('ECG_R_Peaks', []) / sampling_rate
         report = get_classification_report(full_gt_onsets, fecg_peaks_seconds)
 
-        logger.success(f"Experiment 9 (PARAFAC GPU Sliding Window) Completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
+        logger.success(f"Experiment completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
+
+        elapsed_time = time.time() - start_time
+        experiment_name = Path(sys.argv[0]).stem
+        data_to_save = {
+            'mecg_combined_full': full_mecg.cpu().numpy(),
+            'fecg_combined_selected_full': full_fecg.cpu().numpy(),
+            'fecg_combined_residual_full': full_noise.cpu().numpy(),
+            'sampling_rate': sampling_rate
+        }
+
+        experiment_report = {
+            "experiment_id": experiment_name,
+            "execution_time_seconds": elapsed_time,
+            "filename": filename,
+            "target_channels": target_channels,
+            "segment_length": segment_length,
+            "overlap": overlap,
+            "window_length": window_length,
+            "parafac_rank": parafac_rank,
+            "weights_channels": weights_np.tolist(),
+            "selected_mecg_components": [0],
+            "selected_fecg_components": [1, 2],
+            "results": report
+        }
+
+        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
+
+        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
+        with open(json_output_path, 'w') as f:
+            json.dump(experiment_report, f, indent=4)
+        logger.info(f"Report saved to {json_output_path}") 
 
     except Exception as e:
         logger.error(f"An error occurred during the PARAFAC GPU experiment: {e}")

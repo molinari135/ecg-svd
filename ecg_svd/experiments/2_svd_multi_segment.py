@@ -1,10 +1,14 @@
 import typer
+import sys
+import json
+import time
 import numpy as np
 import neurokit2 as nk
 from loguru import logger
 from typing import List
+from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import hankel_with_svd, lower_peaks
 from ecg_svd.src.metrics import get_classification_report, get_signal_weights
@@ -23,6 +27,7 @@ def main(
     window_length: int = 625 * 2
 ):
     edf_path = RAW_DATA_DIR / filename
+    start_time = time.time()
 
     try:
         # initialization and data loading
@@ -69,7 +74,7 @@ def main(
             logger.debug(f"Channel {target_channels[i]} processed.")
 
         # signal combination
-        mecg_mean = np.mean(mecg_list, axis=0)
+        # mecg_mean = np.mean(mecg_list, axis=0)
         fecg_mean = np.mean(fecg_list, axis=0)
 
         # weighted sum
@@ -89,6 +94,33 @@ def main(
         fecg_weighted_peaks_sec = info_weighted.get('ECG_R_Peaks', []) / sampling_rate
         report_weighted = get_classification_report(gt_onsets, fecg_weighted_peaks_sec)
         logger.success(f"Weighted Sum Result Accuracy: {report_weighted['accuracy']:.2f}%")
+
+        elapsed_time = time.time() - start_time
+        experiment_name = Path(sys.argv[0]).stem
+        data_to_save = {
+            'original_segment': segments_data,
+            'mecg': mecg_weighted,
+            'fecg': fecg_weighted
+        }
+
+        experiment_report = {
+            "experiment_id": experiment_name,
+            "execution_time_seconds": elapsed_time,
+            "filename": filename,
+            "target_channel": target_channels,
+            "segment_duration": segment_duration,
+            "mecg_cvp": mecg_cvp,
+            "fecg_cvp": fecg_cvp,
+            "window_length": window_length,
+            "results": report_weighted
+        }
+
+        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
+
+        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
+        with open(json_output_path, 'w') as f:
+            json.dump(experiment_report, f, indent=4)
+        logger.info(f"Report saved to {json_output_path}")
 
     except Exception as e:
         logger.error(f"An error occurred during the experiment: {e}")

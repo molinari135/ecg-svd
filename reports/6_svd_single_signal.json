@@ -1,0 +1,21 @@
+{
+    "experiment_id": "6_svd_single_signal",
+    "execution_time_seconds": 246.13054823875427,
+    "filename": "r01.edf",
+    "target_channel": 4,
+    "segment_length": 5.0,
+    "overlap": 0.5,
+    "window_length_svd": 1250,
+    "mecg_cvp": 0.75,
+    "fecg_cvp": 0.9,
+    "segment_count": 67,
+    "results": {
+        "TP": 453,
+        "FN": 191,
+        "FP": 45,
+        "TN": 0,
+        "accuracy": 65.74746008708273,
+        "precision": 90.96385542168674,
+        "recall": 70.34161490683229
+    }
+}

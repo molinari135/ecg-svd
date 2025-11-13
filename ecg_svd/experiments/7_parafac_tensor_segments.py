@@ -1,11 +1,15 @@
 import typer
+import sys
+import time
+import json
 import numpy as np
 import neurokit2 as nk
 import tensorly as tl
 from loguru import logger
 from typing import List
+from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader, create_segment_tensor
 from ecg_svd.src.decomposition import run_parafac, reconstruct_channels, create_hankel_matrix
 from ecg_svd.src.metrics import get_classification_report, get_signal_weights
@@ -25,6 +29,7 @@ def main(
     parafac_rank: int = 4,
 ):
     edf_path = RAW_DATA_DIR / filename
+    start_time = time.time()
 
     try:
         # initialization and data loading
@@ -87,7 +92,40 @@ def main(
         fecg_peaks_seconds = info.get('ECG_R_Peaks', []) / sampling_rate
         report = get_classification_report(gt_onsets, fecg_peaks_seconds)
 
-        logger.success(f"Experiment 7 (PARAFAC) Completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
+        logger.success(f"Experiment completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
+
+        elapsed_time = time.time() - start_time
+        experiment_name = Path(sys.argv[0]).stem
+        data_to_save = {
+            'original_segment_avg': segment_tensor,
+            'mecg_combined': mECG_combined,
+            'fecg_combined_selected': noise_combined,
+            'fecg_combined_residual': fECG_combined,
+            'parafac_weights': parafac_weights,
+            'parafac_factors': factors,
+            'sampling_rate': sampling_rate
+        }
+
+        experiment_report = {
+            "experiment_id": experiment_name,
+            "execution_time_seconds": elapsed_time,
+            "filename": filename,
+            "target_channels": target_channels,
+            "segment_duration": segment_duration,
+            "window_length": window_length,
+            "parafac_rank": parafac_rank,
+            "weights_channels": weights_channels.tolist(),
+            "selected_mecg_components": [0],
+            "selected_fecg_components": [1, 2],
+            "results": report
+        }
+
+        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
+
+        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
+        with open(json_output_path, 'w') as f:
+            json.dump(experiment_report, f, indent=4)
+        logger.info(f"Report saved to {json_output_path}")
 
     except Exception as e:
         logger.error(f"An error occurred during the PARAFAC experiment: {e}")

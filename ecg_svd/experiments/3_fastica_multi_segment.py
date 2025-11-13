@@ -1,10 +1,14 @@
 import typer
+import sys
+import json
+import time
 import numpy as np
 import neurokit2 as nk
 from loguru import logger
 from typing import List
+from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import run_fastica, lower_peaks
 from ecg_svd.src.metrics import get_classification_report
@@ -23,6 +27,7 @@ def main(
     fecg_component_idx: int = 1,  # assuming that the 3rd component is fECG
 ):
     edf_path = RAW_DATA_DIR / filename
+    start_time = time.time()
 
     try:
         # initialization and data loading
@@ -60,7 +65,7 @@ def main(
         _, mecg_info = nk.ecg_peaks(mecg_component, sampling_rate=sampling_rate, correct_artifacts=True)
         mecg_peaks_indices = mecg_info.get('ECG_R_Peaks', [])
 
-        logger.info(f"MECG peaks identified from component {mecg_component_idx + 1}: {len(mecg_peaks_indices)}")
+        logger.info(f"mECG peaks identified from component {mecg_component_idx + 1}: {len(mecg_peaks_indices)}")
 
         # clean the fECG component by suppressing the mECG peaks
         ica_fecg = lower_peaks(fecg_component_raw, peaks=mecg_peaks_indices, neighborhood=65)
@@ -72,7 +77,38 @@ def main(
         fecg_peaks_seconds = ica_fecg_info.get('ECG_R_Peaks', []) / sampling_rate  # convert peaks to seconds
 
         report = get_classification_report(gt_onsets, fecg_peaks_seconds)
-        logger.success(f"Experiment 3 (FastICA) Completed. Final Accuracy: {report['accuracy']:.2f}%")
+        logger.success(f"Experiment completed. Final Accuracy: {report['accuracy']:.2f}%")
+
+        elapsed_time = time.time() - start_time
+        experiment_name = Path(sys.argv[0]).stem
+        data_to_save = {
+            'input_matrix': stacked_matrix,
+            'mecg': mecg_component,
+            'fecg': ica_fecg,
+            'sampling_rate': sampling_rate
+        }
+
+        npy_output_path = PROCESSED_DATA_DIR / f"{experiment_name}_signals.npy"
+        np.save(npy_output_path, data_to_save)
+        logger.info(f"Signals and Matrix saved to {npy_output_path}")
+
+        # 3. Prepara il report per JSON
+        experiment_report = {
+            "experiment_id": experiment_name,
+            "execution_time_seconds": elapsed_time,
+            "filename": filename,
+            "target_channels": target_channels,
+            "segment_duration": segment_duration,
+            "n_sources": n_sources,
+            "mecg_component_idx": mecg_component_idx,
+            "fecg_component_idx": fecg_component_idx,
+            "results": report
+        }
+
+        json_output_path = REPORTS_DIR / f"{experiment_name}_report.json"
+        with open(json_output_path, 'w') as f:
+            json.dump(experiment_report, f, indent=4)
+        logger.info(f"Report saved to {json_output_path}")
 
     except Exception as e:
         logger.error(f"An error occurred during the FastICA experiment: {e}")

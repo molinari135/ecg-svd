@@ -1,10 +1,14 @@
 import typer
+import sys
+import json
+import time
 import numpy as np
 import neurokit2 as nk
 from loguru import logger
 from scipy.signal.windows import hann
+from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import hankel_with_svd, lower_peaks
 from ecg_svd.src.metrics import get_classification_report
@@ -24,6 +28,7 @@ def main(
     window_length_svd: int = 625 * 2
 ):
     edf_path = RAW_DATA_DIR / filename
+    start_time = time.time()
 
     try:
         # initialization and data loading
@@ -123,6 +128,36 @@ def main(
 
         report = get_classification_report(full_gt_onsets, fecg_peaks_seconds)
         logger.success(f"Experiment 6 (Sliding Window SVD) Completed. Final FECG Accuracy: {report['accuracy']:.2f}%")
+
+        elapsed_time = time.time() - start_time
+        experiment_name = Path(sys.argv[0]).stem
+        data_to_save = {
+            'original_full_segment': segment_signal,
+            'mecg_combined': combined_mecg,
+            'fecg_combined': combined_fecg,
+            'sampling_rate': sampling_rate
+        }
+
+        experiment_report = {
+            "experiment_id": experiment_name,
+            "execution_time_seconds": elapsed_time,
+            "filename": filename,
+            "target_channel": target_channel,
+            "segment_length": segment_length,
+            "overlap": overlap,
+            "window_length_svd": window_length_svd,
+            "mecg_cvp": mecg_cvp,
+            "fecg_cvp": fecg_cvp,
+            "segment_count": segment_count,
+            "results": report
+        }
+
+        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
+
+        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
+        with open(json_output_path, 'w') as f:
+            json.dump(experiment_report, f, indent=4)
+        logger.info(f"Report saved to {json_output_path}")
 
     except Exception as e:
         logger.error(f"An error occurred during the Sliding Window experiment: {e}")
