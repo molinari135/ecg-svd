@@ -16,7 +16,7 @@ import warnings
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import run_parafac, reconstruct_channels_torch
-from ecg_svd.src.metrics import get_classification_report, get_signal_weights
+from ecg_svd.src.metrics import get_classification_report, get_signal_weights_and_qualities
 
 
 # set pytorch for tensorly and GPU optimization
@@ -65,7 +65,7 @@ def main(
 
         # compute channel weights
         initial_segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
-        weights_np = get_signal_weights(initial_segments_data)
+        weights_np, _ = get_signal_weights_and_qualities(initial_segments_data)
         weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
         logger.info(f"Calculated channel weights: {weights_np}")
 
@@ -198,7 +198,7 @@ def main(
         json_output_path = REPORTS_DIR / f"{experiment_name}.json"
         with open(json_output_path, 'w') as f:
             json.dump(experiment_report, f, indent=4)
-        logger.info(f"Report saved to {json_output_path}") 
+        logger.info(f"Report saved to {json_output_path}")
 
     except Exception as e:
         logger.error(f"An error occurred during the PARAFAC GPU experiment: {e}")

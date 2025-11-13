@@ -135,26 +135,19 @@ def run_parafac(
     return cp_tensor
 
 
-def get_tucker_rank(signal_list: List[Dict[str, Any]], signal_quality_func) -> int:
-
-    L = 625 * 2
+def get_tucker_rank(quality_results: List[Dict[str, Any]]) -> int:
     ranks = []
 
-    for signal_data in signal_list:
-        signal = signal_data['segment']
-        H = create_hankel_matrix(signal, L_samples=L)
-        S = svd(H, full_matrices=False)[1]
+    for quality_data in quality_results:
+        S = quality_data['singular_values']
+        best_cvp = quality_data['best_cvp']
 
         variances = S**2
         explained_variance = variances / np.sum(variances)
         cumulative_variance = np.cumsum(explained_variance)
 
-        best_cvp = signal_quality_func(signal)['best_cvp']
         k = np.searchsorted(cumulative_variance, best_cvp) + 1
         ranks.append(k)
-
-        del H, S
-        gc.collect()
 
     return int(np.round(np.mean(ranks)))
 

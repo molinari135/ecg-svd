@@ -1,10 +1,10 @@
 import numpy as np
 import neurokit2 as nk
-import gc
+from scipy.linalg import svd
 from loguru import logger
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
 
-from .decomposition import hankel_with_svd
+from ecg_svd.src.decomposition import create_hankel_matrix, diagonal_averaging
 
 
 def get_classification_report(ground_truth: np.ndarray, prediction: np.ndarray, epsilon: float = 0.15) -> Dict[str, Any]:
@@ -68,45 +68,54 @@ def signal_quality(
     cvp_to_test: List[float] = [0.70, 0.75, 0.80, 0.85, 0.90, 0.95],
     window_length: int = 625 * 2
 ) -> Dict[str, Any]:
+
+    H = create_hankel_matrix(signal, L_samples=window_length)
+    U, S, Vt = svd(H, full_matrices=False)
+
+    variances = S**2
+    total_variance = np.sum(variances)
+    explained_variance = variances / total_variance
+    cumulative_explained_variance = np.cumsum(explained_variance)
+
     qualities = {}
 
-    # iterate over CVP values
     for cvp in cvp_to_test:
-        # use the composite decomposition function to get the reconstructed signal
-        extracted_signal = hankel_with_svd(signal, window_length=window_length, cvp=cvp)
+        k = np.argmax(cumulative_explained_variance >= cvp) + 1
+        R = U[:, :k] @ np.diag(S[:k]) @ Vt[:k, :]
+        reconstructed_signal = diagonal_averaging(R)
 
-        # calculate quality using NeuroKit2
-        # note: NeuroKit returns a quality index series; we take the mean.
-        signal_quality = nk.ecg_quality(extracted_signal, sampling_rate=sampling_rate)
-        qualities[cvp] = signal_quality.mean()
+        quality_mean = nk.ecg_quality(reconstructed_signal, sampling_rate=sampling_rate).mean()
+        qualities[cvp] = quality_mean
+        del R
+        del reconstructed_signal
 
-        del extracted_signal
-        gc.collect()
-
-    # find the CVP that yielded the best quality
     best_cvp = max(qualities, key=qualities.get)
     best_quality = qualities[best_cvp]
 
     return {
         "qualities": qualities,
         "best_cvp": best_cvp,
-        "best_quality": best_quality
+        "best_quality": best_quality,
+        "singular_values": S
     }
 
 
-def get_signal_weights(signal_list: List[Dict[str, Any]]) -> np.ndarray:
-    quality = []
+def get_signal_weights_and_qualities(signal_list: List[Dict[str, Any]]) -> Tuple[np.ndarray, List[Dict[str, Any]]]:
+    all_quality_data = []
+    quality_values = []
 
     for signal_data in signal_list:
-        # calculate the best quality for each signal segment
-        best_quality = signal_quality(signal_data['segment'])['best_quality']
-        quality.append(best_quality)
+        quality_data = signal_quality(signal_data['segment'])
 
-    quality_array = np.array(quality)
+        all_quality_data.append(quality_data)
+        quality_values.append(quality_data['best_quality'])
 
-    # return normalized weights
-    if np.sum(quality_array) == 0:
+    quality_array = np.array(quality_values)
+
+    sum_quality = np.sum(quality_array)
+    if sum_quality == 0:
         logger.warning("Total quality is zero. Returning uniform weights.")
-        return np.ones_like(quality_array) / len(quality_array)
-
-    return quality_array / np.sum(quality_array)
+        weights = np.ones_like(quality_array) / len(quality_array)
+    else:
+        weights = quality_array / sum_quality
+    return weights, all_quality_data

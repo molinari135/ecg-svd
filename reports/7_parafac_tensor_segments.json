@@ -1,6 +1,6 @@
 {
     "experiment_id": "7_parafac_tensor_segments",
-    "execution_time_seconds": 55.66494846343994,
+    "execution_time_seconds": 23.186290502548218,
     "filename": "r01.edf",
     "target_channels": [
         1,

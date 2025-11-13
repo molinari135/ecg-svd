@@ -1,6 +1,6 @@
 {
     "experiment_id": "4_svd_unfolded_tensor",
-    "execution_time_seconds": 7.880337953567505,
+    "execution_time_seconds": 7.273545026779175,
     "filename": "r01.edf",
     "target_channels": [
         1,

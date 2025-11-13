@@ -12,7 +12,7 @@ from pathlib import Path
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader, create_segment_tensor
 from ecg_svd.src.decomposition import run_tucker, reconstruct_channels, create_hankel_matrix, get_tucker_rank
-from ecg_svd.src.metrics import get_classification_report, get_signal_weights, signal_quality
+from ecg_svd.src.metrics import get_classification_report, get_signal_weights_and_qualities
 
 tl.set_backend('numpy')
 
@@ -51,11 +51,11 @@ def main(
         segment_tensor = create_segment_tensor(hankel_matrices)
 
         # calculate weights based on signal quality
-        weights = get_signal_weights(segments_data)
+        weights, quality_results = get_signal_weights_and_qualities(segments_data)
         logger.info(f"Calculated channel weights: {weights}")
 
         # rank determination based on the median optimal rank across channels
-        tucker_rank = get_tucker_rank(segments_data, signal_quality_func=signal_quality)
+        tucker_rank = get_tucker_rank(quality_results)
 
         # tucker rank is (R_L, R_K, R_C). R_L and R_K are based on time/trajectory subspace (k=tucker_rank).
         # R_C (channels) is fixed to the number of channels (4 in this case)

@@ -11,7 +11,7 @@ from pathlib import Path
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import hankel_with_svd, lower_peaks
-from ecg_svd.src.metrics import get_classification_report, get_signal_weights
+from ecg_svd.src.metrics import get_classification_report, get_signal_weights_and_qualities
 
 app = typer.Typer(help="Runs SVD separation on multiple segments/channels with weighted summation.")
 
@@ -47,7 +47,7 @@ def main(
         logger.info(f"Processing {len(target_channels)} channels...")
 
         # weight calculation
-        weights = get_signal_weights(segments_data)
+        weights, _ = get_signal_weights_and_qualities(segments_data)
         logger.info(f"Calculated normalized weights: {weights}")
 
         # iterative SVD separation

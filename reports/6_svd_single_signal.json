@@ -1,6 +1,6 @@
 {
     "experiment_id": "6_svd_single_signal",
-    "execution_time_seconds": 246.13054823875427,
+    "execution_time_seconds": 218.65576767921448,
     "filename": "r01.edf",
     "target_channel": 4,
     "segment_length": 5.0,

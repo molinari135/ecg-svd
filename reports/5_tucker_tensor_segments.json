@@ -1,6 +1,6 @@
 {
     "experiment_id": "5_tucker_tensor_segments",
-    "execution_time_seconds": 103.06211376190186,
+    "execution_time_seconds": 22.177944660186768,
     "filename": "r01.edf",
     "target_channels": [
         1,
@@ -20,12 +20,12 @@
         0.30847360322937023
     ],
     "results": {
-        "TP": 10,
-        "FN": 1,
+        "TP": 9,
+        "FN": 2,
         "FP": 0,
         "TN": 0,
-        "accuracy": 90.9090909090909,
+        "accuracy": 81.81818181818183,
         "precision": 100.0,
-        "recall": 90.9090909090909
+        "recall": 81.81818181818183
     }
 }

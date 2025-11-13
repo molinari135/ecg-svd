@@ -16,7 +16,7 @@ import warnings
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
 from ecg_svd.src.decomposition import get_tucker_rank, run_tucker, reconstruct_channels_torch
-from ecg_svd.src.metrics import get_classification_report, get_signal_weights, signal_quality
+from ecg_svd.src.metrics import get_classification_report, get_signal_weights_and_qualities
 
 
 # set pytorch for tensorly
@@ -64,13 +64,13 @@ def main(
         weights_final = torch.zeros_like(full_mecg, device=device)
 
         segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
-        weights_np = get_signal_weights(segments_data)
+        weights_np, quality_results = get_signal_weights_and_qualities(segments_data)
 
         # move on GPU
         weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
 
         # tucker rank
-        tucker_rank = get_tucker_rank(segments_data, signal_quality_func=signal_quality)
+        tucker_rank = get_tucker_rank(quality_results)
         L = window_length
         rank_tucker = [tucker_rank, tucker_rank, len(target_channels)]
 

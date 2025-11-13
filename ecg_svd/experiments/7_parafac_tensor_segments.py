@@ -12,7 +12,7 @@ from pathlib import Path
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader, create_segment_tensor
 from ecg_svd.src.decomposition import run_parafac, reconstruct_channels, create_hankel_matrix
-from ecg_svd.src.metrics import get_classification_report, get_signal_weights
+from ecg_svd.src.metrics import get_classification_report, get_signal_weights_and_qualities
 
 tl.set_backend('numpy')
 
@@ -51,8 +51,8 @@ def main(
         ]
         segment_tensor = create_segment_tensor(hankel_matrices)
 
-        weights_channels = get_signal_weights(segments_data)
-        logger.info(f"Calculated channel weights: {weights_channels}")
+        weights, _ = get_signal_weights_and_qualities(segments_data)
+        logger.info(f"Calculated channel weights: {weights}")
         logger.info(f"PARAFAC decomposition starting with rank: {parafac_rank}")
 
         # parafac
@@ -80,9 +80,9 @@ def main(
         fECG_signals_list = reconstruct_channels(S_fecg)
         noise_signals_list = reconstruct_channels(S_noise)
 
-        mECG_combined = np.sum(np.array(mECG_signals_list) * weights_channels[:, None], axis=0)
-        fECG_combined = np.sum(np.array(fECG_signals_list) * weights_channels[:, None], axis=0)
-        noise_combined = np.sum(np.array(noise_signals_list) * weights_channels[:, None], axis=0)
+        mECG_combined = np.sum(np.array(mECG_signals_list) * weights[:, None], axis=0)
+        fECG_combined = np.sum(np.array(fECG_signals_list) * weights[:, None], axis=0)
+        noise_combined = np.sum(np.array(noise_signals_list) * weights[:, None], axis=0)
 
         # metrics calculations
         N_original = len(segments_data[0]['segment'])
@@ -114,7 +114,7 @@ def main(
             "segment_duration": segment_duration,
             "window_length": window_length,
             "parafac_rank": parafac_rank,
-            "weights_channels": weights_channels.tolist(),
+            "weights_channels": weights.tolist(),
             "selected_mecg_components": [0],
             "selected_fecg_components": [1, 2],
             "results": report
