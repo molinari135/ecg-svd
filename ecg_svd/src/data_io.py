@@ -3,6 +3,7 @@ import pyedflib
 import numpy as np
 from loguru import logger
 
+
 from ecg_svd.config import INTERIM_DATA_DIR
 
 
@@ -61,6 +62,20 @@ def get_signal_segment(
         "onsets": onsets,
         "values": values
     }
+
+
+def create_segment_tensor(hankel_matrices: list[np.ndarray]) -> np.ndarray:
+    if not hankel_matrices:
+        raise ValueError("The list of Hankel matrices cannot be empty")
+
+    first_shape = hankel_matrices[0].shape
+    if not all(m.shape == first_shape for m in hankel_matrices):
+        logger.error("Hankel matrices must have the same (L, K) dimension for stacking")
+        raise ValueError("Inconsistent matrix dimensions")
+
+    segment_tensor = np.stack(hankel_matrices, axis=2)
+    logger.info(f"3D Tensor created with shape (L, K, Channels): {segment_tensor.shape}")
+    return segment_tensor
 
 
 def save_numpy_array(data: np.ndarray, filename: str, data_dir: Path = INTERIM_DATA_DIR):

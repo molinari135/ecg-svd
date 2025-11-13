@@ -121,7 +121,7 @@ def run_tucker(
     tensor: np.ndarray,
     rank: Tuple[int, ...]
 ) -> Tuple[np.ndarray, list]:
-    core, factors = tucker(tensor, rank=rank, init='random', n_iter_max=500, tol=1e-1, verbose=False)
+    core, factors = tucker(tensor, rank=rank, init='random', n_iter_max=500, tol=1e-2, verbose=False)
     logger.success(f"Tucker decomposition performed with rank {rank}.")
     return core, factors
 
