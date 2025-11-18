@@ -46,7 +46,8 @@ def main(
 
         # stack segments: (channels, samples) -> transpose to (samples, channels) for ICA
         stacked_matrix = np.stack(signals_list, axis=0)
-        X = stacked_matrix.T  # Input matrix X (N_samples, N_channels)
+        X = stacked_matrix.T  # input matrix X (N_samples, N_channels)
+        X = X - np.mean(X, axis=0)  # center data
 
         logger.info(f"Input Matrix for ICA shape: {X.shape}. Running ICA with {n_sources} sources.")
 

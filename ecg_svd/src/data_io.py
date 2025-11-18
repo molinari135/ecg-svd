@@ -3,10 +3,6 @@ import pyedflib
 import numpy as np
 from loguru import logger
 
-
-from ecg_svd.config import INTERIM_DATA_DIR
-
-
 _EDF_READER = None
 
 
@@ -76,9 +72,3 @@ def create_segment_tensor(hankel_matrices: list[np.ndarray]) -> np.ndarray:
     segment_tensor = np.stack(hankel_matrices, axis=2)
     logger.info(f"3D Tensor created with shape (L, K, Channels): {segment_tensor.shape}")
     return segment_tensor
-
-
-def save_numpy_array(data: np.ndarray, filename: str, data_dir: Path = INTERIM_DATA_DIR):
-    file_path = data_dir / filename
-    np.save(file_path, data)
-    logger.success(f"Array saved to: {file_path} with shape {data.shape}")

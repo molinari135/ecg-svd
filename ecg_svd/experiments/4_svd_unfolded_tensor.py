@@ -35,14 +35,17 @@ def main(
         gt_data = get_signal_segment(edf, ch_number=gt_channel, end_time=segment_duration)
         gt_onsets = gt_data['onsets']
         sampling_rate = gt_data['sampling_rate']
-        segments_data = [
-            get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
-            for ch in target_channels
-        ]
+        segments_data = []
+        for ch in target_channels:
+            sig = get_signal_segment(edf, ch_number=ch, end_time=segment_duration)['segment']
+
+            # center data
+            sig = (sig - np.mean(sig)) / (np.std(sig) + 1e-8)
+            segments_data.append(sig)
 
         # tensor unfolding
         hankel_matrices = [
-            create_hankel_matrix(data['segment'], L_samples=window_length)
+            create_hankel_matrix(data, L_samples=window_length)
             for data in segments_data
         ]
         segment_tensor = create_segment_tensor(hankel_matrices)
@@ -87,7 +90,7 @@ def main(
         logger.info("mECG and fECG signals reconstructed and combined by channel averaging.")
 
         # metrics calculations
-        N_original = len(segments_data[0]['segment'])
+        N_original = len(segments_data[0])
         fecg_to_test = fecg_combined[:N_original]  # mean of reconstructed signals
 
         _, info = nk.ecg_peaks(fecg_to_test, sampling_rate=sampling_rate, correct_artifacts=True)

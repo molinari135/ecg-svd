@@ -9,7 +9,6 @@ import numpy as np
 from loguru import logger
 from typing import List
 from scipy.signal.windows import hann
-from scipy.linalg import hankel
 from pathlib import Path
 import warnings
 
@@ -78,64 +77,90 @@ def main(
         segment_step = segment_length - overlap
         segment_count = 0
 
+        # define Hann window
+        L_seg_samples = int(segment_length * sampling_rate)
+        window_cpu = hann(L_seg_samples)
+        window_gpu_full = torch.tensor(window_cpu, device=device, dtype=torch.float32)
+
         # sliding window
-        while curr_start < total_duration:
-            curr_end = min(curr_start + segment_length, total_duration)
-            segment_count += 1
-            logger.debug(f"Processing segment {segment_count}: {curr_start:.2f}s to {curr_end:.2f}s")
+        with torch.no_grad():
+            while curr_start < total_duration:
+                curr_end = min(curr_start + segment_length, total_duration)
+                segments_list_gpu = []
+                for ch in target_channels:
+                    seg_np = get_signal_segment(edf, ch_number=ch, start_time=curr_start, end_time=curr_end)['segment']
+                    seg_t = torch.tensor(seg_np, device=device, dtype=torch.float32)
 
-            hankels = []
+                    # center data
+                    seg_t = (seg_t - seg_t.mean()) / (seg_t.std() + 1e-8)
+                    segments_list_gpu.append(seg_t)
 
-            # hankel on GPU
-            for ch in target_channels:
-                segment = get_signal_segment(edf, ch_number=ch, start_time=curr_start, end_time=curr_end)['segment']
-                hankels.append(torch.tensor(hankel(segment[:L], segment[L - 1:]), device=device, dtype=torch.float32))
+                current_seg_len = segments_list_gpu[0].shape[0]
+                if current_seg_len < L:  # skip if segment smaller than Hankel window
+                    break
 
-            if len(hankels) < len(target_channels):
-                break  # interrupt if incomplete
+                segment_count += 1
+                if segment_count % 10 == 0:
+                    logger.debug(f"Processing segment {segment_count}: {curr_start:.2f}s")
 
-            segment_tensor = torch.stack(hankels, dim=2).to(device)
-            L_curr, K, C = segment_tensor.shape
+                hankels = []
+                for seg_t in segments_list_gpu:
+                    # unfold creates a sliding window view: (Batch, Channel, Time) -> (1, 1, N)
+                    # unfold(dimension, size, step)
+                    # PyTorch unfold gives: (N_windows, Window_Size) -> (K, L)
+                    H = seg_t.unfold(0, L, 1).T
+                    hankels.append(H)
 
-            core, factors = run_tucker(segment_tensor, rank=rank_tucker)
-            # core, factors = run_tucker(segment_tensor, rank=[64, 64, 4])
-            U_L, U_K, U_C = factors
+                segment_tensor = torch.stack(hankels, dim=2).to(device)
+                L_curr, K, C = segment_tensor.shape
 
-            # component selection
-            S_mecg = torch.zeros_like(core, device=device)
-            S_mecg[:, :, 0] = core[:, :, 0]
+                core, factors = run_tucker(segment_tensor, rank=rank_tucker)
+                # core, factors = run_tucker(segment_tensor, rank=[64, 64, 4])
+                U_L, U_K, U_C = factors
 
-            S_fecg = torch.zeros_like(core, device=device)
-            S_fecg[:, :, 1:] = core[:, :, 1:]
+                # component selection
+                S_mecg = torch.zeros_like(core, device=device)
+                S_mecg[:, :, 0] = core[:, :, 0]
 
-            # partial reconstruction
-            H_mecg = tl.tucker_to_tensor((S_mecg, factors))
-            H_fecg = tl.tucker_to_tensor((S_fecg, factors))
-            H_noise = segment_tensor - (H_mecg + H_fecg)
+                S_fecg = torch.zeros_like(core, device=device)
+                S_fecg[:, :, 1:] = core[:, :, 1:]
 
-            # diagonal averaging
-            mECG_signals = reconstruct_channels_torch(H_mecg).to(device)
-            fECG_signals = reconstruct_channels_torch(H_fecg).to(device)
-            noise_signals = reconstruct_channels_torch(H_noise).to(device)
+                # partial reconstruction
+                H_mecg = tl.tucker_to_tensor((S_mecg, factors))
+                H_fecg = tl.tucker_to_tensor((S_fecg, factors))
+                H_noise = segment_tensor - (H_mecg + H_fecg)
 
-            # weighted combination
-            mECG_seg = torch.sum(mECG_signals * weights[None, :], dim=1)
-            fECG_seg = torch.sum(fECG_signals * weights[None, :], dim=1)
-            noise_seg = torch.sum(noise_signals * weights[None, :], dim=1)
+                # diagonal averaging
+                mECG_signals = reconstruct_channels_torch(H_mecg).to(device)
+                fECG_signals = reconstruct_channels_torch(H_fecg).to(device)
+                noise_signals = reconstruct_channels_torch(H_noise).to(device)
 
-            window = torch.tensor(hann(len(mECG_seg)), device=device, dtype=torch.float32)
-            start_idx = int(curr_start * sampling_rate)
-            end_idx = min(start_idx + len(window), full_mecg.size(0))
-            w = window[:end_idx - start_idx]
+                # weighted combination
+                mECG_seg = torch.sum(mECG_signals * weights[None, :], dim=1)
+                fECG_seg = torch.sum(fECG_signals * weights[None, :], dim=1)
+                noise_seg = torch.sum(noise_signals * weights[None, :], dim=1)
 
-            # weighted summation
-            full_mecg[start_idx:end_idx] += mECG_seg[:len(w)] * w
-            full_fecg[start_idx:end_idx] += fECG_seg[:len(w)] * w
-            full_noise[start_idx:end_idx] += noise_seg[:len(w)] * w
-            weights_final[start_idx:end_idx] += w
+                if current_seg_len == L_seg_samples:
+                    w = window_gpu_full
+                else:
+                    w = window_gpu_full[:current_seg_len]
 
-            # next segment
-            curr_start += segment_step
+                # Overlap-Add accumulation
+                start_idx = int(curr_start * sampling_rate)
+                end_idx = start_idx + current_seg_len
+
+                # safety clip
+                end_idx = min(end_idx, signal_full_len)
+                len_w = end_idx - start_idx
+                w = w[:len_w]
+
+                full_mecg[start_idx:end_idx] += mECG_seg[:len_w] * w
+                full_fecg[start_idx:end_idx] += fECG_seg[:len_w] * w
+                full_noise[start_idx:end_idx] += noise_seg[:len_w] * w
+                weights_final[start_idx:end_idx] += w
+
+                # next segment
+                curr_start += segment_step
 
         logger.info(f"Finished processing {segment_count} segments.")
 

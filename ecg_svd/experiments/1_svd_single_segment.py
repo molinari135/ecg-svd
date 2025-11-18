@@ -38,6 +38,7 @@ def main(
         target_data = get_signal_segment(edf, ch_number=target_channel, end_time=segment_duration)
 
         target_segment = target_data['segment']
+        target_segment = (target_segment - np.mean(target_segment)) / np.std(target_segment + 1e-8)  # center data
         gt_onsets = gt_data['onsets']
         sampling_rate = target_data['sampling_rate']  # use sampling rate from segment_data
 
@@ -49,6 +50,10 @@ def main(
         # identify mECG peaks
         _, mecg_info = nk.ecg_peaks(mecg, sampling_rate=sampling_rate, correct_artifacts=True)
         mecg_peaks_indices = mecg_info.get('ECG_R_Peaks', [])
+
+        # safety check
+        if len(mecg_peaks_indices) == 0:
+            logger.warning("No mECG peaks detected! Peak suppression will be skipped.")
 
         # mECG peaks suppression and fECG extraction
         cleaned_signal = lower_peaks(target_segment, peaks=mecg_peaks_indices)

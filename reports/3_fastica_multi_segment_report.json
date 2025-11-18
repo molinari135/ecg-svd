@@ -1,6 +1,6 @@
 {
     "experiment_id": "3_fastica_multi_segment",
-    "execution_time_seconds": 0.08780264854431152,
+    "execution_time_seconds": 0.08297586441040039,
     "filename": "r01.edf",
     "target_channels": [
         1,

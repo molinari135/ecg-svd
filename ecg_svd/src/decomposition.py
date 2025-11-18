@@ -1,6 +1,5 @@
 import numpy as np
 import torch
-import gc
 import tensorly as tl
 from tensorly.decomposition import tucker, parafac
 from sklearn.decomposition import FastICA

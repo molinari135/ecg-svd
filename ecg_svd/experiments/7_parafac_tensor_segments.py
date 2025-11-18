@@ -39,10 +39,13 @@ def main(
         gt_onsets = gt_data['onsets']
         sampling_rate = gt_data['sampling_rate']
 
-        segments_data = [
-            get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
-            for ch in target_channels
-        ]
+        segments_data = []
+        for ch in target_channels:
+            sig = get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
+
+            # center data
+            sig['segment'] = (sig['segment'] - np.mean(sig['segment'])) / (np.std(sig['segment']) + 1e-8)
+            segments_data.append(sig)
 
         # tensor and weights
         hankel_matrices = [
@@ -97,11 +100,9 @@ def main(
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
         data_to_save = {
-            'original_segment_avg': segment_tensor,
             'mecg_combined': mECG_combined,
             'fecg_combined_selected': noise_combined,
             'fecg_combined_residual': fECG_combined,
-            'parafac_weights': parafac_weights,
             'parafac_factors': factors,
             'sampling_rate': sampling_rate
         }

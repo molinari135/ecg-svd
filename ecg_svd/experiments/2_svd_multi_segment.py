@@ -56,6 +56,7 @@ def main(
 
         for i, data in enumerate(segments_data):
             segment = data['segment']
+            segment = (segment - np.mean(segment)) / (np.std(segment) + 1e-8)  # center data
 
             # mECG extraction
             mecg_i = hankel_with_svd(segment, window_length=window_length, cvp=mecg_cvp)

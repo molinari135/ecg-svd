@@ -1,6 +1,6 @@
 {
     "experiment_id": "4_svd_unfolded_tensor",
-    "execution_time_seconds": 7.273545026779175,
+    "execution_time_seconds": 8.391609191894531,
     "filename": "r01.edf",
     "target_channels": [
         1,
@@ -12,8 +12,8 @@
     "window_length": 1250,
     "mecg_cvp_threshold": 0.75,
     "fecg_cvp_threshold": 0.95,
-    "k1_rank_mecg": 36,
-    "k2_rank_fecg": 82,
+    "k1_rank_mecg": 38,
+    "k2_rank_fecg": 87,
     "results": {
         "TP": 10,
         "FN": 1,

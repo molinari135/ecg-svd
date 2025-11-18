@@ -1,6 +1,6 @@
 {
     "experiment_id": "9_parafac_tensor_gpu",
-    "execution_time_seconds": 29.0389986038208,
+    "execution_time_seconds": 23.864721059799194,
     "filename": "r01.edf",
     "target_channels": [
         1,
@@ -26,12 +26,12 @@
         2
     ],
     "results": {
-        "TP": 621,
-        "FN": 23,
-        "FP": 17,
+        "TP": 614,
+        "FN": 30,
+        "FP": 22,
         "TN": 0,
-        "accuracy": 93.94856278366112,
-        "precision": 97.33542319749216,
-        "recall": 96.42857142857143
+        "accuracy": 92.1921921921922,
+        "precision": 96.54088050314465,
+        "recall": 95.34161490683229
     }
 }

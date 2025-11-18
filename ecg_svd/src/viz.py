@@ -6,7 +6,6 @@ from ecg_svd.config import REPORTS_DIR
 
 
 def consolidate_all_reports(results_dir: Path = REPORTS_DIR) -> pd.DataFrame:
-    """Carica tutti i file di report JSON e li consolida in un DataFrame."""
     all_data = []
 
     for report_file in results_dir.glob("*.json"):

@@ -1,6 +1,6 @@
 {
     "experiment_id": "5_tucker_tensor_segments",
-    "execution_time_seconds": 22.177944660186768,
+    "execution_time_seconds": 24.475969076156616,
     "filename": "r01.edf",
     "target_channels": [
         1,
@@ -14,18 +14,18 @@
     "tucker_rank_K": 64,
     "tucker_rank_C": 4,
     "weights": [
-        0.23753761701712553,
-        0.20751110913593537,
-        0.24647767061756892,
-        0.30847360322937023
+        0.2379028356219494,
+        0.20714671545451036,
+        0.2460454460902573,
+        0.308905002833283
     ],
     "results": {
-        "TP": 9,
-        "FN": 2,
+        "TP": 10,
+        "FN": 1,
         "FP": 0,
         "TN": 0,
-        "accuracy": 81.81818181818183,
+        "accuracy": 90.9090909090909,
         "precision": 100.0,
-        "recall": 81.81818181818183
+        "recall": 90.9090909090909
     }
 }

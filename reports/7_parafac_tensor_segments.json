@@ -1,6 +1,6 @@
 {
     "experiment_id": "7_parafac_tensor_segments",
-    "execution_time_seconds": 23.186290502548218,
+    "execution_time_seconds": 24.207815885543823,
     "filename": "r01.edf",
     "target_channels": [
         1,
@@ -12,10 +12,10 @@
     "window_length": 1250,
     "parafac_rank": 4,
     "weights_channels": [
-        0.23753761701712553,
-        0.20751110913593537,
-        0.24647767061756892,
-        0.30847360322937023
+        0.2379028356219494,
+        0.20714671545451036,
+        0.2460454460902573,
+        0.308905002833283
     ],
     "selected_mecg_components": [
         0
@@ -25,12 +25,12 @@
         2
     ],
     "results": {
-        "TP": 10,
-        "FN": 1,
+        "TP": 9,
+        "FN": 2,
         "FP": 0,
         "TN": 0,
-        "accuracy": 90.9090909090909,
+        "accuracy": 81.81818181818183,
         "precision": 100.0,
-        "recall": 90.9090909090909
+        "recall": 81.81818181818183
     }
 }

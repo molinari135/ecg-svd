@@ -49,6 +49,10 @@ def main(
         curr_start = 0.0
         segment_step = segment_length - overlap
 
+        # define Hann window
+        L_seg_samples = int(segment_length * sampling_rate)
+        window_full = hann(L_seg_samples)
+
         # sliding window
         segment_count = 0
         while curr_start < total_duration:
@@ -59,6 +63,7 @@ def main(
                 edf, ch_number=target_channel, start_time=curr_start, end_time=curr_end
             )
             segment_signal = segment_data['segment']
+            segment_signal = (segment_signal - np.mean(segment_signal)) / (np.std(segment_signal) + 1e-8)  # center data
 
             if len(segment_signal) < 1000:  # skip if segment is too short
                 break
@@ -102,13 +107,16 @@ def main(
 
             fecg = np.nan_to_num(fecg)
 
+            current_seg_len = len(segment_signal)
+            if current_seg_len == L_seg_samples:
+                w = window_full
+            else:
+                # handle edge case (last segment)
+                w = hann(current_seg_len)
+
             # weighted sum
-            window = hann(len(mecg))
             start_idx = int(curr_start * sampling_rate)
-            end_idx = min(start_idx + len(window), full_length)
-
-            w = window[: end_idx - start_idx]  # truncate window if last segment
-
+            end_idx = min(start_idx + len(mecg), full_length)
             combined_mecg[start_idx:end_idx] += mecg[:len(w)] * w
             combined_fecg[start_idx:end_idx] += fecg[:len(w)] * w
             weights[start_idx:end_idx] += w
@@ -132,7 +140,6 @@ def main(
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
         data_to_save = {
-            'original_full_segment': segment_signal,
             'mecg_combined': combined_mecg,
             'fecg_combined': combined_fecg,
             'sampling_rate': sampling_rate
