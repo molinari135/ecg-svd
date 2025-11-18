@@ -61,6 +61,11 @@ analytics:
 	python ecg_svd/src/viz.py
 
 
+.PHONY: plots
+plots:
+	python ecg_svd/src/plots.py
+
+
 ## Set up Python interpreter environment
 .PHONY: create_environment
 create_environment:
