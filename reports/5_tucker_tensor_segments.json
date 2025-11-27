@@ -1,32 +1,32 @@
 {
-    "experiment_id": "5_tucker_tensor_segments",
-    "execution_time_seconds": 24.09712290763855,
-    "filename": "r01.edf",
-    "target_channels": [
-        1,
-        2,
-        3,
-        4
-    ],
-    "segment_duration": 5.0,
-    "window_length": 1250,
-    "tucker_rank_L": 64,
-    "tucker_rank_K": 64,
-    "tucker_rank_C": 4,
-    "weights": [
-        0.2379028356219494,
-        0.20714671545451036,
-        0.2460454460902573,
-        0.308905002833283
-    ],
-    "results": {
-        "TP": 10,
-        "FN": 1,
-        "FP": 0,
-        "TN": 0,
-        "accuracy": 90.9090909090909,
-        "precision": 100.0,
-        "recall": 90.9090909090909,
-        "f1": 95.23809523809523
+    "r01.edf": {
+        "execution_time_seconds": 22.326512098312378,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "tucker_rank_L": 64,
+        "tucker_rank_K": 64,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.2379028356219494,
+            0.20714671545451036,
+            0.2460454460902573,
+            0.308905002833283
+        ],
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
     }
 }

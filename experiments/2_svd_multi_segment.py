@@ -1,6 +1,5 @@
 import typer
 import sys
-import json
 import time
 import numpy as np
 import neurokit2 as nk
@@ -8,8 +7,8 @@ from loguru import logger
 from typing import List
 from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.common import lower_peaks
 from ecg_svd.methods.matrix import run_ssa
@@ -95,35 +94,27 @@ def main(
         # --- weighted sum ---
         _, info_weighted = nk.ecg_peaks(fecg_weighted, sampling_rate=sampling_rate, correct_artifacts=True)
         fecg_weighted_peaks_sec = info_weighted.get('ECG_R_Peaks', []) / sampling_rate
-        report_weighted = get_classification_report(gt_onsets, fecg_weighted_peaks_sec)
-        logger.success(f"Weighted Sum Result Accuracy: {report_weighted['accuracy']:.2f}%")
+        report = get_classification_report(gt_onsets, fecg_weighted_peaks_sec)
 
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
         data_to_save = {
-            'original_segment': segments_data,
             'mecg': mecg_weighted,
             'fecg': fecg_weighted
         }
 
         experiment_report = {
-            "experiment_id": experiment_name,
             "execution_time_seconds": elapsed_time,
-            "filename": filename,
             "target_channel": target_channels,
             "segment_duration": segment_duration,
             "mecg_cvp": mecg_cvp,
             "fecg_cvp": fecg_cvp,
             "window_length": window_length,
-            "results": report_weighted
+            "results": report
         }
 
-        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
-
-        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
-        with open(json_output_path, 'w') as f:
-            json.dump(experiment_report, f, indent=4)
-        logger.info(f"Report saved to {json_output_path}")
+        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed. Final fECG accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the experiment: {e}")

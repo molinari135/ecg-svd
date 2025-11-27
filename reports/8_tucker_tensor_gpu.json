@@ -1,31 +1,31 @@
 {
-    "experiment_id": "8_tucker_tensor_gpu",
-    "execution_time_seconds": 33.09702706336975,
-    "filename": "r01.edf",
-    "target_channels": [
-        1,
-        2,
-        3,
-        4
-    ],
-    "window_length": 1250,
-    "tucker_rank_L": 64,
-    "tucker_rank_K": 64,
-    "tucker_rank_C": 4,
-    "weights": [
-        0.23753762245178223,
-        0.20751111209392548,
-        0.2464776635169983,
-        0.3084736168384552
-    ],
-    "results": {
-        "TP": 618,
-        "FN": 26,
-        "FP": 6,
-        "TN": 0,
-        "accuracy": 95.07692307692308,
-        "precision": 99.03846153846155,
-        "recall": 95.96273291925466,
-        "f1": 97.47634069400631
+    "r01.edf": {
+        "execution_time_seconds": 32.32005953788757,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "window_length": 1250,
+        "tucker_rank_L": 64,
+        "tucker_rank_K": 64,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.23753762245178223,
+            0.20751111209392548,
+            0.2464776635169983,
+            0.3084736168384552
+        ],
+        "results": {
+            "TP": 618,
+            "FN": 26,
+            "FP": 6,
+            "TN": 0,
+            "accuracy": 95.07692307692308,
+            "precision": 99.03846153846155,
+            "recall": 95.96273291925466,
+            "f1": 97.47634069400631
+        }
     }
 }

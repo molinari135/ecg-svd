@@ -5,20 +5,21 @@ import pandas as pd
 from ecg_svd.config import REPORTS_DIR
 
 
-def consolidate_all_reports(results_dir: Path = REPORTS_DIR) -> pd.DataFrame:
+def consolidate_all_reports(edf_file: str = "r01.edf", results_dir: Path = REPORTS_DIR) -> pd.DataFrame:
     all_data = []
 
     for report_file in results_dir.glob("*.json"):
         with open(report_file, 'r') as f:
             data = json.load(f)
+
             experiment_data = {
-                "experiment_id": data["experiment_id"],
-                "execution_time_seconds": data["execution_time_seconds"],
-                "filename": data["filename"],
-                "accuracy": data["results"]["accuracy"],
-                "precision": data["results"]["precision"],
-                "recall": data["results"]["recall"],
-                "f1": data["results"]["f1"]
+                "experiment_id": report_file.stem,
+                "filename": edf_file,
+                "execution_time_seconds": data[edf_file]["execution_time_seconds"],
+                "accuracy": data[edf_file]["results"]["accuracy"],
+                "precision": data[edf_file]["results"]["precision"],
+                "recall": data[edf_file]["results"]["recall"],
+                "f1": data[edf_file]["results"]["f1"]
             }
             all_data.append(experiment_data)
 

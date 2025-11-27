@@ -1,37 +1,37 @@
 {
-    "experiment_id": "7_parafac_tensor_segments",
-    "execution_time_seconds": 23.36416745185852,
-    "filename": "r01.edf",
-    "target_channels": [
-        1,
-        2,
-        3,
-        4
-    ],
-    "segment_duration": 5.0,
-    "window_length": 1250,
-    "parafac_rank": 4,
-    "weights_channels": [
-        0.2379028356219494,
-        0.20714671545451036,
-        0.2460454460902573,
-        0.308905002833283
-    ],
-    "selected_mecg_components": [
-        0
-    ],
-    "selected_fecg_components": [
-        1,
-        2
-    ],
-    "results": {
-        "TP": 9,
-        "FN": 2,
-        "FP": 0,
-        "TN": 0,
-        "accuracy": 81.81818181818183,
-        "precision": 100.0,
-        "recall": 81.81818181818183,
-        "f1": 90.0
+    "r01.edf": {
+        "execution_time_seconds": 23.18261432647705,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.2379028356219494,
+            0.20714671545451036,
+            0.2460454460902573,
+            0.308905002833283
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
     }
 }

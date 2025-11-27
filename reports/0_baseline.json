@@ -1,11 +1,8 @@
 {
     "r01.edf": {
-        "execution_time_seconds": 3.3513147830963135,
-        "target_channel": 4,
+        "execution_time_seconds": 0.03299903869628906,
+        "target_channel": 0,
         "segment_duration": 5.0,
-        "mecg_cvp": 0.75,
-        "fecg_cvp": 0.9,
-        "window_length": 1250,
         "results": {
             "TP": 10,
             "FN": 1,

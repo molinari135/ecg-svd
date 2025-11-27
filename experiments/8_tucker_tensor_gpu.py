@@ -1,19 +1,17 @@
 import typer
 import sys
-import json
 import time
 import neurokit2 as nk
 import torch
 import tensorly as tl
-import numpy as np
 from loguru import logger
 from typing import List
 from scipy.signal.windows import hann
 from pathlib import Path
 import warnings
 
-from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.common import reconstruct_channels
 from ecg_svd.methods.tensor import run_tucker
@@ -179,7 +177,6 @@ def main(
 
         fecg_peaks_seconds = info.get('ECG_R_Peaks', []) / sampling_rate
         report = get_classification_report(full_gt_onsets, fecg_peaks_seconds)
-        logger.success(f"Experiment completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
 
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
@@ -187,13 +184,10 @@ def main(
             'mecg': full_fecg.cpu().numpy(),
             'fecg': full_noise.cpu().numpy(),
             'noise': full_mecg.cpu().numpy(),
-            'sampling_rate': sampling_rate
         }
 
         experiment_report = {
-            "experiment_id": experiment_name,
             "execution_time_seconds": elapsed_time,
-            "filename": filename,
             "target_channels": target_channels,
             "window_length": window_length,
             "tucker_rank_L": int(rank_tucker[0]),
@@ -203,12 +197,8 @@ def main(
             "results": report
         }
 
-        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
-
-        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
-        with open(json_output_path, 'w') as f:
-            json.dump(experiment_report, f, indent=4)
-        logger.info(f"Report saved to {json_output_path}")
+        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the Tucker GPU experiment: {e}")

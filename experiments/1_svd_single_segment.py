@@ -1,5 +1,4 @@
 import typer
-import json
 import sys
 import time
 import neurokit2 as nk
@@ -7,8 +6,8 @@ import numpy as np
 from pathlib import Path
 from loguru import logger
 
-from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.common import lower_peaks
 from ecg_svd.methods.matrix import run_ssa
@@ -70,15 +69,12 @@ def main(
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
         data_to_save = {
-            'original_segment': target_segment,
             'mecg': mecg,
             'fecg': fecg
         }
 
         experiment_report = {
-            "experiment_id": experiment_name,
             "execution_time_seconds": elapsed_time,
-            "filename": filename,
             "target_channel": target_channel,
             "segment_duration": segment_duration,
             "mecg_cvp": mecg_cvp,
@@ -87,14 +83,8 @@ def main(
             "results": report
         }
 
-        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
-
-        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
-        with open(json_output_path, 'w') as f:
-            json.dump(experiment_report, f, indent=4)
-        logger.info(f"Report saved to {json_output_path}")
-
-        logger.success(f"Experiment completed. Final Accuracy: {report['accuracy']:.2f}%")
+        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed. Final fECG accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the experiment: {e}")

@@ -1,6 +1,5 @@
 import typer
 import sys
-import json
 import time
 import numpy as np
 import neurokit2 as nk
@@ -8,8 +7,8 @@ from loguru import logger
 from typing import List
 from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.common import lower_peaks
 from ecg_svd.methods.matrix import run_fastica
@@ -78,29 +77,17 @@ def main(
         _, ica_fecg_info = nk.ecg_peaks(ica_fecg, sampling_rate=sampling_rate, correct_artifacts=True)
 
         fecg_peaks_seconds = ica_fecg_info.get('ECG_R_Peaks', []) / sampling_rate  # convert peaks to seconds
-
         report = get_classification_report(gt_onsets, fecg_peaks_seconds)
-        logger.success(f"Experiment completed. Final Accuracy: {report['accuracy']:.2f}%")
 
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
         data_to_save = {
-            'input_matrix': stacked_matrix,
             'mecg': mecg_component,
             'fecg': ica_fecg,
-            'sampling_rate': sampling_rate
         }
 
-        npy_output_path = PROCESSED_DATA_DIR / f"{experiment_name}_signals.npy"
-        np.save(npy_output_path, data_to_save)
-        logger.info(f"Signals and Matrix saved to {npy_output_path}")
-
-        # 3. Prepara il report per JSON
         experiment_report = {
-            "experiment_id": experiment_name,
             "execution_time_seconds": elapsed_time,
-            "filename": filename,
-            "target_channels": target_channels,
             "segment_duration": segment_duration,
             "n_sources": n_sources,
             "mecg_component_idx": mecg_component_idx,
@@ -108,10 +95,8 @@ def main(
             "results": report
         }
 
-        json_output_path = REPORTS_DIR / f"{experiment_name}_report.json"
-        with open(json_output_path, 'w') as f:
-            json.dump(experiment_report, f, indent=4)
-        logger.info(f"Report saved to {json_output_path}")
+        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed. Final fECG accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the FastICA experiment: {e}")

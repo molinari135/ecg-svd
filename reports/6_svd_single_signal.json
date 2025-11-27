@@ -1,22 +1,22 @@
 {
-    "experiment_id": "6_svd_single_signal",
-    "execution_time_seconds": 237.4457142353058,
-    "filename": "r01.edf",
-    "target_channel": 4,
-    "segment_length": 5.0,
-    "overlap": 0.5,
-    "window_length_svd": 1250,
-    "mecg_cvp": 0.75,
-    "fecg_cvp": 0.9,
-    "segment_count": 67,
-    "results": {
-        "TP": 450,
-        "FN": 194,
-        "FP": 45,
-        "TN": 0,
-        "accuracy": 65.31204644412192,
-        "precision": 90.9090909090909,
-        "recall": 69.87577639751554,
-        "f1": 79.01668129938543
+    "r01.edf": {
+        "execution_time_seconds": 216.58867025375366,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 67,
+        "results": {
+            "TP": 450,
+            "FN": 194,
+            "FP": 45,
+            "TN": 0,
+            "accuracy": 65.31204644412192,
+            "precision": 90.9090909090909,
+            "recall": 69.87577639751554,
+            "f1": 79.01668129938543
+        }
     }
 }

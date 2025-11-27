@@ -1,7 +1,6 @@
 import typer
 import time
 import sys
-import json
 import numpy as np
 import neurokit2 as nk
 import tensorly as tl
@@ -9,8 +8,8 @@ from loguru import logger
 from typing import List, Tuple
 from pathlib import Path
 
-from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.config import RAW_DATA_DIR
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
 from ecg_svd.data.preprocessing import get_signal_segment, create_segment_tensor
 from ecg_svd.methods.tensor import run_tucker
 from ecg_svd.methods.common import reconstruct_channels, create_hankel_matrix
@@ -107,7 +106,6 @@ def main(
 
         fecg_peaks_seconds = info.get('ECG_R_Peaks', []) / sampling_rate
         report = get_classification_report(gt_onsets, fecg_peaks_seconds)
-        logger.success(f"Experiment 5 (Tucker) Completed. Final FECG Accuracy: {report['accuracy']:.2f}%")
 
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
@@ -115,14 +113,10 @@ def main(
             'mecg_combined': mECG_combined,
             'fecg_combined': fECG_combined,
             'noise_combined': noise_combined,
-            'tucker_core': core,
-            'sampling_rate': sampling_rate
         }
 
         experiment_report = {
-            "experiment_id": experiment_name,
             "execution_time_seconds": elapsed_time,
-            "filename": filename,
             "target_channels": target_channels,
             "segment_duration": segment_duration,
             "window_length": window_length,
@@ -133,12 +127,8 @@ def main(
             "results": report
         }
 
-        np.save(PROCESSED_DATA_DIR / f"{experiment_name}.npy", data_to_save)
-
-        json_output_path = REPORTS_DIR / f"{experiment_name}.json"
-        with open(json_output_path, 'w') as f:
-            json.dump(experiment_report, f, indent=4)
-        logger.info(f"Report saved to {json_output_path}")
+        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the Tucker experiment: {e}")
