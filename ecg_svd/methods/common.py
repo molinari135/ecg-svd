@@ -23,58 +23,53 @@ def lower_peaks(
     return clean_signal
 
 
-def diagonal_averaging(hankel_matrix: np.ndarray) -> np.ndarray:
-    L, K = hankel_matrix.shape
+def diagonal_averaging(hankel_matrix, on_cuda: bool = False) -> np.ndarray:
+    sums = 0
+    counts = 0
 
-    # index matrix of anti-diagonals
-    idx = np.arange(L)[:, None] + np.arange(K)
-    sums = np.zeros(L + K - 1, dtype=hankel_matrix.dtype)
-    counts = np.zeros(L + K - 1, dtype=hankel_matrix.dtype)
-
-    # accumulate matrix values from anti-diagonals
-    np.add.at(sums, idx, hankel_matrix)
-
-    # count anti-diagonal elements
-    np.add.at(counts, idx, 1)
-    return sums / counts
-
-
-def diagonal_averaging_torch(hankel_matrix, on_cuda: bool = True):
     device = torch.device("cuda" if on_cuda and torch.cuda.is_available() else "cpu")
 
-    if isinstance(hankel_matrix, np.ndarray):
-        hankel_matrix = torch.from_numpy(hankel_matrix).float().to(device)
+    if on_cuda:
+        if isinstance(hankel_matrix, np.ndarray):
+            hankel_matrix = torch.from_numpy(hankel_matrix).float().to(device)
+        else:
+            hankel_matrix = hankel_matrix.float().to(device)
+
+        L, K = hankel_matrix.shape
+        N = L + K - 1
+
+        row_indices = torch.arange(L, device=device).unsqueeze(1)
+        col_indices = torch.arange(K, device=device).unsqueeze(0)
+        indices = row_indices + col_indices
+
+        indices_flat = indices.flatten().long()
+        weights_flat = hankel_matrix.flatten()
+
+        sums = torch.bincount(indices_flat, weights=weights_flat, minlength=N)
+        counts = torch.bincount(indices_flat, minlength=N)
+        counts[counts == 0] = 1e-8
     else:
-        hankel_matrix = hankel_matrix.float().to(device)
+        L, K = hankel_matrix.shape
 
-    L, K = hankel_matrix.shape
-    N = L + K - 1
+        # index matrix of anti-diagonals
+        idx = np.arange(L)[:, None] + np.arange(K)
+        sums = np.zeros(L + K - 1, dtype=hankel_matrix.dtype)
+        counts = np.zeros(L + K - 1, dtype=hankel_matrix.dtype)
 
-    row_indices = torch.arange(L, device=device).unsqueeze(1)
-    col_indices = torch.arange(K, device=device).unsqueeze(0)
-    indices = row_indices + col_indices
+        # accumulate matrix values from anti-diagonals
+        np.add.at(sums, idx, hankel_matrix)
 
-    indices_flat = indices.flatten().long()
-    weights_flat = hankel_matrix.flatten()
-
-    sums = torch.bincount(indices_flat, weights=weights_flat, minlength=N)
-    counts = torch.bincount(indices_flat, minlength=N)
-    counts[counts == 0] = 1e-8
+        # count anti-diagonal elements
+        np.add.at(counts, idx, 1)
     return sums / counts
 
 
-def reconstruct_channels(H_block: np.ndarray) -> List[np.ndarray]:
+def reconstruct_channels(H_block: np.ndarray, on_cuda: bool = False) -> List[np.ndarray]:
     L, K, C = H_block.shape
-    reconstructed = []
-    for c in range(C):  # iterate over channels
-        x_rec = diagonal_averaging(H_block[:, :, c])  # perform diagonal averaging on the L x K slice
-        reconstructed.append(x_rec)
-    return reconstructed
-
-
-def reconstruct_channels_torch(H_block):
-    L, K, C = H_block.shape
-    rec = torch.stack([diagonal_averaging_torch(H_block[:, :, c]) for c in range(C)], dim=1)
+    if on_cuda:
+        rec = torch.stack([diagonal_averaging(H_block[:, :, c], on_cuda=True) for c in range(C)], dim=1)
+    else:
+        rec = [diagonal_averaging(H_block[:, :, c]) for c in range(C)]
     return rec
 
 
