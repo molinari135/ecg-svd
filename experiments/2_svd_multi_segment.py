@@ -9,9 +9,11 @@ from typing import List
 from pathlib import Path
 
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
-from ecg_svd.src.decomposition import hankel_with_svd, lower_peaks
-from ecg_svd.src.metrics import get_classification_report, get_signal_weights_and_qualities
+from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.data.preprocessing import get_signal_segment
+from ecg_svd.methods.common import lower_peaks
+from ecg_svd.methods.matrix import run_ssa
+from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
 
 app = typer.Typer(help="Runs SVD separation on multiple segments/channels with weighted summation.")
 
@@ -59,7 +61,7 @@ def main(
             segment = (segment - np.mean(segment)) / (np.std(segment) + 1e-8)  # center data
 
             # mECG extraction
-            mecg_i = hankel_with_svd(segment, window_length=window_length, cvp=mecg_cvp)
+            mecg_i = run_ssa(segment, window_length=window_length, cvp=mecg_cvp)
 
             # identify MECG peaks
             _, mecg_info_i = nk.ecg_peaks(mecg_i, sampling_rate=sampling_rate, correct_artifacts=True)
@@ -67,7 +69,7 @@ def main(
 
             # fECG extraction
             cleaned_signal = lower_peaks(segment, peaks=mecg_peaks_indices)
-            fecg_i = hankel_with_svd(cleaned_signal, window_length=window_length, cvp=fecg_cvp)
+            fecg_i = run_ssa(cleaned_signal, window_length=window_length, cvp=fecg_cvp)
 
             mecg_list.append(mecg_i)
             fecg_list.append(fecg_i)

@@ -9,9 +9,11 @@ from scipy.signal.windows import hann
 from pathlib import Path
 
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
-from ecg_svd.src.decomposition import hankel_with_svd, lower_peaks
-from ecg_svd.src.metrics import get_classification_report
+from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.data.preprocessing import get_signal_segment
+from ecg_svd.methods.common import lower_peaks
+from ecg_svd.methods.matrix import run_ssa
+from ecg_svd.evaluation.metrics import get_classification_report
 
 app = typer.Typer(help="Runs two-step SVD separation on a single channel using a sliding window approach.")
 
@@ -72,7 +74,7 @@ def main(
             logger.debug(f"Processing segment {segment_count}: {curr_start:.2f}s to {curr_end:.2f}s")
 
             # mECG extraction
-            mecg = hankel_with_svd(segment_signal, cvp=mecg_cvp, window_length=window_length_svd)
+            mecg = run_ssa(segment_signal, cvp=mecg_cvp, window_length=window_length_svd)
 
             if mecg is None or len(mecg) == 0 or np.all(np.isnan(mecg)):
                 logger.warning(f"Skipping segment {segment_count}: invalid mECG reconstruction.")
@@ -98,7 +100,7 @@ def main(
 
             # fECG extraction
             residual = lower_peaks(segment_signal, peaks=mecg_peaks_indices)
-            fecg = hankel_with_svd(residual, cvp=fecg_cvp, window_length=window_length_svd)
+            fecg = run_ssa(residual, cvp=fecg_cvp, window_length=window_length_svd)
 
             if fecg is None or len(fecg) == 0 or np.all(np.isnan(fecg)):
                 logger.warning(f"Skipping segment {segment_count}: invalid fECG extraction.")

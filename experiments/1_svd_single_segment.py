@@ -8,9 +8,11 @@ from pathlib import Path
 from loguru import logger
 
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
-from ecg_svd.src.decomposition import hankel_with_svd, lower_peaks
-from ecg_svd.src.metrics import get_classification_report
+from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.data.preprocessing import get_signal_segment
+from ecg_svd.methods.common import lower_peaks
+from ecg_svd.methods.matrix import run_ssa
+from ecg_svd.evaluation.metrics import get_classification_report
 
 
 app = typer.Typer(help="Runs SVD-based separation on a single ECG segment.")
@@ -45,7 +47,7 @@ def main(
         logger.info(f"Starting SVD separation on Channel {target_channel} ({segment_duration}s segment)...")
 
         # mECG extraction
-        mecg = hankel_with_svd(target_segment, window_length=window_length, cvp=mecg_cvp)
+        mecg = run_ssa(target_segment, window_length=window_length, cvp=mecg_cvp)
 
         # identify mECG peaks
         _, mecg_info = nk.ecg_peaks(mecg, sampling_rate=sampling_rate, correct_artifacts=True)
@@ -57,7 +59,7 @@ def main(
 
         # mECG peaks suppression and fECG extraction
         cleaned_signal = lower_peaks(target_segment, peaks=mecg_peaks_indices)
-        fecg = hankel_with_svd(cleaned_signal, window_length=window_length, cvp=fecg_cvp)
+        fecg = run_ssa(cleaned_signal, window_length=window_length, cvp=fecg_cvp)
 
         # metrics calculation
         _, fecg_info = nk.ecg_peaks(fecg, sampling_rate=sampling_rate, correct_artifacts=True)

@@ -1,6 +1,6 @@
 {
     "experiment_id": "8_tucker_tensor_gpu",
-    "execution_time_seconds": 33.874431848526,
+    "execution_time_seconds": 33.09702706336975,
     "filename": "r01.edf",
     "target_channels": [
         1,
@@ -25,6 +25,7 @@
         "TN": 0,
         "accuracy": 95.07692307692308,
         "precision": 99.03846153846155,
-        "recall": 95.96273291925466
+        "recall": 95.96273291925466,
+        "f1": 97.47634069400631
     }
 }

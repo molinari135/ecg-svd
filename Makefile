@@ -44,16 +44,16 @@ format:
 ## Launch all the experiments
 .PHONY: experiments
 experiments:
-	python ecg_svd/experiments/1_svd_single_segment.py 
-	python ecg_svd/experiments/2_svd_multi_segment.py 
-	python ecg_svd/experiments/3_fastica_multi_segment.py 
-	python ecg_svd/experiments/4_svd_unfolded_tensor.py 
-	python ecg_svd/experiments/5_tucker_tensor_segments.py 
-	python ecg_svd/experiments/6_svd_single_signal.py 
-	python ecg_svd/experiments/7_parafac_tensor_segments.py 
-	python ecg_svd/experiments/8_tucker_tensor_gpu.py 
-	python ecg_svd/experiments/9_parafac_tensor_gpu.py 
-	python ecg_svd/src/viz.py
+	python experiments/1_svd_single_segment.py 
+	python experiments/2_svd_multi_segment.py 
+	python experiments/3_fastica_multi_segment.py 
+	python experiments/4_svd_unfolded_tensor.py 
+	python experiments/5_tucker_tensor_segments.py 
+	python experiments/6_svd_single_signal.py 
+	python experiments/7_parafac_tensor_segments.py 
+	python experiments/8_tucker_tensor_gpu.py 
+	python experiments/9_parafac_tensor_gpu.py 
+	python ecg_svd/evaluation/reporting.py
 
 
 .PHONY: analytics

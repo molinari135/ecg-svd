@@ -9,9 +9,11 @@ from typing import List
 from pathlib import Path
 
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
-from ecg_svd.src.data_io import get_edf_reader, get_signal_segment, close_edf_reader
-from ecg_svd.src.decomposition import run_fastica, lower_peaks
-from ecg_svd.src.metrics import get_classification_report
+from ecg_svd.data.io import get_edf_reader, close_edf_reader
+from ecg_svd.data.preprocessing import get_signal_segment
+from ecg_svd.methods.common import lower_peaks
+from ecg_svd.methods.matrix import run_fastica
+from ecg_svd.evaluation.metrics import get_classification_report
 
 app = typer.Typer(help="Runs FastICA on all raw signals for Blind Source Separation.")
 

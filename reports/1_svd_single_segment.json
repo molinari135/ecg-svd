@@ -1,6 +1,6 @@
 {
     "experiment_id": "1_svd_single_segment",
-    "execution_time_seconds": 3.8917601108551025,
+    "execution_time_seconds": 3.5248026847839355,
     "filename": "r01.edf",
     "target_channel": 4,
     "segment_duration": 5.0,
@@ -14,6 +14,7 @@
         "TN": 0,
         "accuracy": 90.9090909090909,
         "precision": 100.0,
-        "recall": 90.9090909090909
+        "recall": 90.9090909090909,
+        "f1": 95.23809523809523
     }
 }
