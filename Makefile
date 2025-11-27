@@ -41,9 +41,9 @@ format:
 	black ecg_svd
 
 
-## Launch all the experiments
-.PHONY: experiments
-experiments:
+## Launch all the experiments on the default file
+.PHONY: experiment
+experiment:
 	python experiments/1_svd_single_segment.py 
 	python experiments/2_svd_multi_segment.py 
 	python experiments/3_fastica_multi_segment.py 
@@ -53,6 +53,66 @@ experiments:
 	python experiments/7_parafac_tensor_segments.py 
 	python experiments/8_tucker_tensor_gpu.py 
 	python experiments/9_parafac_tensor_gpu.py 
+	python ecg_svd/evaluation/reporting.py
+
+
+## Launch all the experiments on all the files
+.PHONY: experiments
+experiments:
+	python experiments/1_svd_single_segment.py --filename "f01.edf"
+	python experiments/1_svd_single_segment.py --filename "f04.edf"
+	python experiments/1_svd_single_segment.py --filename "f07.edf"
+	python experiments/1_svd_single_segment.py --filename "f08.edf"
+	python experiments/1_svd_single_segment.py --filename "f10.edf"
+
+	python experiments/2_svd_multi_segment.py --filename "f01.edf"
+	python experiments/2_svd_multi_segment.py --filename "f04.edf"
+	python experiments/2_svd_multi_segment.py --filename "f07.edf"
+	python experiments/2_svd_multi_segment.py --filename "f08.edf"
+	python experiments/2_svd_multi_segment.py --filename "f10.edf"
+
+	python experiments/3_fastica_multi_segment.py --filename "f01.edf"
+	python experiments/3_fastica_multi_segment.py --filename "f04.edf"
+	python experiments/3_fastica_multi_segment.py --filename "f07.edf"
+	python experiments/3_fastica_multi_segment.py --filename "f08.edf"
+	python experiments/3_fastica_multi_segment.py --filename "f10.edf"
+
+	python experiments/4_svd_unfolded_tensor.py --filename "f01.edf"
+	python experiments/4_svd_unfolded_tensor.py --filename "f04.edf"
+	python experiments/4_svd_unfolded_tensor.py --filename "f07.edf"
+	python experiments/4_svd_unfolded_tensor.py --filename "f08.edf"
+	python experiments/4_svd_unfolded_tensor.py --filename "f10.edf"
+
+	python experiments/5_tucker_tensor_segments.py --filename "f01.edf"
+	python experiments/5_tucker_tensor_segments.py --filename "f04.edf"
+	python experiments/5_tucker_tensor_segments.py --filename "f07.edf"
+	python experiments/5_tucker_tensor_segments.py --filename "f08.edf"
+	python experiments/5_tucker_tensor_segments.py --filename "f10.edf"
+
+	python experiments/6_svd_single_signal.py --filename "f01.edf"
+	python experiments/6_svd_single_signal.py --filename "f04.edf"
+	python experiments/6_svd_single_signal.py --filename "f07.edf"
+	python experiments/6_svd_single_signal.py --filename "f08.edf"
+	python experiments/6_svd_single_signal.py --filename "f10.edf"
+
+	python experiments/7_parafac_tensor_segments.py --filename "f01.edf"
+	python experiments/7_parafac_tensor_segments.py --filename "f04.edf"
+	python experiments/7_parafac_tensor_segments.py --filename "f07.edf"
+	python experiments/7_parafac_tensor_segments.py --filename "f08.edf"
+	python experiments/7_parafac_tensor_segments.py --filename "f10.edf"
+
+	python experiments/8_tucker_tensor_gpu.py --filename "f01.edf"
+	python experiments/8_tucker_tensor_gpu.py --filename "f04.edf"
+	python experiments/8_tucker_tensor_gpu.py --filename "f07.edf"
+	python experiments/8_tucker_tensor_gpu.py --filename "f08.edf"
+	python experiments/8_tucker_tensor_gpu.py --filename "f10.edf"
+
+	python experiments/9_parafac_tensor_gpu.py --filename "f01.edf"
+	python experiments/9_parafac_tensor_gpu.py --filename "f04.edf"
+	python experiments/9_parafac_tensor_gpu.py --filename "f07.edf"
+	python experiments/9_parafac_tensor_gpu.py --filename "f08.edf"
+	python experiments/9_parafac_tensor_gpu.py --filename "f10.edf"
+
 	python ecg_svd/evaluation/reporting.py
 
 
