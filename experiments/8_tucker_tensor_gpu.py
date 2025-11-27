@@ -11,7 +11,7 @@ from pathlib import Path
 import warnings
 
 from ecg_svd.config import RAW_DATA_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.common import reconstruct_channels
 from ecg_svd.methods.tensor import run_tucker
@@ -33,7 +33,14 @@ def main(
     segment_length: float = 5.0,
     overlap: float = 0.5,
     window_length: int = 625 * 2,
+    verbose: bool = False
 ):
+    logger.remove()
+    if verbose:
+        logger.add(sys.stderr, level="DEBUG")
+    else:
+        logger.add(sys.stderr, level="SUCCESS")
+
     edf_path = RAW_DATA_DIR / filename
     start_time = time.time()
 
@@ -197,8 +204,8 @@ def main(
             "results": report
         }
 
-        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed. Final fECG Accuracy: {report['accuracy']:.2f}%")
+        save_results(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed in {round(elapsed_time, 2)} seconds. Final fECG accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the Tucker GPU experiment: {e}")

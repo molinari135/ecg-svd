@@ -23,7 +23,7 @@ def run_ssa(
     variances = S**2
     explained_variance = variances / np.sum(variances)
     k = np.argmax(np.cumsum(explained_variance) >= cvp) + 1
-    logger.info(f"SVD performed. Rank k={k} chosen (CVP: {cvp * 100:.1f}%)")
+    logger.debug(f"SVD performed. Rank k={k} chosen (CVP: {cvp * 100:.1f}%)")
 
     R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
     reconstructed_signal = diagonal_averaging(R)
@@ -36,7 +36,7 @@ def run_fastica(
 ) -> Tuple[np.ndarray, np.ndarray]:
     if n_components is None:
         n_components = min(data_matrix.shape)
-        logger.info(f"Using default n_components: {n_components}")
+        logger.debug(f"Using default n_components: {n_components}")
 
     ica = FastICA(n_components=n_components, max_iter=1000, random_state=42)
     sources = ica.fit_transform(data_matrix)

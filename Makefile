@@ -44,6 +44,7 @@ format:
 ## Launch all the experiments on the default file
 .PHONY: experiment
 experiment:
+	python experiments/0_baseline.py 
 	python experiments/1_svd_single_segment.py 
 	python experiments/2_svd_multi_segment.py 
 	python experiments/3_fastica_multi_segment.py 
@@ -59,6 +60,12 @@ experiment:
 ## Launch all the experiments on all the files
 .PHONY: experiments
 experiments:
+	python experiments/0_baseline.py --filename "f01.edf"
+	python experiments/0_baseline.py --filename "f04.edf"
+	python experiments/0_baseline.py --filename "f07.edf"
+	python experiments/0_baseline.py --filename "f08.edf"
+	python experiments/0_baseline.py --filename "f10.edf"
+
 	python experiments/1_svd_single_segment.py --filename "f01.edf"
 	python experiments/1_svd_single_segment.py --filename "f04.edf"
 	python experiments/1_svd_single_segment.py --filename "f07.edf"

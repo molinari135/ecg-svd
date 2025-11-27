@@ -9,7 +9,7 @@ from typing import List
 from pathlib import Path
 
 from ecg_svd.config import RAW_DATA_DIR
-from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_npy_json
+from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
 from ecg_svd.data.preprocessing import get_signal_segment, create_segment_tensor
 from ecg_svd.methods.common import reconstruct_channels, create_hankel_matrix
 from ecg_svd.methods.tensor import run_parafac
@@ -28,11 +28,18 @@ def main(
     segment_duration: float = 5.0,
     window_length: int = 625 * 2,
     parafac_rank: int = 4,
+    verbose: bool = False
 ):
     edf_path = RAW_DATA_DIR / filename
     start_time = time.time()
 
     try:
+        logger.remove()
+        if verbose:
+            logger.add(sys.stderr, level="DEBUG")
+        else:
+            logger.add(sys.stderr, level="SUCCESS")
+
         # initialization and data loading
         edf = get_edf_reader(edf_path)
 
@@ -116,8 +123,8 @@ def main(
             "results": report
         }
 
-        save_npy_json(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed. Final fECG accuracy: {report['accuracy']:.2f}%")
+        save_results(filename, experiment_name, data_to_save, experiment_report)
+        logger.success(f"Experiment completed in {round(elapsed_time, 2)} seconds. Final fECG accuracy: {report['accuracy']:.2f}%")
 
     except Exception as e:
         logger.error(f"An error occurred during the PARAFAC experiment: {e}")

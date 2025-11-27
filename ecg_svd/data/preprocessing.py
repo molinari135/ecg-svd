@@ -45,5 +45,5 @@ def create_segment_tensor(hankel_matrices: list[np.ndarray]) -> np.ndarray:
         raise ValueError("Inconsistent matrix dimensions")
 
     segment_tensor = np.stack(hankel_matrices, axis=2)
-    logger.info(f"3D Tensor created with shape (L, K, Channels): {segment_tensor.shape}")
+    logger.debug(f"3D Tensor created with shape (L, K, Channels): {segment_tensor.shape}")
     return segment_tensor
