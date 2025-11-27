@@ -56,15 +56,6 @@ def get_classification_report(ground_truth: np.ndarray, prediction: np.ndarray, 
     }
 
 
-def extract_neurokit_r_peaks(signal: np.ndarray, sampling_rate: int = 1000) -> np.ndarray:
-    # use the negative signal for MECG extraction if needed, but standard is positive for ECG peaks
-    _, info = nk.ecg_peaks(signal, sampling_rate=sampling_rate, correct_artifacts=True)
-
-    # convert R-peak indices to seconds
-    r_peaks_seconds = info.get('ECG_R_Peaks', []) / sampling_rate
-    return r_peaks_seconds
-
-
 def signal_quality(
     signal: np.ndarray,
     sampling_rate: int = 1000,
