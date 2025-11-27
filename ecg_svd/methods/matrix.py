@@ -25,8 +25,7 @@ def run_ssa(
     k = np.argmax(np.cumsum(explained_variance) >= cvp) + 1
     logger.info(f"SVD performed. Rank k={k} chosen (CVP: {cvp * 100:.1f}%)")
 
-    # FIXME remove diag
-    R = U[:, :k] @ np.diag(S[:k]) @ Vt[:k, :]
+    R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
     reconstructed_signal = diagonal_averaging(R)
     return reconstructed_signal
 

@@ -75,7 +75,7 @@ def signal_quality(
 
     for cvp in cvp_to_test:
         k = np.argmax(cumulative_explained_variance >= cvp) + 1
-        R = U[:, :k] @ np.diag(S[:k]) @ Vt[:k, :]
+        R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
         reconstructed_signal = diagonal_averaging(R)
 
         quality_mean = nk.ecg_quality(reconstructed_signal, sampling_rate=sampling_rate).mean()
