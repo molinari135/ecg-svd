@@ -10,7 +10,7 @@ def run_tucker(
     rank: Tuple[int, ...]
 ) -> Tuple[np.ndarray, list]:
     core, factors = tucker(tensor, rank=rank, init='random', n_iter_max=500, tol=1e-2, random_state=42, verbose=False)
-    logger.success(f"Tucker decomposition performed with rank {rank}.")
+    logger.debug(f"Tucker decomposition performed with rank {rank}.")
     return core, factors
 
 
@@ -19,5 +19,5 @@ def run_parafac(
     rank: int
 ) -> tl.cp_tensor.CPTensor:
     cp_tensor = parafac(tensor, rank=rank, init='random', n_iter_max=500, tol=1e-2, random_state=42, verbose=False)
-    logger.success(f"PARAFAC decomposition performed with rank {rank}.")
+    logger.debug(f"PARAFAC decomposition performed with rank {rank}.")
     return cp_tensor

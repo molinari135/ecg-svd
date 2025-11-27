@@ -3,9 +3,10 @@ import sys
 import time
 import numpy as np
 import neurokit2 as nk
-from loguru import logger
-from typing import List
 from pathlib import Path
+from loguru import logger
+from tqdm import tqdm
+from typing import List
 
 from ecg_svd.config import RAW_DATA_DIR
 from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
@@ -28,17 +29,18 @@ def main(
     window_length: int = 625 * 2,
     verbose: bool = False
 ):
+    # configure logger
+    logger.remove()
+    if verbose:
+        logger.add(sys.stderr, level="DEBUG")
+    else:
+        logger.add(sys.stderr, level="SUCCESS")
+
     edf_path = RAW_DATA_DIR / filename
     start_time = time.time()
 
     try:
-        logger.remove()
-        if verbose:
-            logger.add(sys.stderr, level="DEBUG")
-        else:
-            logger.add(sys.stderr, level="SUCCESS")
-
-        # initialization and data loading
+        # --- Loading Data ---
         edf = get_edf_reader(edf_path)
 
         # load ground truth
@@ -46,7 +48,7 @@ def main(
         gt_onsets = gt_data['onsets']
         sampling_rate = gt_data['sampling_rate']
 
-        # load all segments (required for processing and weight calculation)
+        # load all segments
         segments_data = [
             get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
             for ch in target_channels
@@ -62,7 +64,16 @@ def main(
         mecg_list = []
         fecg_list = []
 
-        for i, data in enumerate(segments_data):
+        # --- 2. Channel Processing Loop with TQDM ---
+        channel_iterator = tqdm(
+            enumerate(segments_data),
+            total=len(segments_data),
+            desc="Processing Channels",
+            unit="ch",
+            disable=verbose
+        )
+
+        for i, data in channel_iterator:
             segment = data['segment']
             segment = (segment - np.mean(segment)) / (np.std(segment) + 1e-8)  # center data
 
@@ -87,30 +98,32 @@ def main(
         fecg_mean = np.mean(fecg_list, axis=0)
 
         # weighted sum
-        mecg_weighted = np.average(np.stack(mecg_list, axis=-1), axis=-1, weights=weights)
-        fecg_weighted = np.average(np.stack(fecg_list, axis=-1), axis=-1, weights=weights)
+        min_len = min(len(s) for s in fecg_list)
+        fecg_stack = np.stack([s[:min_len] for s in fecg_list], axis=-1)
+        mecg_stack = np.stack([s[:min_len] for s in mecg_list], axis=-1)
 
-        # metrics calculations
+        mecg_weighted = np.average(mecg_stack, axis=-1, weights=weights)
+        fecg_weighted = np.average(fecg_stack, axis=-1, weights=weights)
 
-        # --- simple mean ---
         _, info_mean = nk.ecg_peaks(fecg_mean, sampling_rate=sampling_rate, correct_artifacts=True)
         fecg_mean_peaks_sec = info_mean.get('ECG_R_Peaks', []) / sampling_rate
         report_mean = get_classification_report(gt_onsets, fecg_mean_peaks_sec)
         logger.info(f"Mean Sum Result Accuracy: {report_mean['accuracy']:.2f}%")
 
-        # --- weighted sum ---
         _, info_weighted = nk.ecg_peaks(fecg_weighted, sampling_rate=sampling_rate, correct_artifacts=True)
         fecg_weighted_peaks_sec = info_weighted.get('ECG_R_Peaks', []) / sampling_rate
         report = get_classification_report(gt_onsets, fecg_weighted_peaks_sec)
 
         elapsed_time = time.time() - start_time
         experiment_name = Path(sys.argv[0]).stem
+
         data_to_save = {
             'mecg': mecg_weighted,
             'fecg': fecg_weighted
         }
 
         experiment_report = {
+            "experiment_id": experiment_name,
             "execution_time_seconds": elapsed_time,
             "target_channel": target_channels,
             "segment_duration": segment_duration,
@@ -121,7 +134,7 @@ def main(
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)} seconds. Final fECG accuracy: {report['accuracy']:.2f}%")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the experiment: {e}")

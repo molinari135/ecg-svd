@@ -1,6 +1,103 @@
 {
     "r01.edf": {
-        "execution_time_seconds": 28.670573472976685,
+        "experiment_id": "2_svd_multi_segment",
+        "execution_time_seconds": 28.187803506851196,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "2_svd_multi_segment",
+        "execution_time_seconds": 28.666424036026,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "2_svd_multi_segment",
+        "execution_time_seconds": 28.441569566726685,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "2_svd_multi_segment",
+        "execution_time_seconds": 28.222824811935425,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "2_svd_multi_segment",
+        "execution_time_seconds": 30.25384259223938,
         "target_channel": [
             1,
             2,

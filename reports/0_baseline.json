@@ -1,6 +1,71 @@
 {
     "r01.edf": {
-        "execution_time_seconds": 0.03299903869628906,
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.03619956970214844,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.0501406192779541,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.05020713806152344,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.05024838447570801,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.04855489730834961,
         "target_channel": 0,
         "segment_duration": 5.0,
         "results": {

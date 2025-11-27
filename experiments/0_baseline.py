@@ -5,6 +5,7 @@ import neurokit2 as nk
 import numpy as np
 from pathlib import Path
 from loguru import logger
+from tqdm import tqdm
 
 from ecg_svd.config import RAW_DATA_DIR
 from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
@@ -23,49 +24,71 @@ def main(
     segment_duration: float = 5.0,
     verbose: bool = False
 ):
-
+    # configure logger
     logger.remove()
     if verbose:
+        # show debug logs and hide progress bar
         logger.add(sys.stderr, level="DEBUG")
     else:
+        # show only success/error and progress bar
         logger.add(sys.stderr, level="SUCCESS")
 
     edf_path = RAW_DATA_DIR / filename
     start_time = time.time()
 
+    # number of steps for progress bar
+    TOTAL_STEPS = 4
+
     try:
-        # initialization and data loading
-        edf = get_edf_reader(edf_path)
+        # initialize progress bar
+        with tqdm(total=TOTAL_STEPS, disable=verbose, unit="step", desc="Initializing") as pbar:
 
-        # load ground truth and target signal (single segment)
-        gt_data = get_signal_segment(edf, ch_number=gt_channel, end_time=segment_duration)
-        target_data = get_signal_segment(edf, ch_number=target_channel, end_time=segment_duration)
+            # --- STEP 1: Data Loading ---
+            pbar.set_description("Loading Data")
+            edf = get_edf_reader(edf_path)
 
-        target_segment = target_data['segment']
-        target_segment = (target_segment - np.mean(target_segment)) / np.std(target_segment + 1e-8)  # center data
-        gt_onsets = gt_data['onsets']
-        sampling_rate = target_data['sampling_rate']  # use sampling rate from segment_data
+            gt_data = get_signal_segment(edf, ch_number=gt_channel, end_time=segment_duration)
+            target_data = get_signal_segment(edf, ch_number=target_channel, end_time=segment_duration)
 
-        # identify mECG peaks
-        _, fecg_info = nk.ecg_peaks(target_segment, sampling_rate=sampling_rate, correct_artifacts=True)
-        fecg_peaks_seconds = fecg_info.get('ECG_R_Peaks', []) / sampling_rate  # convert to seconds
-        report = get_classification_report(gt_onsets, fecg_peaks_seconds)
+            target_segment = target_data['segment']
+            target_segment = (target_segment - np.mean(target_segment)) / np.std(target_segment + 1e-8)  # center data
+            gt_onsets = gt_data['onsets']
+            sampling_rate = target_data['sampling_rate']
+            pbar.update(1)  # 25%
 
-        elapsed_time = time.time() - start_time
-        experiment_name = Path(sys.argv[0]).stem
-        data_to_save = {}
-        experiment_report = {
-            "execution_time_seconds": elapsed_time,
-            "target_channel": target_channel,
-            "segment_duration": segment_duration,
-            "results": report
-        }
+            # --- STEP 2: Processing (Peak Detection) ---
+            pbar.set_description("Processing Signal")
+            _, fecg_info = nk.ecg_peaks(target_segment, sampling_rate=sampling_rate, correct_artifacts=True)
+            fecg_peaks_seconds = fecg_info.get('ECG_R_Peaks', []) / sampling_rate
+            pbar.update(1)  # 50%
 
-        save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)} seconds. Final fECG accuracy: {report['accuracy']:.2f}%")
+            # --- STEP 3: Metrics ---
+            pbar.set_description("Calculating Metrics")
+            report = get_classification_report(gt_onsets, fecg_peaks_seconds)
+            pbar.update(1)  # 75%
+
+            # --- STEP 4: Saving ---
+            pbar.set_description("Saving Results")
+            elapsed_time = time.time() - start_time
+            experiment_name = Path(sys.argv[0]).stem
+            data_to_save = {}
+
+            experiment_report = {
+                "experiment_id": experiment_name,
+                "execution_time_seconds": elapsed_time,
+                "target_channel": target_channel,
+                "segment_duration": segment_duration,
+                "results": report
+            }
+
+            save_results(filename, experiment_name, data_to_save, experiment_report)
+            pbar.update(1)  # 100%
+            pbar.set_description("Done")
+
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
-        logger.error(f"An error occurred during the experiment: {e}")
+        logger.exception(f"An error occurred during the experiment: {e}")
         raise
 
     finally:

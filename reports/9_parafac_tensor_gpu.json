@@ -1,6 +1,155 @@
 {
     "r01.edf": {
-        "execution_time_seconds": 24.014841079711914,
+        "experiment_id": "9_parafac_tensor_gpu",
+        "execution_time_seconds": 23.513432025909424,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.23753761701712553,
+            0.20751110913593537,
+            0.24647767061756892,
+            0.30847360322937023
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 613,
+            "FN": 31,
+            "FP": 22,
+            "TN": 0,
+            "accuracy": 92.04204204204204,
+            "precision": 96.53543307086613,
+            "recall": 95.1863354037267,
+            "f1": 95.85613760750587
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "9_parafac_tensor_gpu",
+        "execution_time_seconds": 23.427968978881836,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.23753761701712553,
+            0.20751110913593537,
+            0.24647767061756892,
+            0.30847360322937023
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 613,
+            "FN": 31,
+            "FP": 22,
+            "TN": 0,
+            "accuracy": 92.04204204204204,
+            "precision": 96.53543307086613,
+            "recall": 95.1863354037267,
+            "f1": 95.85613760750587
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "9_parafac_tensor_gpu",
+        "execution_time_seconds": 23.234007596969604,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.23753761701712553,
+            0.20751110913593537,
+            0.24647767061756892,
+            0.30847360322937023
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 613,
+            "FN": 31,
+            "FP": 22,
+            "TN": 0,
+            "accuracy": 92.04204204204204,
+            "precision": 96.53543307086613,
+            "recall": 95.1863354037267,
+            "f1": 95.85613760750587
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "9_parafac_tensor_gpu",
+        "execution_time_seconds": 23.282840967178345,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.23753761701712553,
+            0.20751110913593537,
+            0.24647767061756892,
+            0.30847360322937023
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 613,
+            "FN": 31,
+            "FP": 22,
+            "TN": 0,
+            "accuracy": 92.04204204204204,
+            "precision": 96.53543307086613,
+            "recall": 95.1863354037267,
+            "f1": 95.85613760750587
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "9_parafac_tensor_gpu",
+        "execution_time_seconds": 23.364481449127197,
         "target_channels": [
             1,
             2,

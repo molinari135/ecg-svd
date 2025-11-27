@@ -1,6 +1,7 @@
 {
     "r01.edf": {
-        "execution_time_seconds": 216.58867025375366,
+        "experiment_id": "6_svd_single_signal",
+        "execution_time_seconds": 241.43553185462952,
         "target_channel": 4,
         "segment_length": 5.0,
         "overlap": 0.5,
@@ -9,14 +10,98 @@
         "fecg_cvp": 0.9,
         "segment_count": 67,
         "results": {
-            "TP": 450,
-            "FN": 194,
-            "FP": 45,
+            "TP": 440,
+            "FN": 204,
+            "FP": 40,
             "TN": 0,
-            "accuracy": 65.31204644412192,
-            "precision": 90.9090909090909,
-            "recall": 69.87577639751554,
-            "f1": 79.01668129938543
+            "accuracy": 64.32748538011695,
+            "precision": 91.66666666666666,
+            "recall": 68.32298136645963,
+            "f1": 78.29181494661921
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "6_svd_single_signal",
+        "execution_time_seconds": 221.60561966896057,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 67,
+        "results": {
+            "TP": 440,
+            "FN": 204,
+            "FP": 40,
+            "TN": 0,
+            "accuracy": 64.32748538011695,
+            "precision": 91.66666666666666,
+            "recall": 68.32298136645963,
+            "f1": 78.29181494661921
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "6_svd_single_signal",
+        "execution_time_seconds": 224.55621695518494,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 67,
+        "results": {
+            "TP": 440,
+            "FN": 204,
+            "FP": 40,
+            "TN": 0,
+            "accuracy": 64.32748538011695,
+            "precision": 91.66666666666666,
+            "recall": 68.32298136645963,
+            "f1": 78.29181494661921
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "6_svd_single_signal",
+        "execution_time_seconds": 229.5097095966339,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 67,
+        "results": {
+            "TP": 440,
+            "FN": 204,
+            "FP": 40,
+            "TN": 0,
+            "accuracy": 64.32748538011695,
+            "precision": 91.66666666666666,
+            "recall": 68.32298136645963,
+            "f1": 78.29181494661921
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "6_svd_single_signal",
+        "execution_time_seconds": 220.06200242042542,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 67,
+        "results": {
+            "TP": 440,
+            "FN": 204,
+            "FP": 40,
+            "TN": 0,
+            "accuracy": 64.32748538011695,
+            "precision": 91.66666666666666,
+            "recall": 68.32298136645963,
+            "f1": 78.29181494661921
         }
     }
 }

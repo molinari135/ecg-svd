@@ -42,7 +42,7 @@ def run_fastica(
     sources = ica.fit_transform(data_matrix)
     mixing_matrix = ica.mixing_
 
-    logger.success(f"FastICA performed. Extracted {n_components} components.")
+    logger.debug(f"FastICA performed. Extracted {n_components} components.")
     return sources, mixing_matrix
 
 

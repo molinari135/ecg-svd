@@ -15,7 +15,7 @@ def consolidate_all_reports(edf_file: str = "r01.edf", results_dir: Path = REPOR
             experiment_data = {
                 "experiment_id": report_file.stem,
                 "filename": edf_file,
-                "execution_time_seconds": data[edf_file]["execution_time_seconds"],
+                "execution_time_seconds": round(data[edf_file]["execution_time_seconds"], 2),
                 "accuracy": data[edf_file]["results"]["accuracy"],
                 "precision": data[edf_file]["results"]["precision"],
                 "recall": data[edf_file]["results"]["recall"],

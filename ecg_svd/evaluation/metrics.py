@@ -1,5 +1,6 @@
 import numpy as np
 import neurokit2 as nk
+from tqdm import tqdm
 from scipy.linalg import svd
 from loguru import logger
 from typing import Dict, Any, List, Tuple
@@ -94,11 +95,22 @@ def signal_quality(
     }
 
 
-def get_signal_weights_and_qualities(signal_list: List[Dict[str, Any]]) -> Tuple[np.ndarray, List[Dict[str, Any]]]:
+def get_signal_weights_and_qualities(
+    signal_list: List[Dict[str, Any]],
+    verbose: bool = False
+) -> Tuple[np.ndarray, List[Dict[str, Any]]]:
+
     all_quality_data = []
     quality_values = []
 
-    for signal_data in signal_list:
+    iterator = tqdm(
+        signal_list,
+        desc="Calculating Weights",
+        unit="ch",
+        disable=verbose
+    )
+
+    for signal_data in iterator:
         quality_data = signal_quality(signal_data['segment'])
 
         all_quality_data.append(quality_data)
@@ -108,10 +120,12 @@ def get_signal_weights_and_qualities(signal_list: List[Dict[str, Any]]) -> Tuple
 
     sum_quality = np.sum(quality_array)
     if sum_quality == 0:
-        logger.warning("Total quality is zero. Returning uniform weights.")
+        if verbose:
+            logger.warning("Total quality is zero. Returning uniform weights.")
         weights = np.ones_like(quality_array) / len(quality_array)
     else:
         weights = quality_array / sum_quality
+
     return weights, all_quality_data
 
 
