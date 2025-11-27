@@ -15,7 +15,7 @@ import warnings
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.data.io import get_edf_reader, close_edf_reader
 from ecg_svd.data.preprocessing import get_signal_segment
-from ecg_svd.methods.common import reconstruct_channels_torch
+from ecg_svd.methods.common import reconstruct_channels
 from ecg_svd.methods.tensor import run_parafac
 from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
 
@@ -135,9 +135,9 @@ def main(
                 S_fecg = torch.sum(components[:, :, :, [1, 2]], dim=-1)
                 H_noise = segment_tensor - (S_mecg + S_fecg)
 
-                mECG_signals = reconstruct_channels_torch(S_mecg).to(device)
-                fECG_signals = reconstruct_channels_torch(S_fecg).to(device)
-                noise_signals = reconstruct_channels_torch(H_noise).to(device)
+                mECG_signals = reconstruct_channels(S_mecg, on_cuda=True).to(device)
+                fECG_signals = reconstruct_channels(S_fecg, on_cuda=True).to(device)
+                noise_signals = reconstruct_channels(H_noise, on_cuda=True).to(device)
 
                 mECG_seg = torch.sum(mECG_signals * weights[None, :], dim=1)
                 fECG_seg = torch.sum(fECG_signals * weights[None, :], dim=1)

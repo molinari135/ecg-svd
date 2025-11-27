@@ -15,7 +15,7 @@ import warnings
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, REPORTS_DIR
 from ecg_svd.data.io import get_edf_reader, close_edf_reader
 from ecg_svd.data.preprocessing import get_signal_segment
-from ecg_svd.methods.common import reconstruct_channels_torch
+from ecg_svd.methods.common import reconstruct_channels
 from ecg_svd.methods.tensor import run_tucker
 from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities, get_tucker_rank
 
@@ -133,9 +133,9 @@ def main(
                 H_noise = segment_tensor - (H_mecg + H_fecg)
 
                 # diagonal averaging
-                mECG_signals = reconstruct_channels_torch(H_mecg).to(device)
-                fECG_signals = reconstruct_channels_torch(H_fecg).to(device)
-                noise_signals = reconstruct_channels_torch(H_noise).to(device)
+                mECG_signals = reconstruct_channels(H_mecg, on_cuda=True).to(device)
+                fECG_signals = reconstruct_channels(H_fecg, on_cuda=True).to(device)
+                noise_signals = reconstruct_channels(H_noise, on_cuda=True).to(device)
 
                 # weighted combination
                 mECG_seg = torch.sum(mECG_signals * weights[None, :], dim=1)
