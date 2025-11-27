@@ -73,17 +73,17 @@ def plot_qualitative_assessment():
     axes[0].set_ylabel('Ampl. [a.u.]')
     axes[0].grid(True, alpha=0.3)
 
-    axes[1].plot(time_axis, z_norm(est_mecg), color='#1f77b4', label='Extracted mECG') # Blue
+    axes[1].plot(time_axis, z_norm(est_mecg), color='#1f77b4', label='Extracted mECG')  # Blue
     axes[1].set_title('(b) Extracted Maternal Component (Tucker)')
     axes[1].set_ylabel('Ampl. [a.u.]')
     axes[1].grid(True, alpha=0.3)
 
-    axes[2].plot(time_axis, z_norm(est_fecg), color='#d62728', label='Extracted fECG') # Red
+    axes[2].plot(time_axis, z_norm(est_fecg), color='#d62728', label='Extracted fECG')  # Red
     axes[2].set_title('(c) Extracted Fetal Component (Tucker)')
     axes[2].set_ylabel('Ampl. [a.u.]')
     axes[2].grid(True, alpha=0.3)
 
-    axes[3].plot(time_axis, z_norm(gt_signal), color='#2ca02c', label='Reference fECG') # Green
+    axes[3].plot(time_axis, z_norm(gt_signal), color='#2ca02c', label='Reference fECG')  # Green
     axes[3].set_title('(d) Ground Truth Reference (Direct Scalp)')
     axes[3].set_ylabel('Ampl. [a.u.]')
     axes[3].set_xlabel('Time [s]')
