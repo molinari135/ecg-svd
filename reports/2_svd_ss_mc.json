@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 28.130598306655884,
+        "execution_time_seconds": 31.120725393295288,
         "target_channel": [
             1,
             2,
@@ -20,12 +20,12 @@
             "accuracy": 81.81818181818183,
             "precision": 100.0,
             "recall": 81.81818181818183,
-            "f1": 90.0
+            "f1": 90.00000000000001
         }
     },
     "r04.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 27.81061577796936,
+        "execution_time_seconds": 27.93429398536682,
         "target_channel": [
             1,
             2,
@@ -41,15 +41,15 @@
             "FN": 4,
             "FP": 1,
             "TN": 0,
-            "accuracy": 58.333333333333336,
+            "accuracy": 63.63636363636363,
             "precision": 87.5,
             "recall": 63.63636363636363,
-            "f1": 73.68421052631578
+            "f1": 73.6842105263158
         }
     },
     "r07.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 27.76958918571472,
+        "execution_time_seconds": 25.69923496246338,
         "target_channel": [
             1,
             2,
@@ -65,15 +65,15 @@
             "FN": 7,
             "FP": 2,
             "TN": 0,
-            "accuracy": 30.76923076923077,
+            "accuracy": 36.36363636363637,
             "precision": 66.66666666666666,
             "recall": 36.36363636363637,
-            "f1": 47.05882352941177
+            "f1": 47.05882352941176
         }
     },
     "r08.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 27.8031165599823,
+        "execution_time_seconds": 24.464117288589478,
         "target_channel": [
             1,
             2,
@@ -89,15 +89,15 @@
             "FN": 8,
             "FP": 2,
             "TN": 0,
-            "accuracy": 23.076923076923077,
+            "accuracy": 27.27272727272727,
             "precision": 60.0,
             "recall": 27.27272727272727,
-            "f1": 37.49999999999999
+            "f1": 37.5
         }
     },
     "r10.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 28.07294726371765,
+        "execution_time_seconds": 28.429768562316895,
         "target_channel": [
             1,
             2,

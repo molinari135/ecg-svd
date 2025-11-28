@@ -45,15 +45,16 @@ format:
 .PHONY: experiment
 experiment:
 	python experiments/0_baseline.py 
-	python experiments/1_svd_single_segment.py 
-	python experiments/2_svd_multi_segment.py 
-	python experiments/3_fastica_multi_segment.py 
-	python experiments/4_svd_unfolded_tensor.py 
-	python experiments/5_tucker_tensor_segments.py 
-	python experiments/6_svd_single_signal.py 
-	python experiments/7_parafac_tensor_segments.py 
-	python experiments/8_tucker_tensor_gpu.py 
-	python experiments/9_parafac_tensor_gpu.py 
+	python experiments/1_svd_ss_sc.py 
+	python experiments/2_svd_ss_mc.py 
+	python experiments/3_svd_ss_mc.py 
+	python experiments/4_svd_ms_sc.py 
+	python experiments/5_fastica_ss_ms.py 
+	python experiments/6_fastica_ms_mc.py 
+	python experiments/7_tucker_ss_mc.py 
+	python experiments/8_tucker_ms_mc.py 
+	python experiments/9_parafac_ss_mc.py
+	python experiments/10_parafac_ms_mc.py
 	python ecg_svd/evaluation/reporting.py
 
 
@@ -62,13 +63,14 @@ r01:
 	python experiments/0_baseline.py --filename "r01.edf"
 	python experiments/1_svd_ss_sc.py --filename "r01.edf"
 	python experiments/2_svd_ss_mc.py --filename "r01.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r01.edf"
-	python experiments/4_svd_ss_mc.py --filename "r01.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r01.edf"
-	python experiments/6_svd_ms_sc.py --filename "r01.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r01.edf"
+	python experiments/3_svd_ss_mc.py --filename "r01.edf"
+	python experiments/4_svd_ms_sc.py --filename "r01.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r01.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r01.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r01.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r01.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r01.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r01.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r01.edf"
 	python ecg_svd/evaluation/reporting.py --edf-name "r01"
 	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r01"
 
@@ -78,13 +80,14 @@ r04:
 	python experiments/0_baseline.py --filename "r04.edf"
 	python experiments/1_svd_ss_sc.py --filename "r04.edf"
 	python experiments/2_svd_ss_mc.py --filename "r04.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r04.edf"
-	python experiments/4_svd_ss_mc.py --filename "r04.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r04.edf"
-	python experiments/6_svd_ms_sc.py --filename "r04.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r04.edf"
+	python experiments/3_svd_ss_mc.py --filename "r04.edf"
+	python experiments/4_svd_ms_sc.py --filename "r04.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r04.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r04.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r04.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r04.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r04.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r04.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r04.edf"
 	python ecg_svd/evaluation/reporting.py --edf-name "r04"
 	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r04"
 
@@ -94,13 +97,14 @@ r07:
 	python experiments/0_baseline.py --filename "r07.edf"
 	python experiments/1_svd_ss_sc.py --filename "r07.edf"
 	python experiments/2_svd_ss_mc.py --filename "r07.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r07.edf"
-	python experiments/4_svd_ss_mc.py --filename "r07.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r07.edf"
-	python experiments/6_svd_ms_sc.py --filename "r07.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r07.edf"
+	python experiments/3_svd_ss_mc.py --filename "r07.edf"
+	python experiments/4_svd_ms_sc.py --filename "r07.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r07.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r07.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r07.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r07.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r07.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r07.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r07.edf"
 	python ecg_svd/evaluation/reporting.py --edf-name "r07"
 	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r07"
 
@@ -110,13 +114,14 @@ r08:
 	python experiments/0_baseline.py --filename "r08.edf"
 	python experiments/1_svd_ss_sc.py --filename "r08.edf"
 	python experiments/2_svd_ss_mc.py --filename "r08.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r08.edf"
-	python experiments/4_svd_ss_mc.py --filename "r08.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r08.edf"
-	python experiments/6_svd_ms_sc.py --filename "r08.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r08.edf"
+	python experiments/3_svd_ss_mc.py --filename "r08.edf"
+	python experiments/4_svd_ms_sc.py --filename "r08.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r08.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r08.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r08.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r08.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r08.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r08.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r08.edf"
 	python ecg_svd/evaluation/reporting.py --edf-name "r08"
 	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r08"
 
@@ -126,13 +131,14 @@ r10:
 	python experiments/0_baseline.py --filename "r10.edf"
 	python experiments/1_svd_ss_sc.py --filename "r10.edf"
 	python experiments/2_svd_ss_mc.py --filename "r10.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r10.edf"
-	python experiments/4_svd_ss_mc.py --filename "r10.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r10.edf"
-	python experiments/6_svd_ms_sc.py --filename "r10.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r10.edf"
+	python experiments/3_svd_ss_mc.py --filename "r10.edf"
+	python experiments/4_svd_ms_sc.py --filename "r10.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r10.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r10.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r10.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r10.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r10.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r10.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r10.edf"
 	python ecg_svd/evaluation/reporting.py --edf-name "r10"
 	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r10"
 
@@ -158,35 +164,35 @@ experiments:
 	python experiments/2_svd_ss_mc.py --filename "r08.edf"
 	python experiments/2_svd_ss_mc.py --filename "r10.edf"
 
-	python experiments/3_fastica_ss_mc.py --filename "r01.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r04.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r07.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r08.edf"
-	python experiments/3_fastica_ss_mc.py --filename "r10.edf"
+	python experiments/3_svd_ss_mc.py --filename "r01.edf"
+	python experiments/3_svd_ss_mc.py --filename "r04.edf"
+	python experiments/3_svd_ss_mc.py --filename "r07.edf"
+	python experiments/3_svd_ss_mc.py --filename "r08.edf"
+	python experiments/3_svd_ss_mc.py --filename "r10.edf"
 
-	python experiments/4_svd_ss_mc.py --filename "r01.edf"
-	python experiments/4_svd_ss_mc.py --filename "r04.edf"
-	python experiments/4_svd_ss_mc.py --filename "r07.edf"
-	python experiments/4_svd_ss_mc.py --filename "r08.edf"
-	python experiments/4_svd_ss_mc.py --filename "r10.edf"
+	python experiments/4_svd_ms_sc.py --filename "r01.edf"
+	python experiments/4_svd_ms_sc.py --filename "r04.edf"
+	python experiments/4_svd_ms_sc.py --filename "r07.edf"
+	python experiments/4_svd_ms_sc.py --filename "r08.edf"
+	python experiments/4_svd_ms_sc.py --filename "r10.edf"
 
-	python experiments/5_tucker_ss_mc.py --filename "r01.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r04.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r07.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r08.edf"
-	python experiments/5_tucker_ss_mc.py --filename "r10.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r01.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r04.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r07.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r08.edf"
+	python experiments/5_fastica_ss_mc.py --filename "r10.edf"
 
-	python experiments/6_svd_ms_sc.py --filename "r01.edf"
-	python experiments/6_svd_ms_sc.py --filename "r04.edf"
-	python experiments/6_svd_ms_sc.py --filename "r07.edf"
-	python experiments/6_svd_ms_sc.py --filename "r08.edf"
-	python experiments/6_svd_ms_sc.py --filename "r10.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r01.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r04.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r07.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r08.edf"
+	python experiments/6_fastica_ms_mc.py --filename "r10.edf"
 
-	python experiments/7_parafac_ss_mc.py --filename "r01.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r04.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r07.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r08.edf"
-	python experiments/7_parafac_ss_mc.py --filename "r10.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r01.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r04.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r07.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r08.edf"
+	python experiments/7_tucker_ss_mc.py --filename "r10.edf"
 
 	python experiments/8_tucker_ms_mc.py --filename "r01.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r04.edf"
@@ -194,11 +200,17 @@ experiments:
 	python experiments/8_tucker_ms_mc.py --filename "r08.edf"
 	python experiments/8_tucker_ms_mc.py --filename "r10.edf"
 
-	python experiments/9_parafac_ms_mc.py --filename "r01.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r04.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r07.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r08.edf"
-	python experiments/9_parafac_ms_mc.py --filename "r10.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r01.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r04.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r07.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r08.edf"
+	python experiments/9_parafac_ss_mc.py --filename "r10.edf"
+
+	python experiments/10_parafac_ms_mc.py --filename "r01.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r04.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r07.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r08.edf"
+	python experiments/10_parafac_ms_mc.py --filename "r10.edf"
 
 
 .PHONY: reports
@@ -208,11 +220,11 @@ reports:
 
 .PHONY: plots
 plots:
-	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r01"
-	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r04"
-	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r07"
-	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r08"
-	python ecg_svd/visualization/plots.py plot_mecg --edf-name "r10"
+	python ecg_svd/visualization/plots.py "r01"
+	python ecg_svd/visualization/plots.py "r04"
+	python ecg_svd/visualization/plots.py "r07"
+	python ecg_svd/visualization/plots.py "r08"
+	python ecg_svd/visualization/plots.py "r10"
 
 
 ## Set up Python interpreter environment

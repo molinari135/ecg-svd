@@ -2,14 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 import os
+import typer
 
 from ecg_svd.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, FIGURES_DIR
 from ecg_svd.data.io import get_edf_reader, close_edf_reader
 from ecg_svd.data.preprocessing import get_signal_segment
 
 sys.path.append(".")
+app = typer.Typer(help="Plot extracted mECG and fECG signals from processed results.")
 
 
+@app.command()
 def plot_mecg_fecg(edf_name):
     for name in os.listdir(PROCESSED_DATA_DIR):
         # name must start with a number
@@ -72,6 +75,4 @@ def plot_mecg_fecg(edf_name):
 
 
 if __name__ == "__main__":
-    files = ["r01", "r04", "r07", "r08", "r10"]
-    for f in files:
-        plot_mecg_fecg(f)
+    app()

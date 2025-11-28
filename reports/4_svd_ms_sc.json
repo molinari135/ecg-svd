@@ -1,0 +1,112 @@
+{
+    "r01.edf": {
+        "experiment_id": "4_svd_ms_sc",
+        "execution_time_seconds": 232.3330819606781,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 66,
+        "results": {
+            "TP": 448,
+            "FN": 260,
+            "FP": 40,
+            "TN": 0,
+            "accuracy": 63.69375573921029,
+            "precision": 77.55465914556824,
+            "recall": 63.69375573921029,
+            "f1": 68.93462917608159,
+            "reports_count": 66
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "4_svd_ms_sc",
+        "execution_time_seconds": 209.78937339782715,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 66,
+        "results": {
+            "TP": 117,
+            "FN": 578,
+            "FP": 48,
+            "TN": 0,
+            "accuracy": 16.544230180593818,
+            "precision": 37.59139009139009,
+            "recall": 16.544230180593818,
+            "f1": 21.52377270340963,
+            "reports_count": 66
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "4_svd_ms_sc",
+        "execution_time_seconds": 215.7361297607422,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 66,
+        "results": {
+            "TP": 130,
+            "FN": 560,
+            "FP": 43,
+            "TN": 0,
+            "accuracy": 18.898071625344354,
+            "precision": 46.3131313131313,
+            "recall": 18.898071625344354,
+            "f1": 25.245507338456953,
+            "reports_count": 66
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "4_svd_ms_sc",
+        "execution_time_seconds": 209.01849913597107,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 66,
+        "results": {
+            "TP": 346,
+            "FN": 370,
+            "FP": 72,
+            "TN": 0,
+            "accuracy": 48.64631160085706,
+            "precision": 67.44107744107744,
+            "recall": 48.64631160085706,
+            "f1": 55.53896228532788,
+            "reports_count": 66
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "4_svd_ms_sc",
+        "execution_time_seconds": 211.73273968696594,
+        "target_channel": 4,
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length_svd": 1250,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "segment_count": 66,
+        "results": {
+            "TP": 512,
+            "FN": 186,
+            "FP": 42,
+            "TN": 0,
+            "accuracy": 73.05590873772692,
+            "precision": 89.20350693077967,
+            "recall": 73.05590873772692,
+            "f1": 78.6798467546794,
+            "reports_count": 66
+        }
+    }
+}

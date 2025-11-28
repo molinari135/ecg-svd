@@ -1,0 +1,102 @@
+{
+    "r01.edf": {
+        "experiment_id": "6_fastica_ms_mc",
+        "execution_time_seconds": 12.160140037536621,
+        "segment_duration": 5.0,
+        "overlap": 0.5,
+        "n_sources": 3,
+        "mecg_component_idx": 2,
+        "fecg_component_idx": 1,
+        "segment_count": 66,
+        "results": {
+            "TP": 401,
+            "FN": 307,
+            "FP": 68,
+            "TN": 0,
+            "accuracy": 56.83425160697889,
+            "precision": 80.57102409375136,
+            "recall": 56.83425160697889,
+            "f1": 64.21929586086637
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "6_fastica_ms_mc",
+        "execution_time_seconds": 17.93746066093445,
+        "segment_duration": 5.0,
+        "overlap": 0.5,
+        "n_sources": 3,
+        "mecg_component_idx": 2,
+        "fecg_component_idx": 1,
+        "segment_count": 66,
+        "results": {
+            "TP": 218,
+            "FN": 477,
+            "FP": 80,
+            "TN": 0,
+            "accuracy": 31.413376186103463,
+            "precision": 67.83910533910534,
+            "recall": 31.413376186103463,
+            "f1": 40.528337618120894
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "6_fastica_ms_mc",
+        "execution_time_seconds": 16.79610824584961,
+        "segment_duration": 5.0,
+        "overlap": 0.5,
+        "n_sources": 3,
+        "mecg_component_idx": 2,
+        "fecg_component_idx": 1,
+        "segment_count": 66,
+        "results": {
+            "TP": 260,
+            "FN": 430,
+            "FP": 74,
+            "TN": 0,
+            "accuracy": 37.68595041322314,
+            "precision": 74.78294853294852,
+            "recall": 37.68595041322314,
+            "f1": 47.51692749089315
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "6_fastica_ms_mc",
+        "execution_time_seconds": 25.1847140789032,
+        "segment_duration": 5.0,
+        "overlap": 0.5,
+        "n_sources": 3,
+        "mecg_component_idx": 2,
+        "fecg_component_idx": 1,
+        "segment_count": 66,
+        "results": {
+            "TP": 358,
+            "FN": 358,
+            "FP": 72,
+            "TN": 0,
+            "accuracy": 50.09182736455463,
+            "precision": 79.02591936682846,
+            "recall": 50.09182736455463,
+            "f1": 59.2418217812251
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "6_fastica_ms_mc",
+        "execution_time_seconds": 10.44546914100647,
+        "segment_duration": 5.0,
+        "overlap": 0.5,
+        "n_sources": 3,
+        "mecg_component_idx": 2,
+        "fecg_component_idx": 1,
+        "segment_count": 66,
+        "results": {
+            "TP": 290,
+            "FN": 408,
+            "FP": 153,
+            "TN": 0,
+            "accuracy": 41.71413603231786,
+            "precision": 65.22607022607023,
+            "recall": 41.71413603231786,
+            "f1": 49.77323774150399
+        }
+    }
+}

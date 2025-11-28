@@ -15,13 +15,13 @@ from ecg_svd.methods.matrix import run_ssa
 from ecg_svd.evaluation.metrics import get_classification_report
 
 
-app = typer.Typer(help="Runs SVD-based separation on a single ECG segment.")
+app = typer.Typer(help="Runs SVD-based separation on a single ECG segment on a single channel.")
 
 
 @app.command()
 def main(
     filename: str = "r01.edf",
-    target_channel: int = 1,
+    target_channel: int = 4,
     gt_channel: int = 0,
     segment_duration: float = 5.0,
     mecg_cvp: float = 0.75,

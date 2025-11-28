@@ -15,7 +15,7 @@ from ecg_svd.methods.common import lower_peaks
 from ecg_svd.methods.matrix import run_ssa
 from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
 
-app = typer.Typer(help="Runs SVD separation on multiple segments/channels with weighted summation.")
+app = typer.Typer(help="Runs SVD separation on multiple channels of a single segment with weighted summation.")
 
 
 @app.command()

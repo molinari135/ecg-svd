@@ -15,16 +15,16 @@ import warnings
 from ecg_svd.config import RAW_DATA_DIR
 from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
 from ecg_svd.data.preprocessing import get_signal_segment
-from ecg_svd.methods.tensor import run_tucker
+from ecg_svd.methods.tensor import run_parafac
 from ecg_svd.methods.common import reconstruct_channels
-from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities, get_tucker_rank
+from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
 
 
-# set pytorch for tensorly
+# set pytorch for tensorly and GPU optimization
 tl.set_backend('pytorch')
 
 
-app = typer.Typer(help="Runs Tucker HOSVD on a 3D Hankel tensor using a sliding window and GPU.")
+app = typer.Typer(help="Runs PARAFAC Decomposition on a 3D Hankel tensor using a sliding window and GPU.")
 
 
 @app.command()
@@ -35,6 +35,7 @@ def main(
     segment_length: float = 5.0,
     overlap: float = 0.5,
     window_length: int = 625 * 2,
+    parafac_rank: int = 4,
     verbose: bool = False
 ):
     # configure logger
@@ -52,8 +53,9 @@ def main(
     if verbose:
         logger.info(f"Using device: {device}")
     warnings.filterwarnings("ignore", category=UserWarning, module='torch')
-    
+
     try:
+        # initialization and data loading
         if verbose:
             logger.debug("Initializing data...")
         edf = get_edf_reader(edf_path)
@@ -63,47 +65,44 @@ def main(
         total_duration = full_gt_data['time'][-1]
         sampling_rate = full_gt_data['sampling_rate']
 
-        signal_data_full = get_signal_segment(edf, ch_number=target_channels[-1], end_time=300)
-        signal_full_len = len(signal_data_full['segment'])
+        signal_data_ref = get_signal_segment(edf, ch_number=target_channels[-1], end_time=300)
+        signal_full_len = len(signal_data_ref['segment'])
 
         if verbose:
             logger.info(f"Full signal length: {signal_full_len}")
 
-        # zero tensors
         full_mecg = torch.zeros(signal_full_len, device=device, dtype=torch.float32)
         full_fecg = torch.zeros_like(full_mecg, device=device)
         full_noise = torch.zeros_like(full_mecg, device=device)
         weights_final = torch.zeros_like(full_mecg, device=device)
 
-        segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
-        weights_np, quality_results = get_signal_weights_and_qualities(segments_data, verbose=False)
-
+        initial_segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
+        weights_np, _ = get_signal_weights_and_qualities(initial_segments_data, verbose=False)
         weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
-        tucker_rank = get_tucker_rank(quality_results)
+
         L = window_length
-        rank_tucker = [tucker_rank, tucker_rank, len(target_channels)]
+        parafac_rank = parafac_rank
 
         curr_start = 0.0
         segment_step = segment_length - overlap
         segment_count = 0
 
-        # estimate total segments for tqdm
-        est_total_segments = int(np.ceil((total_duration - segment_length) / segment_step)) + 1
-
-        # define Hann window
+        # define Hann window once
         L_seg_samples = int(segment_length * sampling_rate)
         window_cpu = hann(L_seg_samples)
         window_gpu_full = torch.tensor(window_cpu, device=device, dtype=torch.float32)
 
+        # estimate total segments for tqdm
+        est_total_segments = int(np.ceil((total_duration - segment_length) / segment_step)) + 1
+
         # sliding window loop with tqdm
-        with tqdm(total=est_total_segments, desc="Tucker GPU", unit="win", disable=verbose) as pbar:
+        with tqdm(total=est_total_segments, desc="PARAFAC GPU", unit="win", disable=verbose) as pbar:
             with torch.no_grad():
                 while curr_start < total_duration:
                     curr_end = min(curr_start + segment_length, total_duration)
 
+                    # load segments to GPU
                     segments_list_gpu = []
-                    current_seg_len = 0
-
                     for ch in target_channels:
                         seg_np = get_signal_segment(edf, ch_number=ch, start_time=curr_start, end_time=curr_end)['segment']
                         seg_t = torch.tensor(seg_np, device=device, dtype=torch.float32)
@@ -112,11 +111,9 @@ def main(
                         seg_t = (seg_t - seg_t.mean()) / (seg_t.std() + 1e-8)
                         segments_list_gpu.append(seg_t)
 
-                        if ch == target_channels[-1]:
-                            current_seg_len = seg_t.shape[0]
-
-                    if current_seg_len < L:  # skip if segment smaller than Hankel window
-                        break
+                    current_seg_len = segments_list_gpu[0].shape[0]
+                    if current_seg_len < L:
+                        break  # stop if segment too short
 
                     segment_count += 1
                     if verbose:
@@ -129,29 +126,30 @@ def main(
 
                     segment_tensor = torch.stack(hankels, dim=2)
 
-                    core, factors = run_tucker(segment_tensor, rank=rank_tucker)
+                    # parafac
+                    cp_tensor = run_parafac(segment_tensor, rank=parafac_rank)
+                    parafac_weights, factors = cp_tensor
+                    U_L, U_K, U_C = factors
 
-                    # component selection
-                    S_mecg = torch.zeros_like(core, device=device)
-                    S_mecg[:, :, 0] = core[:, :, 0]
+                    # component reconstruction
+                    components_list = []
+                    for r in range(parafac_rank):
+                        # Outer product: L x K x C (componente r)
+                        outer_LK = torch.outer(U_L[:, r], U_K[:, r])
+                        comp = (parafac_weights[r] * outer_LK.unsqueeze(2) * U_C[None, None, r])
+                        components_list.append(comp)
 
-                    S_fecg = torch.zeros_like(core, device=device)
-                    S_fecg[:, :, 1] = core[:, :, 1]
+                    # components shape: (L, K, C, rank_parafac)
+                    components = torch.stack(components_list, dim=-1)
 
-                    S_noise = torch.zeros_like(core, device=device)
-                    if rank_tucker[1] > 2:
-                        S_noise[:, :, 2:] = core[:, :, 2:]
-                    else:
-                        S_noise = core - S_mecg - S_fecg
-
-                    # partial reconstruction
-                    H_mecg = tl.tucker_to_tensor((S_mecg, factors))
-                    H_fecg = tl.tucker_to_tensor((S_fecg, factors))
-                    H_noise = tl.tucker_to_tensor((S_noise, factors))
+                    # select subspaces
+                    S_mecg = torch.sum(components[:, :, :, [0]], dim=-1)
+                    S_fecg = torch.sum(components[:, :, :, [1, 2]], dim=-1)
+                    H_noise = segment_tensor - (S_mecg + S_fecg)
 
                     # diagonal averaging
-                    mECG_signals = reconstruct_channels(H_mecg, on_cuda=True)
-                    fECG_signals = reconstruct_channels(H_fecg, on_cuda=True)
+                    mECG_signals = reconstruct_channels(S_mecg, on_cuda=True)
+                    fECG_signals = reconstruct_channels(S_fecg, on_cuda=True)
                     noise_signals = reconstruct_channels(H_noise, on_cuda=True)
 
                     # weighted combination
@@ -213,10 +211,10 @@ def main(
             "segment_length": segment_length,
             "overlap": overlap,
             "window_length": window_length,
-            "tucker_rank_L": int(rank_tucker[0]),
-            "tucker_rank_K": int(rank_tucker[1]),
-            "tucker_rank_C": int(rank_tucker[2]),
-            "weights": weights.cpu().tolist(),
+            "parafac_rank": parafac_rank,
+            "weights_channels": weights.cpu().tolist(),
+            "selected_mecg_components": [0],
+            "selected_fecg_components": [1, 2],
             "results": report
         }
 
@@ -224,7 +222,7 @@ def main(
         logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy FINALE: {report['accuracy']:.2f}%)")
 
     except Exception as e:
-        logger.error(f"An error occurred during the Tucker GPU experiment: {e}")
+        logger.error(f"An error occurred during the PARAFAC GPU experiment: {e}")
         raise
 
     finally:

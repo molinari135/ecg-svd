@@ -23,14 +23,15 @@ def run_ssa(
 
     if on_cuda:
         H_torch = torch.from_numpy(H).float().to(device)
-        U, S, Vt = torch.svd(H_torch, full_matrices=False)
+        U, S, Vt = torch.linalg.svd(H_torch)
 
         variances = S**2
         explained_variance = variances / torch.sum(variances)
-        k_torch = torch.argmax(torch.cumsum(explained_variance, dim=0) >= cvp) + 1
+        boolean_mask = torch.cumsum(explained_variance, dim=0) >= cvp
+        k_torch = torch.argmax(boolean_mask.int()) + 1
         k = k_torch.item()
 
-        S_diag = S[:k].unqueeze(0)
+        S_diag = S[:k].unsqueeze(0)
         U_S_k = U[:, :k] * S_diag
         R = torch.matmul(U_S_k, Vt[:k, :]).cpu().numpy()
     else:
@@ -54,7 +55,7 @@ def run_fastica(
         n_components = min(data_matrix.shape)
         logger.debug(f"Using default n_components: {n_components}")
 
-    ica = FastICA(n_components=n_components, max_iter=100, random_state=42)
+    ica = FastICA(n_components=n_components, max_iter=100, algorithm='deflation', fun='logcosh', tol=1e-2, random_state=42)
     sources = ica.fit_transform(data_matrix)
     mixing_matrix = ica.mixing_
 
