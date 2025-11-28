@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "3_fastica_ss_mc",
-        "execution_time_seconds": 0.09473562240600586,
+        "execution_time_seconds": 0.0805215835571289,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -19,7 +19,7 @@
     },
     "r04.edf": {
         "experiment_id": "3_fastica_ss_mc",
-        "execution_time_seconds": 0.07683300971984863,
+        "execution_time_seconds": 0.07951521873474121,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -37,7 +37,7 @@
     },
     "r07.edf": {
         "experiment_id": "3_fastica_ss_mc",
-        "execution_time_seconds": 0.07961010932922363,
+        "execution_time_seconds": 0.07900500297546387,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -55,7 +55,7 @@
     },
     "r08.edf": {
         "experiment_id": "3_fastica_ss_mc",
-        "execution_time_seconds": 0.0796360969543457,
+        "execution_time_seconds": 0.07955193519592285,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -73,7 +73,7 @@
     },
     "r10.edf": {
         "experiment_id": "3_fastica_ss_mc",
-        "execution_time_seconds": 0.0790872573852539,
+        "execution_time_seconds": 0.08450818061828613,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,

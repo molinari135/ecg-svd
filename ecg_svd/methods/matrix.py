@@ -15,7 +15,8 @@ tl.set_backend('numpy')
 def run_ssa(
     signal: np.ndarray,
     window_length: int = 625 * 2,
-    cvp: float = 0.75
+    cvp: float = 0.75,
+    on_cuda: bool = False
 ) -> np.ndarray:
     H = create_hankel_matrix(signal, L_samples=window_length)
     U, S, Vt = svd(H, full_matrices=False)
@@ -38,11 +39,11 @@ def run_fastica(
         n_components = min(data_matrix.shape)
         logger.debug(f"Using default n_components: {n_components}")
 
-    ica = FastICA(n_components=n_components, max_iter=1000, random_state=42)
+    ica = FastICA(n_components=n_components, max_iter=100, random_state=42)
     sources = ica.fit_transform(data_matrix)
     mixing_matrix = ica.mixing_
 
-    logger.debug(f"FastICA performed. Extracted {n_components} components.")
+    logger.debug(f"FastICA performed. Extracted {n_components} components in {ica.n_iter_} iterations.")
     return sources, mixing_matrix
 
 
