@@ -1,0 +1,152 @@
+{
+    "r01.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 32.16310262680054,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "window_length": 1250,
+        "tucker_rank_L": 64,
+        "tucker_rank_K": 64,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.23753762245178223,
+            0.20751111209392548,
+            0.2464776635169983,
+            0.3084736168384552
+        ],
+        "results": {
+            "TP": 618,
+            "FN": 26,
+            "FP": 6,
+            "TN": 0,
+            "accuracy": 95.07692307692308,
+            "precision": 99.03846153846155,
+            "recall": 95.96273291925466,
+            "f1": 97.47634069400631
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 25.90510869026184,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "window_length": 1250,
+        "tucker_rank_L": 24,
+        "tucker_rank_K": 24,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.25504136085510254,
+            0.23349100351333618,
+            0.2364545613527298,
+            0.2750130891799927
+        ],
+        "results": {
+            "TP": 315,
+            "FN": 317,
+            "FP": 131,
+            "TN": 0,
+            "accuracy": 41.284403669724774,
+            "precision": 70.62780269058297,
+            "recall": 49.84177215189873,
+            "f1": 58.44155844155845
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 24.630271911621094,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "window_length": 1250,
+        "tucker_rank_L": 16,
+        "tucker_rank_K": 16,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.0,
+            0.5020630359649658,
+            0.0,
+            0.4979369342327118
+        ],
+        "results": {
+            "TP": 391,
+            "FN": 236,
+            "FP": 113,
+            "TN": 0,
+            "accuracy": 52.83783783783784,
+            "precision": 77.57936507936508,
+            "recall": 62.36044657097288,
+            "f1": 69.14235190097259
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 24.592203855514526,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "window_length": 1250,
+        "tucker_rank_L": 11,
+        "tucker_rank_K": 11,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.0,
+            0.0,
+            0.3769325613975525,
+            0.6230674386024475
+        ],
+        "results": {
+            "TP": 634,
+            "FN": 17,
+            "FP": 15,
+            "TN": 0,
+            "accuracy": 95.1951951951952,
+            "precision": 97.68875192604007,
+            "recall": 97.38863287250385,
+            "f1": 97.53846153846155
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 29.109546422958374,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "window_length": 1250,
+        "tucker_rank_L": 44,
+        "tucker_rank_K": 44,
+        "tucker_rank_C": 4,
+        "weights": [
+            0.25387755036354065,
+            0.22656410932540894,
+            0.22404702007770538,
+            0.29551130533218384
+        ],
+        "results": {
+            "TP": 448,
+            "FN": 189,
+            "FP": 28,
+            "TN": 0,
+            "accuracy": 67.36842105263158,
+            "precision": 94.11764705882352,
+            "recall": 70.32967032967034,
+            "f1": 80.50314465408806
+        }
+    }
+}

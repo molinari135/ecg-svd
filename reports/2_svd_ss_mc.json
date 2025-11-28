@@ -1,0 +1,122 @@
+{
+    "r01.edf": {
+        "experiment_id": "2_svd_ss_mc",
+        "execution_time_seconds": 28.130598306655884,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "2_svd_ss_mc",
+        "execution_time_seconds": 27.81061577796936,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 7,
+            "FN": 4,
+            "FP": 1,
+            "TN": 0,
+            "accuracy": 58.333333333333336,
+            "precision": 87.5,
+            "recall": 63.63636363636363,
+            "f1": 73.68421052631578
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "2_svd_ss_mc",
+        "execution_time_seconds": 27.76958918571472,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 4,
+            "FN": 7,
+            "FP": 2,
+            "TN": 0,
+            "accuracy": 30.76923076923077,
+            "precision": 66.66666666666666,
+            "recall": 36.36363636363637,
+            "f1": 47.05882352941177
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "2_svd_ss_mc",
+        "execution_time_seconds": 27.8031165599823,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 3,
+            "FN": 8,
+            "FP": 2,
+            "TN": 0,
+            "accuracy": 23.076923076923077,
+            "precision": 60.0,
+            "recall": 27.27272727272727,
+            "f1": 37.49999999999999
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "2_svd_ss_mc",
+        "execution_time_seconds": 28.07294726371765,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.95,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.0,
+            "precision": 100.0,
+            "recall": 90.0,
+            "f1": 94.73684210526316
+        }
+    }
+}

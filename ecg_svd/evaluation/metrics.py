@@ -64,25 +64,103 @@ def signal_quality(
     window_length: int = 625 * 2
 ) -> Dict[str, Any]:
 
-    H = create_hankel_matrix(signal, L_samples=window_length)
-    U, S, Vt = svd(H, full_matrices=False)
+    # guard against empty or invalid inputs
+    if signal is None or len(signal) == 0:
+        logger.warning("Empty signal provided to signal_quality; returning defaults.")
+        return {
+            "qualities": {},
+            "best_cvp": None,
+            "best_quality": 0.0,
+            "singular_values": np.array([])
+        }
 
+    if window_length is None or window_length <= 0:
+        # fallback to a reasonable default based on signal length
+        window_length = max(1, len(signal) // 2)
+
+    # create hankel matrix and guard against failures / empty matrices
+    try:
+        H = create_hankel_matrix(signal, L_samples=window_length)
+    except Exception as e:
+        logger.warning(f"Failed to create Hankel matrix: {e}; returning defaults.")
+        return {
+            "qualities": {},
+            "best_cvp": None,
+            "best_quality": 0.0,
+            "singular_values": np.array([])
+        }
+
+    if H is None or getattr(H, "size", 0) == 0:
+        logger.warning("Hankel matrix is empty; returning defaults.")
+        return {
+            "qualities": {},
+            "best_cvp": None,
+            "best_quality": 0.0,
+            "singular_values": np.array([])
+        }
+
+    try:
+        U, S, Vt = svd(H, full_matrices=False)
+    except Exception as e:
+        logger.warning(f"SVD failed: {e}; returning defaults.")
+        return {
+            "qualities": {},
+            "best_cvp": None,
+            "best_quality": 0.0,
+            "singular_values": np.array([])
+        }
+
+    S = np.asarray(S)
     variances = S**2
     total_variance = np.sum(variances)
-    explained_variance = variances / total_variance
+    if total_variance == 0:
+        logger.warning("Total variance of singular values is zero. Explained variance set to zeros to avoid division by zero.")
+        explained_variance = np.zeros_like(variances)
+    else:
+        explained_variance = variances / total_variance
     cumulative_explained_variance = np.cumsum(explained_variance)
 
     qualities = {}
 
     for cvp in cvp_to_test:
-        k = np.argmax(cumulative_explained_variance >= cvp) + 1
-        R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
-        reconstructed_signal = diagonal_averaging(R)
+        # find smallest k such that cumulative explained variance >= cvp
+        # if cumulative_explained_variance is empty, fallback to k = 1
+        if cumulative_explained_variance.size == 0:
+            k = 1
+        else:
+            k = int(np.argmax(cumulative_explained_variance >= cvp) + 1)
+            # ensure at least one component is selected
+            if k <= 0:
+                k = 1
+        # if S has fewer elements than k, adjust k
+        if k > len(S):
+            k = len(S) if len(S) > 0 else 1
 
-        quality_mean = nk.ecg_quality(reconstructed_signal, sampling_rate=sampling_rate).mean()
+        # reconstruct and compute quality, guarding ecg_quality against errors (including division by zero inside that function)
+        try:
+            R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
+            reconstructed_signal = diagonal_averaging(R)
+            # ecg_quality may raise errors for very short/invalid signals, handle gracefully
+            try:
+                q = nk.ecg_quality(reconstructed_signal, sampling_rate=sampling_rate)
+                quality_mean = float(np.nanmean(q)) if q is not None else 0.0
+            except Exception as e:
+                logger.warning(f"ecg_quality failed for cvp={cvp}: {e}; using quality 0.0")
+                quality_mean = 0.0
+        except Exception as e:
+            logger.warning(f"Reconstruction failed for cvp={cvp}: {e}; using quality 0.0")
+            quality_mean = 0.0
+
         qualities[cvp] = quality_mean
-        del R
-        del reconstructed_signal
+
+    if len(qualities) == 0:
+        logger.warning("No qualities were computed; returning defaults.")
+        return {
+            "qualities": {},
+            "best_cvp": None,
+            "best_quality": 0.0,
+            "singular_values": S
+        }
 
     best_cvp = max(qualities, key=qualities.get)
     best_quality = qualities[best_cvp]
@@ -103,28 +181,44 @@ def get_signal_weights_and_qualities(
     all_quality_data = []
     quality_values = []
 
+    # show progress bar when verbose is True
     iterator = tqdm(
         signal_list,
         desc="Calculating Weights",
         unit="ch",
-        disable=verbose
+        disable=not verbose
     )
 
     for signal_data in iterator:
-        quality_data = signal_quality(signal_data['segment'])
+        # guard access to expected key
+        segment = signal_data.get('segment') if isinstance(signal_data, dict) else None
+        quality_data = signal_quality(segment) if segment is not None else {
+            "qualities": {},
+            "best_cvp": None,
+            "best_quality": 0.0,
+            "singular_values": np.array([])
+        }
 
         all_quality_data.append(quality_data)
-        quality_values.append(quality_data['best_quality'])
+        # ensure best_quality is numeric
+        best_q = quality_data.get('best_quality', 0.0)
+        if best_q is None or (isinstance(best_q, float) and np.isnan(best_q)):
+            best_q = 0.0
+        quality_values.append(best_q)
 
-    quality_array = np.array(quality_values)
+    quality_array = np.array(quality_values, dtype=float)
 
     sum_quality = np.sum(quality_array)
     if sum_quality == 0:
         if verbose:
             logger.warning("Total quality is zero. Returning uniform weights.")
-        weights = np.ones_like(quality_array) / len(quality_array)
+        # avoid division by zero when length is zero
+        if quality_array.size == 0:
+            weights = np.array([])
+        else:
+            weights = np.ones_like(quality_array, dtype=float) / float(quality_array.size)
     else:
-        weights = quality_array / sum_quality
+        weights = quality_array / float(sum_quality)
 
     return weights, all_quality_data
 
@@ -133,14 +227,37 @@ def get_tucker_rank(quality_results: List[Dict[str, Any]]) -> int:
     ranks = []
 
     for quality_data in quality_results:
-        S = quality_data['singular_values']
-        best_cvp = quality_data['best_cvp']
+        S = np.asarray(quality_data.get('singular_values', np.array([])))
+        best_cvp = quality_data.get('best_cvp')
+        if best_cvp is None:
+            best_cvp = 0.0
+        # ensure numeric type for cvp
+        try:
+            best_cvp = float(best_cvp)
+        except Exception:
+            best_cvp = 0.0
 
         variances = S**2
-        explained_variance = variances / np.sum(variances)
+        sum_variances = np.sum(variances)
+        if sum_variances == 0 or variances.size == 0:
+            explained_variance = np.zeros_like(variances)
+        else:
+            explained_variance = variances / sum_variances
         cumulative_variance = np.cumsum(explained_variance)
 
-        k = np.searchsorted(cumulative_variance, best_cvp) + 1
+        # find minimal k such that cumulative_variance >= best_cvp
+        if cumulative_variance.size == 0:
+            k = 1
+        else:
+            k = int(np.searchsorted(cumulative_variance, best_cvp) + 1)
+            if k <= 0:
+                k = 1
+        if k > len(S):
+            k = len(S) if len(S) > 0 else 1
         ranks.append(k)
+
+    if len(ranks) == 0:
+        # fallback rank if no data was provided
+        return 1
 
     return int(np.round(np.mean(ranks)))

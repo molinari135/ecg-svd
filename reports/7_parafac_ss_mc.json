@@ -1,0 +1,182 @@
+{
+    "r01.edf": {
+        "experiment_id": "7_parafac_ss_mc",
+        "execution_time_seconds": 23.539797067642212,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.2379028356219494,
+            0.20714671545451036,
+            0.2460454460902573,
+            0.308905002833283
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "7_parafac_ss_mc",
+        "execution_time_seconds": 22.275058269500732,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.2549157893308005,
+            0.2334629713992614,
+            0.23643666514376224,
+            0.275184574126176
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 6,
+            "FN": 5,
+            "FP": 1,
+            "TN": 0,
+            "accuracy": 50.0,
+            "precision": 85.71428571428571,
+            "recall": 54.54545454545454,
+            "f1": 66.66666666666666
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "7_parafac_ss_mc",
+        "execution_time_seconds": 22.07965874671936,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.0,
+            0.32106969467546626,
+            0.3576702809781095,
+            0.32126002434642437
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 1,
+            "TN": 0,
+            "accuracy": 75.0,
+            "precision": 90.0,
+            "recall": 81.81818181818183,
+            "f1": 85.71428571428572
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "7_parafac_ss_mc",
+        "execution_time_seconds": 22.572052240371704,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.0,
+            0.0,
+            0.37692929324861346,
+            0.6230707067513864
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "7_parafac_ss_mc",
+        "execution_time_seconds": 23.243456840515137,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "parafac_rank": 4,
+        "weights_channels": [
+            0.25396551428306086,
+            0.2263810176339954,
+            0.22407819482881766,
+            0.295575273254126
+        ],
+        "selected_mecg_components": [
+            0
+        ],
+        "selected_fecg_components": [
+            1,
+            2
+        ],
+        "results": {
+            "TP": 2,
+            "FN": 8,
+            "FP": 6,
+            "TN": 0,
+            "accuracy": 12.5,
+            "precision": 25.0,
+            "recall": 20.0,
+            "f1": 22.222222222222225
+        }
+    }
+}

@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "0_baseline",
-        "execution_time_seconds": 0.03619956970214844,
+        "execution_time_seconds": 0.04003024101257324,
         "target_channel": 0,
         "segment_duration": 5.0,
         "results": {
@@ -17,7 +17,7 @@
     },
     "r04.edf": {
         "experiment_id": "0_baseline",
-        "execution_time_seconds": 0.0501406192779541,
+        "execution_time_seconds": 0.03704714775085449,
         "target_channel": 0,
         "segment_duration": 5.0,
         "results": {
@@ -33,7 +33,7 @@
     },
     "r07.edf": {
         "experiment_id": "0_baseline",
-        "execution_time_seconds": 0.05020713806152344,
+        "execution_time_seconds": 0.037030696868896484,
         "target_channel": 0,
         "segment_duration": 5.0,
         "results": {
@@ -49,7 +49,7 @@
     },
     "r08.edf": {
         "experiment_id": "0_baseline",
-        "execution_time_seconds": 0.05024838447570801,
+        "execution_time_seconds": 0.03603482246398926,
         "target_channel": 0,
         "segment_duration": 5.0,
         "results": {
@@ -65,18 +65,18 @@
     },
     "r10.edf": {
         "experiment_id": "0_baseline",
-        "execution_time_seconds": 0.04855489730834961,
+        "execution_time_seconds": 0.03503584861755371,
         "target_channel": 0,
         "segment_duration": 5.0,
         "results": {
-            "TP": 10,
+            "TP": 9,
             "FN": 1,
             "FP": 0,
             "TN": 0,
-            "accuracy": 90.9090909090909,
+            "accuracy": 90.0,
             "precision": 100.0,
-            "recall": 90.9090909090909,
-            "f1": 95.23809523809523
+            "recall": 90.0,
+            "f1": 94.73684210526316
         }
     }
 }
