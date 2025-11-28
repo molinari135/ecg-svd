@@ -18,15 +18,26 @@ def run_ssa(
     cvp: float = 0.75,
     on_cuda: bool = False
 ) -> np.ndarray:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     H = create_hankel_matrix(signal, L_samples=window_length)
-    U, S, Vt = svd(H, full_matrices=False)
 
-    variances = S**2
-    explained_variance = variances / np.sum(variances)
-    k = np.argmax(np.cumsum(explained_variance) >= cvp) + 1
-    logger.debug(f"SVD performed. Rank k={k} chosen (CVP: {cvp * 100:.1f}%)")
-
-    R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
+    if on_cuda:
+        H_torch = torch.from_numpy(H).float().to(device)
+        U, S, Vt = torch.svd(H_torch, full_matrices=False)
+        variances = S**2
+        explained_variance = variances / torch.sum(variances)
+        k_torch = torch.argmax(torch.cumsum(explained_variance, dim=0) >= cvp) + 1
+        k = k_torch.item()
+        S_diag = S[:k].unqueeze(0)
+        U_S_k = U[:, :k] * S_diag
+        R = torch.matmul(U_S_k, Vt[:k, :]).cpu().numpy()
+    else:
+        U, S, Vt = svd(H, full_matrices=False)
+        variances = S**2
+        explained_variance = variances / np.sum(variances)
+        k = np.argmax(np.cumsum(explained_variance) >= cvp) + 1
+        R = np.dot(U[:, :k] * S[:k], Vt[:k, :])
+    logger.debug(f"SVD performed with rank k={k} (CVP: {cvp * 100:.1f}%)")
     reconstructed_signal = diagonal_averaging(R)
     return reconstructed_signal
 
@@ -43,7 +54,7 @@ def run_fastica(
     sources = ica.fit_transform(data_matrix)
     mixing_matrix = ica.mixing_
 
-    logger.debug(f"FastICA performed. Extracted {n_components} components in {ica.n_iter_} iterations.")
+    logger.debug(f"FastICA performed with {n_components} components in {ica.n_iter_} iterations.")
     return sources, mixing_matrix
 
 
