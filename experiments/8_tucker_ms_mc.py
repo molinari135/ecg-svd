@@ -1,3 +1,4 @@
+import scipy
 import typer
 import sys
 import time
@@ -76,6 +77,12 @@ def main(
         weights_final = torch.zeros_like(full_mecg, device=device)
 
         segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
+        
+        for signal in segments_data:
+            # apply high-pass filter to remove baseline wander
+            lowpassed = scipy.ndimage.gaussian_filter1d(signal['segment'], sigma=0.2 * 1000, order=0)
+            signal['segment'] = signal['segment'] - lowpassed
+
         weights_np, quality_results = get_signal_weights_and_qualities(segments_data, verbose=False)
 
         weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
@@ -221,7 +228,7 @@ def main(
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy FINALE: {report['accuracy']:.2f}%)")
+        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the Tucker GPU experiment: {e}")

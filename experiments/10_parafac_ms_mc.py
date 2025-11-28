@@ -1,3 +1,4 @@
+import scipy
 import typer
 import sys
 import time
@@ -105,6 +106,11 @@ def main(
                     segments_list_gpu = []
                     for ch in target_channels:
                         seg_np = get_signal_segment(edf, ch_number=ch, start_time=curr_start, end_time=curr_end)['segment']
+                        
+                        # apply high-pass filter to remove baseline wander
+                        lowpassed = scipy.ndimage.gaussian_filter1d(seg_np, sigma=0.2 * 1000, order=0)
+                        seg_np = seg_np - lowpassed
+                        
                         seg_t = torch.tensor(seg_np, device=device, dtype=torch.float32)
 
                         # center data
@@ -219,7 +225,7 @@ def main(
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy FINALE: {report['accuracy']:.2f}%)")
+        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the PARAFAC GPU experiment: {e}")

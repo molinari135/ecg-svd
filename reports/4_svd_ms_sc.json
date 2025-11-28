@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "4_svd_ms_sc",
-        "execution_time_seconds": 232.3330819606781,
+        "execution_time_seconds": 211.75781393051147,
         "target_channel": 4,
         "segment_length": 5.0,
         "overlap": 0.5,
@@ -10,20 +10,19 @@
         "fecg_cvp": 0.9,
         "segment_count": 66,
         "results": {
-            "TP": 448,
-            "FN": 260,
-            "FP": 40,
+            "TP": 541,
+            "FN": 103,
+            "FP": 34,
             "TN": 0,
-            "accuracy": 63.69375573921029,
-            "precision": 77.55465914556824,
-            "recall": 63.69375573921029,
-            "f1": 68.93462917608159,
-            "reports_count": 66
+            "accuracy": 79.79351032448378,
+            "precision": 94.08695652173913,
+            "recall": 84.00621118012423,
+            "f1": 88.76127973748974
         }
     },
     "r04.edf": {
         "experiment_id": "4_svd_ms_sc",
-        "execution_time_seconds": 209.78937339782715,
+        "execution_time_seconds": 221.53838419914246,
         "target_channel": 4,
         "segment_length": 5.0,
         "overlap": 0.5,
@@ -32,20 +31,19 @@
         "fecg_cvp": 0.9,
         "segment_count": 66,
         "results": {
-            "TP": 117,
-            "FN": 578,
-            "FP": 48,
+            "TP": 305,
+            "FN": 327,
+            "FP": 78,
             "TN": 0,
-            "accuracy": 16.544230180593818,
-            "precision": 37.59139009139009,
-            "recall": 16.544230180593818,
-            "f1": 21.52377270340963,
-            "reports_count": 66
+            "accuracy": 42.95774647887324,
+            "precision": 79.63446475195822,
+            "recall": 48.25949367088608,
+            "f1": 60.09852216748768
         }
     },
     "r07.edf": {
         "experiment_id": "4_svd_ms_sc",
-        "execution_time_seconds": 215.7361297607422,
+        "execution_time_seconds": 254.6165256500244,
         "target_channel": 4,
         "segment_length": 5.0,
         "overlap": 0.5,
@@ -54,20 +52,19 @@
         "fecg_cvp": 0.9,
         "segment_count": 66,
         "results": {
-            "TP": 130,
-            "FN": 560,
-            "FP": 43,
+            "TP": 356,
+            "FN": 271,
+            "FP": 62,
             "TN": 0,
-            "accuracy": 18.898071625344354,
-            "precision": 46.3131313131313,
-            "recall": 18.898071625344354,
-            "f1": 25.245507338456953,
-            "reports_count": 66
+            "accuracy": 51.66908563134979,
+            "precision": 85.16746411483254,
+            "recall": 56.77830940988836,
+            "f1": 68.13397129186603
         }
     },
     "r08.edf": {
         "experiment_id": "4_svd_ms_sc",
-        "execution_time_seconds": 209.01849913597107,
+        "execution_time_seconds": 363.7072277069092,
         "target_channel": 4,
         "segment_length": 5.0,
         "overlap": 0.5,
@@ -76,20 +73,19 @@
         "fecg_cvp": 0.9,
         "segment_count": 66,
         "results": {
-            "TP": 346,
-            "FN": 370,
-            "FP": 72,
+            "TP": 503,
+            "FN": 148,
+            "FP": 47,
             "TN": 0,
-            "accuracy": 48.64631160085706,
-            "precision": 67.44107744107744,
-            "recall": 48.64631160085706,
-            "f1": 55.53896228532788,
-            "reports_count": 66
+            "accuracy": 72.06303724928367,
+            "precision": 91.45454545454545,
+            "recall": 77.2657450076805,
+            "f1": 83.76353039134055
         }
     },
     "r10.edf": {
         "experiment_id": "4_svd_ms_sc",
-        "execution_time_seconds": 211.73273968696594,
+        "execution_time_seconds": 357.87087965011597,
         "target_channel": 4,
         "segment_length": 5.0,
         "overlap": 0.5,
@@ -98,15 +94,14 @@
         "fecg_cvp": 0.9,
         "segment_count": 66,
         "results": {
-            "TP": 512,
-            "FN": 186,
-            "FP": 42,
+            "TP": 530,
+            "FN": 107,
+            "FP": 60,
             "TN": 0,
-            "accuracy": 73.05590873772692,
-            "precision": 89.20350693077967,
-            "recall": 73.05590873772692,
-            "f1": 78.6798467546794,
-            "reports_count": 66
+            "accuracy": 76.04017216642754,
+            "precision": 89.83050847457628,
+            "recall": 83.20251177394034,
+            "f1": 86.38956805215973
         }
     }
 }

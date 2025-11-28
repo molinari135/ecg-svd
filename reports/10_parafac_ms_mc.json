@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 25.351698875427246,
+        "execution_time_seconds": 100.56532382965088,
         "target_channels": [
             1,
             2,
@@ -27,18 +27,18 @@
         ],
         "results": {
             "TP": 623,
-            "FN": 92,
-            "FP": 16,
+            "FN": 21,
+            "FP": 13,
             "TN": 0,
-            "accuracy": 87.31730955611553,
-            "precision": 97.30912536882686,
-            "recall": 87.31730955611553,
-            "f1": 91.74858617828183
+            "accuracy": 94.82496194824962,
+            "precision": 97.95597484276729,
+            "recall": 96.73913043478261,
+            "f1": 97.34375
         }
     },
     "r04.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 24.03288984298706,
+        "execution_time_seconds": 39.761945486068726,
         "target_channels": [
             1,
             2,
@@ -63,19 +63,19 @@
             2
         ],
         "results": {
-            "TP": 309,
-            "FN": 392,
-            "FP": 143,
+            "TP": 294,
+            "FN": 338,
+            "FP": 137,
             "TN": 0,
-            "accuracy": 44.206995326398314,
-            "precision": 67.3596304193319,
-            "recall": 44.206995326398314,
-            "f1": 53.06259536355188
+            "accuracy": 38.23146944083225,
+            "precision": 68.21345707656613,
+            "recall": 46.51898734177215,
+            "f1": 55.31514581373471
         }
     },
     "r07.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 21.460843086242676,
+        "execution_time_seconds": 43.508543252944946,
         "target_channels": [
             1,
             2,
@@ -100,19 +100,19 @@
             2
         ],
         "results": {
-            "TP": 409,
-            "FN": 287,
-            "FP": 123,
+            "TP": 389,
+            "FN": 238,
+            "FP": 117,
             "TN": 0,
-            "accuracy": 59.023066485753056,
-            "precision": 75.44765350735499,
-            "recall": 59.023066485753056,
-            "f1": 65.83809905213722
+            "accuracy": 52.284946236559136,
+            "precision": 76.87747035573122,
+            "recall": 62.0414673046252,
+            "f1": 68.66725507502206
         }
     },
     "r08.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 21.12582039833069,
+        "execution_time_seconds": 23.008559703826904,
         "target_channels": [
             1,
             2,
@@ -137,19 +137,19 @@
             2
         ],
         "results": {
-            "TP": 644,
-            "FN": 79,
-            "FP": 21,
+            "TP": 633,
+            "FN": 18,
+            "FP": 14,
             "TN": 0,
-            "accuracy": 89.13473756757337,
-            "precision": 96.75599276345545,
-            "recall": 89.13473756757337,
-            "f1": 92.69987318827785
+            "accuracy": 95.18796992481204,
+            "precision": 97.83616692426584,
+            "recall": 97.23502304147466,
+            "f1": 97.5346687211094
         }
     },
     "r10.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 24.93789052963257,
+        "execution_time_seconds": 25.737700700759888,
         "target_channels": [
             1,
             2,
@@ -174,14 +174,14 @@
             2
         ],
         "results": {
-            "TP": 339,
-            "FN": 366,
-            "FP": 125,
+            "TP": 338,
+            "FN": 299,
+            "FP": 122,
             "TN": 0,
-            "accuracy": 46.87132933401589,
-            "precision": 73.08161573086946,
-            "recall": 46.87132933401589,
-            "f1": 56.35042940978433
+            "accuracy": 44.532279314888015,
+            "precision": 73.47826086956522,
+            "recall": 53.06122448979592,
+            "f1": 61.62260711030082
         }
     }
 }

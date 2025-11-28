@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "3_svd_ss_mc",
-        "execution_time_seconds": 7.57158350944519,
+        "execution_time_seconds": 7.484464406967163,
         "target_channels": [
             1,
             2,
@@ -12,8 +12,8 @@
         "window_length": 1250,
         "mecg_cvp_threshold": 0.75,
         "fecg_cvp_threshold": 0.95,
-        "k1_rank_mecg": 38,
-        "k2_rank_fecg": 87,
+        "k1_rank_mecg": 41,
+        "k2_rank_fecg": 92,
         "results": {
             "TP": 10,
             "FN": 1,
@@ -27,7 +27,7 @@
     },
     "r04.edf": {
         "experiment_id": "3_svd_ss_mc",
-        "execution_time_seconds": 6.898005485534668,
+        "execution_time_seconds": 6.877492904663086,
         "target_channels": [
             1,
             2,
@@ -38,22 +38,22 @@
         "window_length": 1250,
         "mecg_cvp_threshold": 0.75,
         "fecg_cvp_threshold": 0.95,
-        "k1_rank_mecg": 15,
-        "k2_rank_fecg": 46,
+        "k1_rank_mecg": 28,
+        "k2_rank_fecg": 58,
         "results": {
             "TP": 4,
             "FN": 7,
             "FP": 2,
             "TN": 0,
-            "accuracy": 36.36363636363637,
+            "accuracy": 30.76923076923077,
             "precision": 66.66666666666666,
             "recall": 36.36363636363637,
-            "f1": 47.05882352941176
+            "f1": 47.05882352941177
         }
     },
     "r07.edf": {
         "experiment_id": "3_svd_ss_mc",
-        "execution_time_seconds": 7.073503494262695,
+        "execution_time_seconds": 6.908509969711304,
         "target_channels": [
             1,
             2,
@@ -64,22 +64,22 @@
         "window_length": 1250,
         "mecg_cvp_threshold": 0.75,
         "fecg_cvp_threshold": 0.95,
-        "k1_rank_mecg": 2,
-        "k2_rank_fecg": 31,
+        "k1_rank_mecg": 28,
+        "k2_rank_fecg": 60,
         "results": {
-            "TP": 4,
-            "FN": 7,
-            "FP": 2,
+            "TP": 8,
+            "FN": 3,
+            "FP": 1,
             "TN": 0,
-            "accuracy": 36.36363636363637,
-            "precision": 66.66666666666666,
-            "recall": 36.36363636363637,
-            "f1": 47.05882352941176
+            "accuracy": 66.66666666666666,
+            "precision": 88.88888888888889,
+            "recall": 72.72727272727273,
+            "f1": 80.0
         }
     },
     "r08.edf": {
         "experiment_id": "3_svd_ss_mc",
-        "execution_time_seconds": 6.86791467666626,
+        "execution_time_seconds": 6.906069040298462,
         "target_channels": [
             1,
             2,
@@ -90,22 +90,22 @@
         "window_length": 1250,
         "mecg_cvp_threshold": 0.75,
         "fecg_cvp_threshold": 0.95,
-        "k1_rank_mecg": 2,
-        "k2_rank_fecg": 16,
+        "k1_rank_mecg": 35,
+        "k2_rank_fecg": 92,
         "results": {
-            "TP": 3,
-            "FN": 8,
-            "FP": 4,
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
             "TN": 0,
-            "accuracy": 27.27272727272727,
-            "precision": 42.857142857142854,
-            "recall": 27.27272727272727,
-            "f1": 33.33333333333333
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
         }
     },
     "r10.edf": {
         "experiment_id": "3_svd_ss_mc",
-        "execution_time_seconds": 6.887311697006226,
+        "execution_time_seconds": 6.925572156906128,
         "target_channels": [
             1,
             2,
@@ -116,17 +116,17 @@
         "window_length": 1250,
         "mecg_cvp_threshold": 0.75,
         "fecg_cvp_threshold": 0.95,
-        "k1_rank_mecg": 26,
-        "k2_rank_fecg": 111,
+        "k1_rank_mecg": 29,
+        "k2_rank_fecg": 129,
         "results": {
-            "TP": 4,
-            "FN": 6,
-            "FP": 1,
+            "TP": 8,
+            "FN": 2,
+            "FP": 0,
             "TN": 0,
-            "accuracy": 40.0,
-            "precision": 80.0,
-            "recall": 40.0,
-            "f1": 53.333333333333336
+            "accuracy": 80.0,
+            "precision": 100.0,
+            "recall": 80.0,
+            "f1": 88.8888888888889
         }
     }
 }

@@ -1,4 +1,5 @@
 import warnings
+import scipy
 import typer
 import sys
 import time
@@ -55,7 +56,18 @@ def main(
 
         full_signals_list = []
         for ch in target_channels:
-            full_signals_list.append(get_signal_segment(edf, ch_number=ch, end_time=300)['segment'])
+            sig = get_signal_segment(edf, ch_number=ch, end_time=300)['segment']
+            
+            # apply high-pass filter to remove baseline wander
+            lowpassed = scipy.ndimage.gaussian_filter1d(sig, sigma=0.2 * 1000, order=0)
+            sig = sig - lowpassed
+                
+            full_signals_list.append(sig)
+            
+        for signal in full_signals_list:
+            # apply high-pass filter to remove baseline wander
+            lowpassed = scipy.ndimage.gaussian_filter1d(signal, sigma=0.2 * 1000, order=0)
+            signal = signal - lowpassed
 
         full_stacked_matrix = np.stack(full_signals_list, axis=0)
         full_length = full_stacked_matrix.shape[1]
@@ -164,7 +176,7 @@ def main(
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy FINALE: {report['accuracy']:.2f}%)")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the FastICA experiment: {e}")

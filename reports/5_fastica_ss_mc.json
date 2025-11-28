@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.21802544593811035,
+        "execution_time_seconds": 0.31276822090148926,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -19,7 +19,7 @@
     },
     "r04.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.27625131607055664,
+        "execution_time_seconds": 0.39637327194213867,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -29,15 +29,15 @@
             "FN": 7,
             "FP": 2,
             "TN": 0,
-            "accuracy": 36.36363636363637,
+            "accuracy": 30.76923076923077,
             "precision": 66.66666666666666,
             "recall": 36.36363636363637,
-            "f1": 47.05882352941176
+            "f1": 47.05882352941177
         }
     },
     "r07.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.2627420425415039,
+        "execution_time_seconds": 0.3332531452178955,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -55,7 +55,7 @@
     },
     "r08.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.2627577781677246,
+        "execution_time_seconds": 0.3262448310852051,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -68,12 +68,12 @@
             "accuracy": 72.72727272727273,
             "precision": 100.0,
             "recall": 72.72727272727273,
-            "f1": 84.21052631578947
+            "f1": 84.21052631578948
         }
     },
     "r10.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.30575084686279297,
+        "execution_time_seconds": 0.39816784858703613,
         "segment_duration": 5.0,
         "n_sources": 3,
         "mecg_component_idx": 2,
@@ -83,10 +83,10 @@
             "FN": 9,
             "FP": 7,
             "TN": 0,
-            "accuracy": 10.0,
+            "accuracy": 5.88235294117647,
             "precision": 12.5,
             "recall": 10.0,
-            "f1": 11.11111111111111
+            "f1": 11.111111111111112
         }
     }
 }

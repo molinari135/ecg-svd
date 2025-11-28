@@ -11,89 +11,49 @@ from ecg_svd.methods.matrix import create_hankel_matrix
 
 
 def get_classification_report(ground_truth: np.ndarray, prediction: np.ndarray, epsilon: float = 0.15) -> Dict[str, Any]:
-    # no labels on ground truth or prediction
     if len(ground_truth) == 0 and len(prediction) == 0:
-        logger.info("Both Ground Truth and Prediction arrays are empty. Returning 100% accuracy (Trivial case).")
+        logger.warning("Both Ground Truth and Prediction arrays are empty. Returning 100% accuracy (Trivial case).")
         return {
             "TP": 0, "FN": 0, "FP": 0, "TN": 0,
             "accuracy": 100.0, "precision": 100.0, "recall": 100.0, "f1": 100.0
         }
 
-    # empty prediction but non-empty ground truth
     if len(prediction) == 0:
-        num_gt = len(ground_truth)
-        logger.warning(f"Prediction array is empty. {num_gt} GT events missed.")
+        logger.warning("Prediction array is empty. Accuracy and Precision will be low/zero.")
 
-        return {
-            "TP": 0,
-            "FN": num_gt,
-            "FP": 0,
-            "TN": 0,
-            "accuracy": 0.0,
-            "precision": 0.0,
-            "recall": 0.0,
-            "f1": 0.0
-        }
+    # identify True Positives (TP) and False Negatives (FN)
+    is_gt_found = [
+        np.any(np.abs(gt_element - prediction) <= epsilon)
+        for gt_element in ground_truth
+    ]
 
-    # empty ground truth but non-empty prediction
-    if len(ground_truth) == 0:
-        num_pred = len(prediction)
-        logger.warning(f"Ground Truth array is empty. {num_pred} predictions are False Positives.")
+    # identify False Positives (FP)
+    is_pred_correct = [
+        np.any(np.abs(p_element - ground_truth) <= epsilon)
+        for p_element in prediction
+    ]
 
-        return {
-            "TP": 0,
-            "FN": 0,
-            "FP": num_pred,
-            "TN": 0,
-            "accuracy": 0.0,
-            "precision": 0.0,
-            "recall": 100.0,
-            "f1": 0.0
-        }
-
-    gt = ground_truth.copy()
-    pred = prediction.copy()
-
-    TP = 0
-    FP = 0
-
-    for gt_event in gt:
-        # compute temporal differences
-        time_diffs = np.abs(pred - gt_event)
-
-        # find closest prediction
-        if len(time_diffs) > 0:
-            closest_idx = np.argmin(time_diffs)
-            min_diff = time_diffs[closest_idx]
-
-            if min_diff <= epsilon:
-                TP += 1
-                pred = np.delete(pred, closest_idx)
-
-    FP = len(pred)
-    FN = len(gt) - TP
+    TP = np.sum(is_gt_found)
+    FN = len(ground_truth) - TP
     TN = 0
+    FP = len(prediction) - np.sum(is_pred_correct)
 
-    precision_denom = TP + FP
-    precision = (TP / precision_denom) * 100.0 if precision_denom > 0 else 0.0
+    total_samples = TP + TN + FP + FN
 
-    recall_denom = TP + FN
-    recall = (TP / recall_denom) * 100.0 if recall_denom > 0 else 0.0
-
-    f1_denom = precision + recall
-    f1 = (2 * precision * recall) / f1_denom if f1_denom > 0 else 0.0
-
-    accuracy = recall
+    # calculate metrics, handling potential ZeroDivisionError
+    accuracy = (TP + TN) / total_samples if total_samples > 0 else 0
+    precision = (TP / (TP + FP)) if (TP + FP) > 0 else 0
+    recall = (TP / (TP + FN)) if (TP + FN) > 0 else 0
 
     return {
-        "TP": TP,
-        "FN": FN,
-        "FP": FP,
-        "TN": TN,
-        "accuracy": accuracy,
-        "precision": precision,
-        "recall": recall,
-        "f1": f1
+        "TP": int(TP),
+        "FN": int(FN),
+        "FP": int(FP),
+        "TN": int(TN),
+        "accuracy": accuracy * 100,
+        "precision": precision * 100,
+        "recall": recall * 100,
+        "f1": (2 * precision * recall / (precision + recall) * 100) if (precision + recall) > 0 else 0
     }
 
 

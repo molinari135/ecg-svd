@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "6_fastica_ms_mc",
-        "execution_time_seconds": 12.160140037536621,
+        "execution_time_seconds": 14.34696912765503,
         "segment_duration": 5.0,
         "overlap": 0.5,
         "n_sources": 3,
@@ -9,19 +9,19 @@
         "fecg_component_idx": 1,
         "segment_count": 66,
         "results": {
-            "TP": 401,
-            "FN": 307,
-            "FP": 68,
+            "TP": 540,
+            "FN": 104,
+            "FP": 31,
             "TN": 0,
-            "accuracy": 56.83425160697889,
-            "precision": 80.57102409375136,
-            "recall": 56.83425160697889,
-            "f1": 64.21929586086637
+            "accuracy": 80.0,
+            "precision": 94.57092819614711,
+            "recall": 83.85093167701864,
+            "f1": 88.8888888888889
         }
     },
     "r04.edf": {
         "experiment_id": "6_fastica_ms_mc",
-        "execution_time_seconds": 17.93746066093445,
+        "execution_time_seconds": 18.117405652999878,
         "segment_duration": 5.0,
         "overlap": 0.5,
         "n_sources": 3,
@@ -29,19 +29,19 @@
         "fecg_component_idx": 1,
         "segment_count": 66,
         "results": {
-            "TP": 218,
-            "FN": 477,
-            "FP": 80,
+            "TP": 255,
+            "FN": 377,
+            "FP": 133,
             "TN": 0,
-            "accuracy": 31.413376186103463,
-            "precision": 67.83910533910534,
-            "recall": 31.413376186103463,
-            "f1": 40.528337618120894
+            "accuracy": 33.33333333333333,
+            "precision": 65.72164948453609,
+            "recall": 40.348101265822784,
+            "f1": 50.0
         }
     },
     "r07.edf": {
         "experiment_id": "6_fastica_ms_mc",
-        "execution_time_seconds": 16.79610824584961,
+        "execution_time_seconds": 13.564966678619385,
         "segment_duration": 5.0,
         "overlap": 0.5,
         "n_sources": 3,
@@ -49,19 +49,19 @@
         "fecg_component_idx": 1,
         "segment_count": 66,
         "results": {
-            "TP": 260,
-            "FN": 430,
-            "FP": 74,
+            "TP": 257,
+            "FN": 370,
+            "FP": 131,
             "TN": 0,
-            "accuracy": 37.68595041322314,
-            "precision": 74.78294853294852,
-            "recall": 37.68595041322314,
-            "f1": 47.51692749089315
+            "accuracy": 33.90501319261214,
+            "precision": 66.23711340206185,
+            "recall": 40.98883572567783,
+            "f1": 50.64039408866995
         }
     },
     "r08.edf": {
         "experiment_id": "6_fastica_ms_mc",
-        "execution_time_seconds": 25.1847140789032,
+        "execution_time_seconds": 17.725890159606934,
         "segment_duration": 5.0,
         "overlap": 0.5,
         "n_sources": 3,
@@ -69,19 +69,19 @@
         "fecg_component_idx": 1,
         "segment_count": 66,
         "results": {
-            "TP": 358,
-            "FN": 358,
-            "FP": 72,
+            "TP": 274,
+            "FN": 377,
+            "FP": 110,
             "TN": 0,
-            "accuracy": 50.09182736455463,
-            "precision": 79.02591936682846,
-            "recall": 50.09182736455463,
-            "f1": 59.2418217812251
+            "accuracy": 36.00525624178712,
+            "precision": 71.35416666666666,
+            "recall": 42.08909370199693,
+            "f1": 52.946859903381636
         }
     },
     "r10.edf": {
         "experiment_id": "6_fastica_ms_mc",
-        "execution_time_seconds": 10.44546914100647,
+        "execution_time_seconds": 13.635700941085815,
         "segment_duration": 5.0,
         "overlap": 0.5,
         "n_sources": 3,
@@ -89,14 +89,14 @@
         "fecg_component_idx": 1,
         "segment_count": 66,
         "results": {
-            "TP": 290,
-            "FN": 408,
-            "FP": 153,
+            "TP": 267,
+            "FN": 370,
+            "FP": 181,
             "TN": 0,
-            "accuracy": 41.71413603231786,
-            "precision": 65.22607022607023,
-            "recall": 41.71413603231786,
-            "f1": 49.77323774150399
+            "accuracy": 32.640586797066014,
+            "precision": 59.59821428571429,
+            "recall": 41.915227629513346,
+            "f1": 49.21658986175115
         }
     }
 }

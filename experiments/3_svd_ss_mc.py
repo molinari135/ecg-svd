@@ -1,3 +1,4 @@
+import scipy
 import typer
 import sys
 import time
@@ -57,6 +58,11 @@ def main(
             for ch in target_channels:
                 sig = get_signal_segment(edf, ch_number=ch, end_time=segment_duration)['segment']
                 sig = (sig - np.mean(sig)) / (np.std(sig) + 1e-8)
+                
+                # apply high-pass filter to remove baseline wander
+                lowpassed = scipy.ndimage.gaussian_filter1d(sig, sigma=0.2 * 1000, order=0)
+                sig = sig - lowpassed
+            
                 segments_data.append(sig)
             pbar.update(1)
 
@@ -151,7 +157,7 @@ def main(
             pbar.update(1)
             pbar.set_description("Done")
 
-        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (accuracy: {report['accuracy']:.2f}%)")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the MSSA experiment: {e}")

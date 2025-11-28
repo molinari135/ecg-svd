@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "9_parafac_ss_mc",
-        "execution_time_seconds": 22.841954231262207,
+        "execution_time_seconds": 33.15689492225647,
         "target_channels": [
             1,
             2,
@@ -12,10 +12,10 @@
         "window_length": 1250,
         "parafac_rank": 4,
         "weights_channels": [
-            0.23790283562194936,
-            0.20714671545451038,
-            0.24604544609025733,
-            0.3089050028332829
+            0.23146797639644284,
+            0.271611454028474,
+            0.20859662232167556,
+            0.2883239472534075
         ],
         "selected_mecg_components": [
             0
@@ -32,12 +32,12 @@
             "accuracy": 81.81818181818183,
             "precision": 100.0,
             "recall": 81.81818181818183,
-            "f1": 90.00000000000001
+            "f1": 90.0
         }
     },
     "r04.edf": {
         "experiment_id": "9_parafac_ss_mc",
-        "execution_time_seconds": 22.65881586074829,
+        "execution_time_seconds": 34.84051990509033,
         "target_channels": [
             1,
             2,
@@ -48,10 +48,10 @@
         "window_length": 1250,
         "parafac_rank": 4,
         "weights_channels": [
-            0.2549157893308005,
-            0.23346297139926134,
-            0.23643666514376235,
-            0.2751845741261759
+            0.3050305466675966,
+            0.19406779783257522,
+            0.227603621129069,
+            0.27329803437075917
         ],
         "selected_mecg_components": [
             0
@@ -61,19 +61,19 @@
             2
         ],
         "results": {
-            "TP": 6,
-            "FN": 5,
-            "FP": 1,
+            "TP": 4,
+            "FN": 7,
+            "FP": 2,
             "TN": 0,
-            "accuracy": 54.54545454545454,
-            "precision": 85.71428571428571,
-            "recall": 54.54545454545454,
-            "f1": 66.66666666666666
+            "accuracy": 30.76923076923077,
+            "precision": 66.66666666666666,
+            "recall": 36.36363636363637,
+            "f1": 47.05882352941177
         }
     },
     "r07.edf": {
         "experiment_id": "9_parafac_ss_mc",
-        "execution_time_seconds": 20.204755783081055,
+        "execution_time_seconds": 31.170183420181274,
         "target_channels": [
             1,
             2,
@@ -84,10 +84,10 @@
         "window_length": 1250,
         "parafac_rank": 4,
         "weights_channels": [
-            0.0,
-            0.32106969467546603,
-            0.35767028097810954,
-            0.3212600243464243
+            0.2274832278573428,
+            0.2740818709776959,
+            0.26125903470447337,
+            0.237175866460488
         ],
         "selected_mecg_components": [
             0
@@ -97,19 +97,19 @@
             2
         ],
         "results": {
-            "TP": 9,
-            "FN": 2,
-            "FP": 1,
+            "TP": 7,
+            "FN": 4,
+            "FP": 2,
             "TN": 0,
-            "accuracy": 81.81818181818183,
-            "precision": 90.0,
-            "recall": 81.81818181818183,
-            "f1": 85.71428571428574
+            "accuracy": 53.84615384615385,
+            "precision": 77.77777777777779,
+            "recall": 63.63636363636363,
+            "f1": 70.0
         }
     },
     "r08.edf": {
         "experiment_id": "9_parafac_ss_mc",
-        "execution_time_seconds": 19.017197847366333,
+        "execution_time_seconds": 29.546291828155518,
         "target_channels": [
             1,
             2,
@@ -120,10 +120,10 @@
         "window_length": 1250,
         "parafac_rank": 4,
         "weights_channels": [
-            0.0,
-            0.0,
-            0.37692929324861346,
-            0.6230707067513864
+            0.2509887331212012,
+            0.24085009697506796,
+            0.2564266325272002,
+            0.25173453737653056
         ],
         "selected_mecg_components": [
             0
@@ -145,7 +145,7 @@
     },
     "r10.edf": {
         "experiment_id": "9_parafac_ss_mc",
-        "execution_time_seconds": 24.140514850616455,
+        "execution_time_seconds": 30.102282762527466,
         "target_channels": [
             1,
             2,
@@ -156,10 +156,10 @@
         "window_length": 1250,
         "parafac_rank": 4,
         "weights_channels": [
-            0.25396551428306086,
-            0.2263810176339954,
-            0.22407819482881766,
-            0.29557527325412597
+            0.26227037997056807,
+            0.26375843498394985,
+            0.2302738202906918,
+            0.24369736475479015
         ],
         "selected_mecg_components": [
             0
@@ -169,14 +169,14 @@
             2
         ],
         "results": {
-            "TP": 2,
-            "FN": 8,
-            "FP": 6,
+            "TP": 1,
+            "FN": 9,
+            "FP": 7,
             "TN": 0,
-            "accuracy": 20.0,
-            "precision": 25.0,
-            "recall": 20.0,
-            "f1": 22.22222222222222
+            "accuracy": 5.88235294117647,
+            "precision": 12.5,
+            "recall": 10.0,
+            "f1": 11.111111111111112
         }
     }
 }

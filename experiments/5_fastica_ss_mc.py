@@ -1,3 +1,4 @@
+import scipy
 import typer
 import sys
 import time
@@ -57,6 +58,11 @@ def main(
                 get_signal_segment(edf, ch_number=ch, end_time=segment_duration)['segment']
                 for ch in target_channels
             ]
+            
+            for signal in signals_list:
+                # apply high-pass filter to remove baseline wander
+                lowpassed = scipy.ndimage.gaussian_filter1d(signal, sigma=0.2 * 1000, order=0)
+                signal = signal - lowpassed
 
             # stack segments: (channels, samples) -> transpose to (samples, channels) for ICA
             stacked_matrix = np.stack(signals_list, axis=0)
@@ -124,7 +130,7 @@ def main(
             pbar.update(1)
             pbar.set_description("Done")
 
-        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (accuracy: {report['accuracy']:.2f}%)")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the FastICA experiment: {e}")
