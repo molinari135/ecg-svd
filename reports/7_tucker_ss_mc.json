@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "7_tucker_ss_mc",
-        "execution_time_seconds": 28.40665578842163,
+        "execution_time_seconds": 24.985151529312134,
         "target_channel": [
             1,
             2,
@@ -13,26 +13,20 @@
         "tucker_rank_L": 72,
         "tucker_rank_K": 72,
         "tucker_rank_C": 4,
-        "weights": [
-            0.23146797639644284,
-            0.271611454028474,
-            0.20859662232167556,
-            0.2883239472534075
-        ],
         "results": {
-            "TP": 9,
-            "FN": 2,
+            "TP": 10,
+            "FN": 1,
             "FP": 0,
             "TN": 0,
-            "accuracy": 81.81818181818183,
+            "accuracy": 90.9090909090909,
             "precision": 100.0,
-            "recall": 81.81818181818183,
-            "f1": 90.0
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
         }
     },
     "r04.edf": {
         "experiment_id": "7_tucker_ss_mc",
-        "execution_time_seconds": 26.55539584159851,
+        "execution_time_seconds": 23.786085844039917,
         "target_channel": [
             1,
             2,
@@ -44,26 +38,20 @@
         "tucker_rank_L": 38,
         "tucker_rank_K": 38,
         "tucker_rank_C": 4,
-        "weights": [
-            0.3050305466675966,
-            0.19406779783257522,
-            0.227603621129069,
-            0.27329803437075917
-        ],
         "results": {
-            "TP": 9,
-            "FN": 2,
+            "TP": 10,
+            "FN": 1,
             "FP": 0,
             "TN": 0,
-            "accuracy": 81.81818181818183,
+            "accuracy": 90.9090909090909,
             "precision": 100.0,
-            "recall": 81.81818181818183,
-            "f1": 90.0
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
         }
     },
     "r07.edf": {
         "experiment_id": "7_tucker_ss_mc",
-        "execution_time_seconds": 29.019891500473022,
+        "execution_time_seconds": 25.62806749343872,
         "target_channel": [
             1,
             2,
@@ -75,26 +63,20 @@
         "tucker_rank_L": 32,
         "tucker_rank_K": 32,
         "tucker_rank_C": 4,
-        "weights": [
-            0.2274832278573428,
-            0.2740818709776959,
-            0.26125903470447337,
-            0.237175866460488
-        ],
         "results": {
-            "TP": 11,
-            "FN": 0,
-            "FP": 0,
+            "TP": 9,
+            "FN": 2,
+            "FP": 1,
             "TN": 0,
-            "accuracy": 100.0,
-            "precision": 100.0,
-            "recall": 100.0,
-            "f1": 100.0
+            "accuracy": 75.0,
+            "precision": 90.0,
+            "recall": 81.81818181818183,
+            "f1": 85.71428571428572
         }
     },
     "r08.edf": {
         "experiment_id": "7_tucker_ss_mc",
-        "execution_time_seconds": 32.52216863632202,
+        "execution_time_seconds": 24.573925256729126,
         "target_channel": [
             1,
             2,
@@ -106,26 +88,20 @@
         "tucker_rank_L": 72,
         "tucker_rank_K": 72,
         "tucker_rank_C": 4,
-        "weights": [
-            0.2509887331212012,
-            0.24085009697506796,
-            0.2564266325272002,
-            0.25173453737653056
-        ],
         "results": {
-            "TP": 9,
-            "FN": 2,
+            "TP": 10,
+            "FN": 1,
             "FP": 0,
             "TN": 0,
-            "accuracy": 81.81818181818183,
+            "accuracy": 90.9090909090909,
             "precision": 100.0,
-            "recall": 81.81818181818183,
-            "f1": 90.0
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
         }
     },
     "r10.edf": {
         "experiment_id": "7_tucker_ss_mc",
-        "execution_time_seconds": 31.40155816078186,
+        "execution_time_seconds": 23.921804428100586,
         "target_channel": [
             1,
             2,
@@ -137,12 +113,6 @@
         "tucker_rank_L": 62,
         "tucker_rank_K": 62,
         "tucker_rank_C": 4,
-        "weights": [
-            0.26227037997056807,
-            0.26375843498394985,
-            0.2302738202906918,
-            0.24369736475479015
-        ],
         "results": {
             "TP": 7,
             "FN": 3,

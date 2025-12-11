@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "1_svd_ss_sc",
-        "execution_time_seconds": 3.5489678382873535,
+        "execution_time_seconds": 3.7389659881591797,
         "target_channel": 4,
         "segment_duration": 5.0,
         "mecg_cvp": 0.75,
@@ -20,7 +20,7 @@
     },
     "r04.edf": {
         "experiment_id": "1_svd_ss_sc",
-        "execution_time_seconds": 3.719594717025757,
+        "execution_time_seconds": 3.6898367404937744,
         "target_channel": 4,
         "segment_duration": 5.0,
         "mecg_cvp": 0.75,
@@ -39,7 +39,7 @@
     },
     "r10.edf": {
         "experiment_id": "1_svd_ss_sc",
-        "execution_time_seconds": 3.9312407970428467,
+        "execution_time_seconds": 3.743788957595825,
         "target_channel": 4,
         "segment_duration": 5.0,
         "mecg_cvp": 0.75,
@@ -58,7 +58,7 @@
     },
     "r07.edf": {
         "experiment_id": "1_svd_ss_sc",
-        "execution_time_seconds": 3.736906051635742,
+        "execution_time_seconds": 3.680272340774536,
         "target_channel": 4,
         "segment_duration": 5.0,
         "mecg_cvp": 0.75,
@@ -77,7 +77,7 @@
     },
     "r08.edf": {
         "experiment_id": "1_svd_ss_sc",
-        "execution_time_seconds": 3.8696019649505615,
+        "execution_time_seconds": 3.7156882286071777,
         "target_channel": 4,
         "segment_duration": 5.0,
         "mecg_cvp": 0.75,

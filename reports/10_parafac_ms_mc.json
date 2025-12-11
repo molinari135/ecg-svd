@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 100.56532382965088,
+        "execution_time_seconds": 10.98448371887207,
         "target_channels": [
             1,
             2,
@@ -12,12 +12,6 @@
         "overlap": 0.5,
         "window_length": 1250,
         "parafac_rank": 4,
-        "weights_channels": [
-            0.23753762245178223,
-            0.20751111209392548,
-            0.2464776635169983,
-            0.3084736168384552
-        ],
         "selected_mecg_components": [
             0
         ],
@@ -26,19 +20,19 @@
             2
         ],
         "results": {
-            "TP": 623,
-            "FN": 21,
-            "FP": 13,
+            "TP": 612,
+            "FN": 32,
+            "FP": 20,
             "TN": 0,
-            "accuracy": 94.82496194824962,
-            "precision": 97.95597484276729,
-            "recall": 96.73913043478261,
-            "f1": 97.34375
+            "accuracy": 92.16867469879519,
+            "precision": 96.83544303797468,
+            "recall": 95.03105590062113,
+            "f1": 95.92476489028213
         }
     },
     "r04.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 39.761945486068726,
+        "execution_time_seconds": 10.847793817520142,
         "target_channels": [
             1,
             2,
@@ -49,12 +43,6 @@
         "overlap": 0.5,
         "window_length": 1250,
         "parafac_rank": 4,
-        "weights_channels": [
-            0.25504136085510254,
-            0.23349100351333618,
-            0.2364545613527298,
-            0.2750130891799927
-        ],
         "selected_mecg_components": [
             0
         ],
@@ -63,19 +51,19 @@
             2
         ],
         "results": {
-            "TP": 294,
-            "FN": 338,
-            "FP": 137,
+            "TP": 287,
+            "FN": 345,
+            "FP": 140,
             "TN": 0,
-            "accuracy": 38.23146944083225,
-            "precision": 68.21345707656613,
-            "recall": 46.51898734177215,
-            "f1": 55.31514581373471
+            "accuracy": 37.17616580310881,
+            "precision": 67.21311475409836,
+            "recall": 45.41139240506329,
+            "f1": 54.20207743153917
         }
     },
     "r07.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 43.508543252944946,
+        "execution_time_seconds": 10.583632469177246,
         "target_channels": [
             1,
             2,
@@ -86,12 +74,6 @@
         "overlap": 0.5,
         "window_length": 1250,
         "parafac_rank": 4,
-        "weights_channels": [
-            0.0,
-            0.5020630359649658,
-            0.0,
-            0.4979369342327118
-        ],
         "selected_mecg_components": [
             0
         ],
@@ -100,19 +82,19 @@
             2
         ],
         "results": {
-            "TP": 389,
-            "FN": 238,
-            "FP": 117,
+            "TP": 307,
+            "FN": 320,
+            "FP": 146,
             "TN": 0,
-            "accuracy": 52.284946236559136,
-            "precision": 76.87747035573122,
-            "recall": 62.0414673046252,
-            "f1": 68.66725507502206
+            "accuracy": 39.715394566623544,
+            "precision": 67.77041942604856,
+            "recall": 48.963317384370015,
+            "f1": 56.85185185185184
         }
     },
     "r08.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 23.008559703826904,
+        "execution_time_seconds": 10.313753128051758,
         "target_channels": [
             1,
             2,
@@ -123,12 +105,6 @@
         "overlap": 0.5,
         "window_length": 1250,
         "parafac_rank": 4,
-        "weights_channels": [
-            0.0,
-            0.0,
-            0.3769325613975525,
-            0.6230674386024475
-        ],
         "selected_mecg_components": [
             0
         ],
@@ -137,19 +113,19 @@
             2
         ],
         "results": {
-            "TP": 633,
-            "FN": 18,
-            "FP": 14,
+            "TP": 635,
+            "FN": 16,
+            "FP": 9,
             "TN": 0,
-            "accuracy": 95.18796992481204,
-            "precision": 97.83616692426584,
-            "recall": 97.23502304147466,
-            "f1": 97.5346687211094
+            "accuracy": 96.21212121212122,
+            "precision": 98.6024844720497,
+            "recall": 97.54224270353302,
+            "f1": 98.06949806949807
         }
     },
     "r10.edf": {
         "experiment_id": "10_parafac_ms_mc",
-        "execution_time_seconds": 25.737700700759888,
+        "execution_time_seconds": 10.1706702709198,
         "target_channels": [
             1,
             2,
@@ -160,12 +136,6 @@
         "overlap": 0.5,
         "window_length": 1250,
         "parafac_rank": 4,
-        "weights_channels": [
-            0.25387755036354065,
-            0.22656410932540894,
-            0.22404702007770538,
-            0.29551130533218384
-        ],
         "selected_mecg_components": [
             0
         ],
@@ -174,14 +144,14 @@
             2
         ],
         "results": {
-            "TP": 338,
-            "FN": 299,
-            "FP": 122,
+            "TP": 332,
+            "FN": 305,
+            "FP": 129,
             "TN": 0,
-            "accuracy": 44.532279314888015,
-            "precision": 73.47826086956522,
-            "recall": 53.06122448979592,
-            "f1": 61.62260711030082
+            "accuracy": 43.34203655352481,
+            "precision": 72.0173535791757,
+            "recall": 52.119309262166404,
+            "f1": 60.4735883424408
         }
     }
 }

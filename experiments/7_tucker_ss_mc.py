@@ -1,4 +1,3 @@
-import scipy
 import typer
 import time
 import sys
@@ -57,13 +56,6 @@ def main(
             segments_data = []
             for ch in target_channels:
                 sig = get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
-                # Z-score normalization
-                sig['segment'] = (sig['segment'] - np.mean(sig['segment'])) / (np.std(sig['segment']) + 1e-8)
-                
-                # apply high-pass filter to remove baseline wander
-                lowpassed = scipy.ndimage.gaussian_filter1d(sig['segment'], sigma=0.2 * 1000, order=0)
-                sig['segment'] = sig['segment'] - lowpassed
-                
                 segments_data.append(sig)
 
             hankel_matrices = [
@@ -76,9 +68,10 @@ def main(
             # --- STEP 2: Adaptive Parameters (Weights & Rank) ---
             pbar.set_description("Estimating Rank")
 
+            # weights unused
             weights, quality_results = get_signal_weights_and_qualities(segments_data, verbose=verbose)
-            if verbose:
-                logger.debug(f"Calculated channel weights: {weights}")
+            # if verbose:
+            #     logger.debug(f"Calculated channel weights: {weights}")
 
             tucker_rank = get_tucker_rank(quality_results)
 
@@ -113,9 +106,9 @@ def main(
             noise_signals_list = reconstruct_channels(H_noise)
 
             # weighted combination
-            mECG_combined = np.average(np.stack(mECG_signals_list, axis=-1), axis=-1, weights=weights)
-            fECG_combined = np.average(np.stack(fECG_signals_list, axis=-1), axis=-1, weights=weights)
-            noise_combined = np.average(np.stack(noise_signals_list, axis=-1), axis=-1, weights=weights)
+            mECG_combined = np.average(np.stack(mECG_signals_list, axis=-1), axis=-1)
+            fECG_combined = np.average(np.stack(fECG_signals_list, axis=-1), axis=-1)
+            noise_combined = np.average(np.stack(noise_signals_list, axis=-1), axis=-1)
             pbar.update(1)
 
             # --- STEP 5: Metrics ---
@@ -152,7 +145,7 @@ def main(
                 "tucker_rank_L": int(rank_tucker[0]),
                 "tucker_rank_K": int(rank_tucker[1]),
                 "tucker_rank_C": int(rank_tucker[2]),
-                "weights": weights.tolist(),
+                # "weights": weights.tolist(),
                 "results": report
             }
 
@@ -160,7 +153,6 @@ def main(
 
             pbar.update(1)
             pbar.set_description("Done")
-
         logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:

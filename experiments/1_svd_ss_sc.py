@@ -1,9 +1,7 @@
-import scipy
 import typer
 import sys
 import time
 import neurokit2 as nk
-import numpy as np
 from pathlib import Path
 from loguru import logger
 from tqdm import tqdm
@@ -58,12 +56,6 @@ def main(
             target_data = get_signal_segment(edf, ch_number=target_channel, end_time=segment_duration)
 
             target_segment = target_data['segment']
-            
-            # apply high-pass filter to remove baseline wander
-            lowpassed = scipy.ndimage.gaussian_filter1d(target_segment, sigma=0.2 * 1000, order=0)
-            target_segment = target_segment - lowpassed
-            
-            target_segment = (target_segment - np.mean(target_segment)) / (np.std(target_segment) + 1e-8)
             gt_onsets = gt_data['onsets']
             sampling_rate = target_data['sampling_rate']
 

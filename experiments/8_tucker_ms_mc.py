@@ -1,4 +1,3 @@
-import scipy
 import typer
 import sys
 import time
@@ -53,7 +52,7 @@ def main(
     if verbose:
         logger.info(f"Using device: {device}")
     warnings.filterwarnings("ignore", category=UserWarning, module='torch')
-    
+
     try:
         if verbose:
             logger.debug("Initializing data...")
@@ -77,15 +76,10 @@ def main(
         weights_final = torch.zeros_like(full_mecg, device=device)
 
         segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
-        
-        for signal in segments_data:
-            # apply high-pass filter to remove baseline wander
-            lowpassed = scipy.ndimage.gaussian_filter1d(signal['segment'], sigma=0.2 * 1000, order=0)
-            signal['segment'] = signal['segment'] - lowpassed
-
+        # not using weights
         weights_np, quality_results = get_signal_weights_and_qualities(segments_data, verbose=False)
 
-        weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
+        # weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
         tucker_rank = get_tucker_rank(quality_results)
         L = window_length
         rank_tucker = [tucker_rank, tucker_rank, len(target_channels)]
@@ -114,9 +108,6 @@ def main(
                     for ch in target_channels:
                         seg_np = get_signal_segment(edf, ch_number=ch, start_time=curr_start, end_time=curr_end)['segment']
                         seg_t = torch.tensor(seg_np, device=device, dtype=torch.float32)
-
-                        # center data
-                        seg_t = (seg_t - seg_t.mean()) / (seg_t.std() + 1e-8)
                         segments_list_gpu.append(seg_t)
 
                         if ch == target_channels[-1]:
@@ -162,9 +153,9 @@ def main(
                     noise_signals = reconstruct_channels(H_noise, on_cuda=True)
 
                     # weighted combination
-                    mECG_seg = torch.sum(mECG_signals * weights[None, :], dim=1)
-                    fECG_seg = torch.sum(fECG_signals * weights[None, :], dim=1)
-                    noise_seg = torch.sum(noise_signals * weights[None, :], dim=1)
+                    mECG_seg = torch.sum(mECG_signals, dim=1)  # * weights[None, :]
+                    fECG_seg = torch.sum(fECG_signals, dim=1)  # * weights[None, :]
+                    noise_seg = torch.sum(noise_signals, dim=1)  # * weights[None, :]
 
                     if current_seg_len == L_seg_samples:
                         w = window_gpu_full
@@ -223,12 +214,12 @@ def main(
             "tucker_rank_L": int(rank_tucker[0]),
             "tucker_rank_K": int(rank_tucker[1]),
             "tucker_rank_C": int(rank_tucker[2]),
-            "weights": weights.cpu().tolist(),
+            # "weights": weights.cpu().tolist(),
             "results": report
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy: {report['accuracy']:.2f}%)")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the Tucker GPU experiment: {e}")

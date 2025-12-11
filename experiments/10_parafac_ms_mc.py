@@ -1,4 +1,3 @@
-import scipy
 import typer
 import sys
 import time
@@ -18,7 +17,7 @@ from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.tensor import run_parafac
 from ecg_svd.methods.common import reconstruct_channels
-from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
+from ecg_svd.evaluation.metrics import get_classification_report
 
 
 # set pytorch for tensorly and GPU optimization
@@ -77,9 +76,9 @@ def main(
         full_noise = torch.zeros_like(full_mecg, device=device)
         weights_final = torch.zeros_like(full_mecg, device=device)
 
-        initial_segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
-        weights_np, _ = get_signal_weights_and_qualities(initial_segments_data, verbose=False)
-        weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
+        # initial_segments_data = [get_signal_segment(edf, ch_number=ch, end_time=segment_length) for ch in target_channels]
+        # weights_np, _ = get_signal_weights_and_qualities(initial_segments_data, verbose=False)
+        # weights = torch.tensor(weights_np, device=device, dtype=torch.float32)
 
         L = window_length
         parafac_rank = parafac_rank
@@ -106,15 +105,7 @@ def main(
                     segments_list_gpu = []
                     for ch in target_channels:
                         seg_np = get_signal_segment(edf, ch_number=ch, start_time=curr_start, end_time=curr_end)['segment']
-                        
-                        # apply high-pass filter to remove baseline wander
-                        lowpassed = scipy.ndimage.gaussian_filter1d(seg_np, sigma=0.2 * 1000, order=0)
-                        seg_np = seg_np - lowpassed
-                        
                         seg_t = torch.tensor(seg_np, device=device, dtype=torch.float32)
-
-                        # center data
-                        seg_t = (seg_t - seg_t.mean()) / (seg_t.std() + 1e-8)
                         segments_list_gpu.append(seg_t)
 
                     current_seg_len = segments_list_gpu[0].shape[0]
@@ -159,9 +150,9 @@ def main(
                     noise_signals = reconstruct_channels(H_noise, on_cuda=True)
 
                     # weighted combination
-                    mECG_seg = torch.sum(mECG_signals * weights[None, :], dim=1)
-                    fECG_seg = torch.sum(fECG_signals * weights[None, :], dim=1)
-                    noise_seg = torch.sum(noise_signals * weights[None, :], dim=1)
+                    mECG_seg = torch.sum(mECG_signals, dim=1)  # * weights[None, :]
+                    fECG_seg = torch.sum(fECG_signals, dim=1)  # * weights[None, :]
+                    noise_seg = torch.sum(noise_signals, dim=1)  # * weights[None, :]
 
                     if current_seg_len == L_seg_samples:
                         w = window_gpu_full
@@ -218,14 +209,14 @@ def main(
             "overlap": overlap,
             "window_length": window_length,
             "parafac_rank": parafac_rank,
-            "weights_channels": weights.cpu().tolist(),
+            # "weights_channels": weights.cpu().tolist(),
             "selected_mecg_components": [0],
             "selected_fecg_components": [1, 2],
             "results": report
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy: {report['accuracy']:.2f}%)")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurred during the PARAFAC GPU experiment: {e}")

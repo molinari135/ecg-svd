@@ -1,6 +1,7 @@
 import pyedflib
 import numpy as np
 from loguru import logger
+import scipy
 
 
 def get_signal_segment(
@@ -18,9 +19,15 @@ def get_signal_segment(
 
     end_idx = min(end_idx, len(signal))
 
+    # apply gaussian low-pass filtering
     segment = signal[start_idx:end_idx]
-    time = np.linspace(start_time, end_time, len(segment))
+    lowpassed = scipy.ndimage.gaussian_filter1d(segment, sigma=0.2 * 1000, order=0)
+    segment = segment - lowpassed
 
+    # z-score normalization
+    segment = (segment - np.mean(segment)) / (np.std(segment) + 1e-8)
+
+    time = np.linspace(start_time, end_time, len(segment))
     onsets = ons[(ons >= start_time) & (ons <= end_time)]
     values = np.interp(onsets, time, segment)
 

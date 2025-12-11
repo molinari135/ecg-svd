@@ -1,4 +1,3 @@
-import scipy
 import typer
 import sys
 import time
@@ -15,7 +14,7 @@ from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
 from ecg_svd.data.preprocessing import get_signal_segment, create_segment_tensor
 from ecg_svd.methods.tensor import run_parafac
 from ecg_svd.methods.common import reconstruct_channels, create_hankel_matrix
-from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
+from ecg_svd.evaluation.metrics import get_classification_report
 
 tl.set_backend('numpy')
 
@@ -58,13 +57,6 @@ def main(
             segments_data = []
             for ch in target_channels:
                 sig = get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
-                # Z-score normalization
-                sig['segment'] = (sig['segment'] - np.mean(sig['segment'])) / (np.std(sig['segment']) + 1e-8)
-                
-                # apply high-pass filter to remove baseline wander
-                lowpassed = scipy.ndimage.gaussian_filter1d(sig['segment'], sigma=0.2 * 1000, order=0)
-                sig['segment'] = sig['segment'] - lowpassed
-                
                 segments_data.append(sig)
 
             hankel_matrices = [
@@ -75,13 +67,13 @@ def main(
             pbar.update(1)
 
             # --- STEP 2: Weights Calculation ---
-            pbar.set_description("Calculating Weights")
-            weights, _ = get_signal_weights_and_qualities(segments_data, verbose=verbose)
-            if verbose:
-                logger.debug(f"Calculated channel weights: {weights}")
-            if verbose:
-                logger.debug(f"PARAFAC rank: {parafac_rank}")
-            pbar.update(1)
+            # pbar.set_description("Calculating Weights")
+            # weights, _ = get_signal_weights_and_qualities(segments_data, verbose=verbose)
+            # if verbose:
+            #     logger.debug(f"Calculated channel weights: {weights}")
+            # if verbose:
+            #     logger.debug(f"PARAFAC rank: {parafac_rank}")
+            # pbar.update(1)
 
             # --- STEP 3: Decomposition ---
             pbar.set_description("Running PARAFAC")
@@ -114,9 +106,9 @@ def main(
             noise_signals_list = reconstruct_channels(S_noise)
 
             # weighted combination
-            mECG_combined = np.average(np.stack(mECG_signals_list, axis=-1), axis=-1, weights=weights)
-            fECG_combined = np.average(np.stack(fECG_signals_list, axis=-1), axis=-1, weights=weights)
-            noise_combined = np.average(np.stack(noise_signals_list, axis=-1), axis=-1, weights=weights)
+            mECG_combined = np.average(np.stack(mECG_signals_list, axis=-1), axis=-1)  # weights=weights
+            fECG_combined = np.average(np.stack(fECG_signals_list, axis=-1), axis=-1)  # weights=weights
+            noise_combined = np.average(np.stack(noise_signals_list, axis=-1), axis=-1)  # weights=weights
             pbar.update(1)
 
             # --- STEP 5: Metrics ---
@@ -150,7 +142,7 @@ def main(
                 "segment_duration": segment_duration,
                 "window_length": window_length,
                 "parafac_rank": parafac_rank,
-                "weights_channels": weights.tolist(),
+                # "weights_channels": weights.tolist(),
                 "selected_mecg_components": [0],
                 "selected_fecg_components": [1, 2],
                 "results": report
@@ -159,7 +151,6 @@ def main(
             save_results(filename, experiment_name, data_to_save, experiment_report)
             pbar.update(1)
             pbar.set_description("Done")
-
         logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:

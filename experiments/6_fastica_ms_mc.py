@@ -1,5 +1,4 @@
 import warnings
-import scipy
 import typer
 import sys
 import time
@@ -29,8 +28,8 @@ def main(
     segment_duration: float = 5.0,
     overlap: float = 0.5,
     n_sources: int = 3,
-    mecg_component_idx: int = 2,
-    fecg_component_idx: int = 1,
+    mecg_component_idx: int = 0,  # 0 if using deflation (default), 2 otherwise
+    fecg_component_idx: int = 1,  # same for deflation and parallel
     verbose: bool = False
 ):
     # configure logger
@@ -57,17 +56,7 @@ def main(
         full_signals_list = []
         for ch in target_channels:
             sig = get_signal_segment(edf, ch_number=ch, end_time=300)['segment']
-            
-            # apply high-pass filter to remove baseline wander
-            lowpassed = scipy.ndimage.gaussian_filter1d(sig, sigma=0.2 * 1000, order=0)
-            sig = sig - lowpassed
-                
             full_signals_list.append(sig)
-            
-        for signal in full_signals_list:
-            # apply high-pass filter to remove baseline wander
-            lowpassed = scipy.ndimage.gaussian_filter1d(signal, sigma=0.2 * 1000, order=0)
-            signal = signal - lowpassed
 
         full_stacked_matrix = np.stack(full_signals_list, axis=0)
         full_length = full_stacked_matrix.shape[1]
@@ -129,7 +118,7 @@ def main(
                     w = window_full
                 else:
                     w = hann(current_seg_len)
-                
+
                 slice_len = min(current_seg_len, full_length - start_sample)
                 w_slice = w[:slice_len]
 

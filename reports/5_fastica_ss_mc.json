@@ -1,64 +1,46 @@
 {
     "r01.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.31276822090148926,
+        "execution_time_seconds": 0.2591245174407959,
         "segment_duration": 5.0,
         "n_sources": 3,
-        "mecg_component_idx": 2,
+        "mecg_component_idx": 0,
         "fecg_component_idx": 1,
         "results": {
-            "TP": 10,
-            "FN": 1,
-            "FP": 0,
+            "TP": 3,
+            "FN": 8,
+            "FP": 2,
             "TN": 0,
-            "accuracy": 90.9090909090909,
-            "precision": 100.0,
-            "recall": 90.9090909090909,
-            "f1": 95.23809523809523
+            "accuracy": 23.076923076923077,
+            "precision": 60.0,
+            "recall": 27.27272727272727,
+            "f1": 37.49999999999999
         }
     },
     "r04.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.39637327194213867,
+        "execution_time_seconds": 0.2787511348724365,
         "segment_duration": 5.0,
         "n_sources": 3,
-        "mecg_component_idx": 2,
+        "mecg_component_idx": 0,
         "fecg_component_idx": 1,
         "results": {
-            "TP": 4,
-            "FN": 7,
-            "FP": 2,
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
             "TN": 0,
-            "accuracy": 30.76923076923077,
-            "precision": 66.66666666666666,
-            "recall": 36.36363636363637,
-            "f1": 47.05882352941177
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
         }
     },
     "r07.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.3332531452178955,
+        "execution_time_seconds": 0.32347893714904785,
         "segment_duration": 5.0,
         "n_sources": 3,
-        "mecg_component_idx": 2,
-        "fecg_component_idx": 1,
-        "results": {
-            "TP": 10,
-            "FN": 1,
-            "FP": 0,
-            "TN": 0,
-            "accuracy": 90.9090909090909,
-            "precision": 100.0,
-            "recall": 90.9090909090909,
-            "f1": 95.23809523809523
-        }
-    },
-    "r08.edf": {
-        "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.3262448310852051,
-        "segment_duration": 5.0,
-        "n_sources": 3,
-        "mecg_component_idx": 2,
+        "mecg_component_idx": 0,
         "fecg_component_idx": 1,
         "results": {
             "TP": 8,
@@ -71,22 +53,40 @@
             "f1": 84.21052631578948
         }
     },
-    "r10.edf": {
+    "r08.edf": {
         "experiment_id": "5_fastica_ss_mc",
-        "execution_time_seconds": 0.39816784858703613,
+        "execution_time_seconds": 0.24175071716308594,
         "segment_duration": 5.0,
         "n_sources": 3,
-        "mecg_component_idx": 2,
+        "mecg_component_idx": 0,
         "fecg_component_idx": 1,
         "results": {
-            "TP": 1,
-            "FN": 9,
-            "FP": 7,
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
             "TN": 0,
-            "accuracy": 5.88235294117647,
-            "precision": 12.5,
-            "recall": 10.0,
-            "f1": 11.111111111111112
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "5_fastica_ss_mc",
+        "execution_time_seconds": 0.27614498138427734,
+        "segment_duration": 5.0,
+        "n_sources": 3,
+        "mecg_component_idx": 0,
+        "fecg_component_idx": 1,
+        "results": {
+            "TP": 2,
+            "FN": 8,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 20.0,
+            "precision": 100.0,
+            "recall": 20.0,
+            "f1": 33.333333333333336
         }
     }
 }

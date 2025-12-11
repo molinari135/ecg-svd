@@ -1,7 +1,7 @@
 {
     "r01.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 29.6730477809906,
+        "execution_time_seconds": 15.510453939437866,
         "target_channel": [
             1,
             2,
@@ -25,7 +25,7 @@
     },
     "r04.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 29.35956335067749,
+        "execution_time_seconds": 15.229171752929688,
         "target_channel": [
             1,
             2,
@@ -49,7 +49,7 @@
     },
     "r07.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 29.950784921646118,
+        "execution_time_seconds": 14.961159706115723,
         "target_channel": [
             1,
             2,
@@ -61,19 +61,19 @@
         "fecg_cvp": 0.95,
         "window_length": 1250,
         "results": {
-            "TP": 8,
-            "FN": 3,
+            "TP": 7,
+            "FN": 4,
             "FP": 0,
             "TN": 0,
-            "accuracy": 72.72727272727273,
+            "accuracy": 63.63636363636363,
             "precision": 100.0,
-            "recall": 72.72727272727273,
-            "f1": 84.21052631578948
+            "recall": 63.63636363636363,
+            "f1": 77.77777777777779
         }
     },
     "r08.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 28.965978622436523,
+        "execution_time_seconds": 15.015235424041748,
         "target_channel": [
             1,
             2,
@@ -97,7 +97,7 @@
     },
     "r10.edf": {
         "experiment_id": "2_svd_ss_mc",
-        "execution_time_seconds": 29.49322509765625,
+        "execution_time_seconds": 14.663768768310547,
         "target_channel": [
             1,
             2,

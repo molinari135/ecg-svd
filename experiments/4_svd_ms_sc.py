@@ -1,4 +1,3 @@
-import scipy
 import typer
 import sys
 import time
@@ -89,18 +88,11 @@ def main(
                 if current_seg_len < int(segment_step * sampling_rate):
                     break
 
-                # Z-score normalization
-                segment_signal = (segment_signal - np.mean(segment_signal)) / (np.std(segment_signal) + 1e-8)
-                
-                # apply high-pass filter to remove baseline wander
-                lowpassed = scipy.ndimage.gaussian_filter1d(segment_signal, sigma=0.2 * 1000, order=0)
-                segment_signal = segment_signal - lowpassed
-
                 segment_count += 1
                 logger.debug(f"Processing segment {segment_count}: {curr_start:.2f}s to {curr_end:.2f}s, length={current_seg_len}")
 
                 # mECG extraction
-                mecg = run_ssa(segment_signal, cvp=mecg_cvp, window_length=window_length_svd)
+                mecg = run_ssa(segment_signal, cvp=mecg_cvp, window_length=window_length_svd, on_cuda=True)
 
                 if mecg is None or len(mecg) == 0 or np.all(np.isnan(mecg)):
                     if verbose:
@@ -127,7 +119,7 @@ def main(
 
                 # fECG extraction
                 residual = lower_peaks(segment_signal, peaks=mecg_peaks_indices)
-                fecg = run_ssa(residual, cvp=fecg_cvp, window_length=window_length_svd)
+                fecg = run_ssa(residual, cvp=fecg_cvp, window_length=window_length_svd, on_cuda=True)
 
                 if fecg is None or len(fecg) == 0 or np.all(np.isnan(fecg)):
                     curr_start += segment_step
@@ -193,7 +185,7 @@ def main(
         }
 
         save_results(filename, experiment_name, data_to_save, experiment_report)
-        logger.success(f"Experiment completed in {round(elapsed_time, 2)}s (Accuracy: {report['accuracy']:.2f}%)")
+        logger.success(f"fECG from {filename} extracted in {round(elapsed_time, 2)} seconds (Accuracy: {report['accuracy']:.2f}%)")
 
     except Exception as e:
         logger.error(f"An error occurared during the Sliding Window experiment: {e}")

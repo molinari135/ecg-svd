@@ -1,4 +1,3 @@
-import scipy
 import typer
 import sys
 import time
@@ -14,7 +13,7 @@ from ecg_svd.data.io import get_edf_reader, close_edf_reader, save_results
 from ecg_svd.data.preprocessing import get_signal_segment
 from ecg_svd.methods.common import lower_peaks
 from ecg_svd.methods.matrix import run_ssa
-from ecg_svd.evaluation.metrics import get_classification_report, get_signal_weights_and_qualities
+from ecg_svd.evaluation.metrics import get_classification_report
 
 app = typer.Typer(help="Runs SVD separation on multiple channels of a single segment with weighted summation.")
 
@@ -54,17 +53,12 @@ def main(
             get_signal_segment(edf, ch_number=ch, end_time=segment_duration)
             for ch in target_channels
         ]
-        
-        for segment in segments_data:
-            # apply high-pass filter to remove baseline wander
-            lowpassed = scipy.ndimage.gaussian_filter1d(segment['segment'], sigma=0.2 * 1000, order=0)
-            segment['segment'] = segment['segment'] - lowpassed
 
         logger.info(f"Processing {len(target_channels)} channels...")
 
         # weight calculation
-        weights, _ = get_signal_weights_and_qualities(segments_data)
-        logger.info(f"Calculated normalized weights: {weights}")
+        # weights, _ = get_signal_weights_and_qualities(segments_data)
+        # logger.info(f"Calculated normalized weights: {weights}")
 
         # iterative SVD separation
         mecg_list = []
@@ -81,8 +75,6 @@ def main(
 
         for i, data in channel_iterator:
             segment = data['segment']
-            segment = (segment - np.mean(segment)) / (np.std(segment) + 1e-8)  # center data
-
             # mECG extraction
             mecg_i = run_ssa(segment, window_length=window_length, cvp=mecg_cvp)
 
@@ -108,8 +100,8 @@ def main(
         fecg_stack = np.stack([s[:min_len] for s in fecg_list], axis=-1)
         mecg_stack = np.stack([s[:min_len] for s in mecg_list], axis=-1)
 
-        mecg_weighted = np.average(mecg_stack, axis=-1, weights=weights)
-        fecg_weighted = np.average(fecg_stack, axis=-1, weights=weights)
+        mecg_weighted = np.average(mecg_stack, axis=-1)  # weights=weights
+        fecg_weighted = np.average(fecg_stack, axis=-1)  # weights=weights
 
         _, info_mean = nk.ecg_peaks(fecg_mean, sampling_rate=sampling_rate, correct_artifacts=True)
         fecg_mean_peaks_sec = info_mean.get('ECG_R_Peaks', []) / sampling_rate
