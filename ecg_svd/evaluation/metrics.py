@@ -120,8 +120,15 @@ def signal_quality(
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-                q_result = nk.ecg_quality(reconstructed_signal, sampling_rate=sampling_rate)
-                quality_mean = q_result.mean()
+                # we will use zhao algorithm
+                q_result = nk.ecg_quality(reconstructed_signal, method="zhao2018", sampling_rate=sampling_rate)
+                if q_result == "Excellent":
+                    quality = 3
+                elif q_result == "Barely acceptable":
+                    quality = 2
+                else:
+                    quality = 1
+                quality_mean = quality
 
                 if np.isnan(quality_mean) or np.isinf(quality_mean):
                     quality_mean = 0.0
