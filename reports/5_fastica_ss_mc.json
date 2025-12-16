@@ -1,0 +1,92 @@
+{
+    "r01.edf": {
+        "experiment_id": "5_fastica_ss_mc",
+        "execution_time_seconds": 0.2591245174407959,
+        "segment_duration": 5.0,
+        "n_sources": 3,
+        "mecg_component_idx": 0,
+        "fecg_component_idx": 1,
+        "results": {
+            "TP": 3,
+            "FN": 8,
+            "FP": 2,
+            "TN": 0,
+            "accuracy": 23.076923076923077,
+            "precision": 60.0,
+            "recall": 27.27272727272727,
+            "f1": 37.49999999999999
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "5_fastica_ss_mc",
+        "execution_time_seconds": 0.2787511348724365,
+        "segment_duration": 5.0,
+        "n_sources": 3,
+        "mecg_component_idx": 0,
+        "fecg_component_idx": 1,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "5_fastica_ss_mc",
+        "execution_time_seconds": 0.32347893714904785,
+        "segment_duration": 5.0,
+        "n_sources": 3,
+        "mecg_component_idx": 0,
+        "fecg_component_idx": 1,
+        "results": {
+            "TP": 8,
+            "FN": 3,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 72.72727272727273,
+            "precision": 100.0,
+            "recall": 72.72727272727273,
+            "f1": 84.21052631578948
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "5_fastica_ss_mc",
+        "execution_time_seconds": 0.24175071716308594,
+        "segment_duration": 5.0,
+        "n_sources": 3,
+        "mecg_component_idx": 0,
+        "fecg_component_idx": 1,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "5_fastica_ss_mc",
+        "execution_time_seconds": 0.27614498138427734,
+        "segment_duration": 5.0,
+        "n_sources": 3,
+        "mecg_component_idx": 0,
+        "fecg_component_idx": 1,
+        "results": {
+            "TP": 2,
+            "FN": 8,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 20.0,
+            "precision": 100.0,
+            "recall": 20.0,
+            "f1": 33.333333333333336
+        }
+    }
+}

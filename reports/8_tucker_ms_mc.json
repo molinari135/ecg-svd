@@ -1,0 +1,132 @@
+{
+    "r01.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 40.50406002998352,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "tucker_rank_L": 72,
+        "tucker_rank_K": 72,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 473,
+            "FN": 171,
+            "FP": 52,
+            "TN": 0,
+            "accuracy": 67.95977011494253,
+            "precision": 90.0952380952381,
+            "recall": 73.4472049689441,
+            "f1": 80.92386655260907
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 32.657586097717285,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "tucker_rank_L": 38,
+        "tucker_rank_K": 38,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 273,
+            "FN": 359,
+            "FP": 144,
+            "TN": 0,
+            "accuracy": 35.180412371134025,
+            "precision": 65.46762589928058,
+            "recall": 43.196202531645575,
+            "f1": 52.04957102001907
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 31.991058826446533,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "tucker_rank_L": 32,
+        "tucker_rank_K": 32,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 250,
+            "FN": 377,
+            "FP": 139,
+            "TN": 0,
+            "accuracy": 32.637075718015666,
+            "precision": 64.26735218508998,
+            "recall": 39.87240829346093,
+            "f1": 49.21259842519685
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 41.030139684677124,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "tucker_rank_L": 72,
+        "tucker_rank_K": 72,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 449,
+            "FN": 202,
+            "FP": 50,
+            "TN": 0,
+            "accuracy": 64.05135520684736,
+            "precision": 89.97995991983969,
+            "recall": 68.97081413210445,
+            "f1": 78.08695652173913
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "8_tucker_ms_mc",
+        "execution_time_seconds": 38.57201266288757,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_length": 5.0,
+        "overlap": 0.5,
+        "window_length": 1250,
+        "tucker_rank_L": 62,
+        "tucker_rank_K": 62,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 167,
+            "FN": 470,
+            "FP": 63,
+            "TN": 0,
+            "accuracy": 23.857142857142858,
+            "precision": 72.60869565217392,
+            "recall": 26.21664050235479,
+            "f1": 38.523644752018456
+        }
+    }
+}

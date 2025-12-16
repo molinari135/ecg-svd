@@ -1,0 +1,97 @@
+{
+    "r01.edf": {
+        "experiment_id": "1_svd_ss_sc",
+        "execution_time_seconds": 3.7389659881591797,
+        "target_channel": 4,
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "window_length": 1250,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "1_svd_ss_sc",
+        "execution_time_seconds": 3.6898367404937744,
+        "target_channel": 4,
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 81.81818181818183,
+            "precision": 100.0,
+            "recall": 81.81818181818183,
+            "f1": 90.0
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "1_svd_ss_sc",
+        "execution_time_seconds": 3.743788957595825,
+        "target_channel": 4,
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "window_length": 1250,
+        "results": {
+            "TP": 9,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.0,
+            "precision": 100.0,
+            "recall": 90.0,
+            "f1": 94.73684210526316
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "1_svd_ss_sc",
+        "execution_time_seconds": 3.680272340774536,
+        "target_channel": 4,
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "window_length": 1250,
+        "results": {
+            "TP": 8,
+            "FN": 3,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 72.72727272727273,
+            "precision": 100.0,
+            "recall": 72.72727272727273,
+            "f1": 84.21052631578948
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "1_svd_ss_sc",
+        "execution_time_seconds": 3.7156882286071777,
+        "target_channel": 4,
+        "segment_duration": 5.0,
+        "mecg_cvp": 0.75,
+        "fecg_cvp": 0.9,
+        "window_length": 1250,
+        "results": {
+            "TP": 8,
+            "FN": 3,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 72.72727272727273,
+            "precision": 100.0,
+            "recall": 72.72727272727273,
+            "f1": 84.21052631578948
+        }
+    }
+}

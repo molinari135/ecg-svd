@@ -1,0 +1,82 @@
+{
+    "r01.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.04303407669067383,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.041551828384399414,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.0395359992980957,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 9,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.0,
+            "precision": 100.0,
+            "recall": 90.0,
+            "f1": 94.73684210526316
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.041106462478637695,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "0_baseline",
+        "execution_time_seconds": 0.04003477096557617,
+        "target_channel": 0,
+        "segment_duration": 5.0,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    }
+}

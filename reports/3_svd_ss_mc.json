@@ -1,0 +1,132 @@
+{
+    "r01.edf": {
+        "experiment_id": "3_svd_ss_mc",
+        "execution_time_seconds": 7.573021411895752,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "mecg_cvp_threshold": 0.75,
+        "fecg_cvp_threshold": 0.95,
+        "k1_rank_mecg": 42,
+        "k2_rank_fecg": 94,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "3_svd_ss_mc",
+        "execution_time_seconds": 7.2595531940460205,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "mecg_cvp_threshold": 0.75,
+        "fecg_cvp_threshold": 0.95,
+        "k1_rank_mecg": 29,
+        "k2_rank_fecg": 59,
+        "results": {
+            "TP": 4,
+            "FN": 7,
+            "FP": 2,
+            "TN": 0,
+            "accuracy": 30.76923076923077,
+            "precision": 66.66666666666666,
+            "recall": 36.36363636363637,
+            "f1": 47.05882352941177
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "3_svd_ss_mc",
+        "execution_time_seconds": 7.697861433029175,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "mecg_cvp_threshold": 0.75,
+        "fecg_cvp_threshold": 0.95,
+        "k1_rank_mecg": 28,
+        "k2_rank_fecg": 61,
+        "results": {
+            "TP": 8,
+            "FN": 3,
+            "FP": 1,
+            "TN": 0,
+            "accuracy": 66.66666666666666,
+            "precision": 88.88888888888889,
+            "recall": 72.72727272727273,
+            "f1": 80.0
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "3_svd_ss_mc",
+        "execution_time_seconds": 7.5578773021698,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "mecg_cvp_threshold": 0.75,
+        "fecg_cvp_threshold": 0.95,
+        "k1_rank_mecg": 35,
+        "k2_rank_fecg": 90,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "3_svd_ss_mc",
+        "execution_time_seconds": 7.626388311386108,
+        "target_channels": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "mecg_cvp_threshold": 0.75,
+        "fecg_cvp_threshold": 0.95,
+        "k1_rank_mecg": 28,
+        "k2_rank_fecg": 125,
+        "results": {
+            "TP": 9,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.0,
+            "precision": 100.0,
+            "recall": 90.0,
+            "f1": 94.73684210526316
+        }
+    }
+}

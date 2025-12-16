@@ -1,0 +1,127 @@
+{
+    "r01.edf": {
+        "experiment_id": "7_tucker_ss_mc",
+        "execution_time_seconds": 24.985151529312134,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "tucker_rank_L": 72,
+        "tucker_rank_K": 72,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r04.edf": {
+        "experiment_id": "7_tucker_ss_mc",
+        "execution_time_seconds": 23.786085844039917,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "tucker_rank_L": 38,
+        "tucker_rank_K": 38,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r07.edf": {
+        "experiment_id": "7_tucker_ss_mc",
+        "execution_time_seconds": 25.62806749343872,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "tucker_rank_L": 32,
+        "tucker_rank_K": 32,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 9,
+            "FN": 2,
+            "FP": 1,
+            "TN": 0,
+            "accuracy": 75.0,
+            "precision": 90.0,
+            "recall": 81.81818181818183,
+            "f1": 85.71428571428572
+        }
+    },
+    "r08.edf": {
+        "experiment_id": "7_tucker_ss_mc",
+        "execution_time_seconds": 24.573925256729126,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "tucker_rank_L": 72,
+        "tucker_rank_K": 72,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 10,
+            "FN": 1,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 90.9090909090909,
+            "precision": 100.0,
+            "recall": 90.9090909090909,
+            "f1": 95.23809523809523
+        }
+    },
+    "r10.edf": {
+        "experiment_id": "7_tucker_ss_mc",
+        "execution_time_seconds": 23.921804428100586,
+        "target_channel": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "segment_duration": 5.0,
+        "window_length": 1250,
+        "tucker_rank_L": 62,
+        "tucker_rank_K": 62,
+        "tucker_rank_C": 4,
+        "results": {
+            "TP": 7,
+            "FN": 3,
+            "FP": 0,
+            "TN": 0,
+            "accuracy": 70.0,
+            "precision": 100.0,
+            "recall": 70.0,
+            "f1": 82.35294117647058
+        }
+    }
+}
